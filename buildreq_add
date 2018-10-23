@@ -6,3 +6,5 @@ opencv
 opencv-python
 openblas
 mkl-dnn-dev
+googletest
+googletest-dev
