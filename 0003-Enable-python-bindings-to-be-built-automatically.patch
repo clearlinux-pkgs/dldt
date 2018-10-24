@@ -1,21 +1,22 @@
-From 76073111e68ed3745b239047cc9002bb652eafd9 Mon Sep 17 00:00:00 2001
+From 796e0710da694f0bee32d70dbfecd83250fa5807 Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Wed, 24 Oct 2018 11:31:44 -0700
-Subject: [PATCH 3/3] Enable python bindings to be built automatically.
+Subject: [PATCH] Enable python bindings to be built automatically.
 
 ---
- inference-engine/CMakeLists.txt | 6 ++++++
- 1 file changed, 6 insertions(+)
+ inference-engine/CMakeLists.txt | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/inference-engine/CMakeLists.txt b/inference-engine/CMakeLists.txt
-index 2f561d9..5232b7d 100644
+index 2f561d9..9fbbb4e 100644
 --- a/inference-engine/CMakeLists.txt
 +++ b/inference-engine/CMakeLists.txt
-@@ -127,6 +127,12 @@ endif(UNIX)
+@@ -127,6 +127,13 @@ endif(UNIX)
  add_subdirectory(src)
  add_subdirectory(tests)
  add_subdirectory(thirdparty)
 +
++option(ENABLE_PYTHON_BINDINGS "Build python bindings." OFF)
 +if (ENABLE_PYTHON_BINDINGS)
 +    set(InferenceEngine_DIR "${CMAKE_BINARY_DIR}")
 +    add_subdirectory(ie_bridges/python)
