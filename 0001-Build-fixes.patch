@@ -1,21 +1,21 @@
-From 5c9c1e51f7d8ebcba1ac93ec17ad345e0f30febc Mon Sep 17 00:00:00 2001
+From 04bfa2e37c957256d5a27fd3066ff9f85a06ae91 Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Wed, 24 Oct 2018 10:09:33 -0700
 Subject: [PATCH] Build fixes.
 
 ---
- inference-engine/CMakeLists.txt                      | 10 ++++++++++
- inference-engine/cmake/config.cmake.in               | 12 ++++++++++--
- inference-engine/cmake/linux_name.cmake              |  2 +-
- inference-engine/cmake/os_flags.cmake                |  2 +-
- .../cmake/share/InferenceEngineConfig.cmake          |  2 +-
- inference-engine/ie_bridges/python/CMakeLists.txt    |  8 +++++++-
- .../python/inference_engine/CMakeLists.txt           |  7 ++++++-
- inference-engine/samples/CMakeLists.txt              |  2 +-
- inference-engine/src/extension/CMakeLists.txt        |  1 +
- inference-engine/src/inference_engine/CMakeLists.txt | 10 +++++++---
- .../thirdparty/mkl-dnn/cmake/platform.cmake          |  4 ++--
- 11 files changed, 47 insertions(+), 13 deletions(-)
+ inference-engine/CMakeLists.txt                     | 10 ++++++++++
+ inference-engine/cmake/config.cmake.in              | 12 ++++++++++--
+ inference-engine/cmake/linux_name.cmake             |  2 +-
+ inference-engine/cmake/os_flags.cmake               |  2 +-
+ .../cmake/share/InferenceEngineConfig.cmake         |  2 +-
+ inference-engine/ie_bridges/python/CMakeLists.txt   |  8 +++++++-
+ .../python/inference_engine/CMakeLists.txt          |  7 ++++++-
+ inference-engine/samples/CMakeLists.txt             |  2 +-
+ inference-engine/src/extension/CMakeLists.txt       |  1 +
+ .../src/inference_engine/CMakeLists.txt             | 13 ++++++++++---
+ .../thirdparty/mkl-dnn/cmake/platform.cmake         |  4 ++--
+ 11 files changed, 50 insertions(+), 13 deletions(-)
 
 diff --git a/inference-engine/CMakeLists.txt b/inference-engine/CMakeLists.txt
 index 2f561d9..6d15d21 100644
@@ -171,7 +171,7 @@ index 6642ea1..9caa1cd 100644
  include_directories (PRIVATE
          ${CMAKE_CURRENT_SOURCE_DIR}/common
 diff --git a/inference-engine/src/inference_engine/CMakeLists.txt b/inference-engine/src/inference_engine/CMakeLists.txt
-index 3f4d678..3b7948f 100644
+index 3f4d678..8741e51 100644
 --- a/inference-engine/src/inference_engine/CMakeLists.txt
 +++ b/inference-engine/src/inference_engine/CMakeLists.txt
 @@ -61,7 +61,7 @@ target_include_directories(${TARGET_NAME} SYSTEM PRIVATE "${IE_MAIN_SOURCE_DIR}/
@@ -192,7 +192,7 @@ index 3f4d678..3b7948f 100644
  
  # export targets
  
-@@ -95,4 +95,8 @@ configure_file(
+@@ -95,4 +95,11 @@ configure_file(
  configure_file(
      "${CMAKE_SOURCE_DIR}/cmake/share/InferenceEngineConfig-version.cmake"
      "${CMAKE_BINARY_DIR}/InferenceEngineConfig-version.cmake"
@@ -201,8 +201,11 @@ index 3f4d678..3b7948f 100644
 +    COPYONLY)
 +
 +install(TARGETS ${TARGET_NAME} LIBRARY DESTINATION lib64)
-+install(FILES ${PUBLIC_HEADERS} DESTINATION include/${TARGET_NAME}
-+)
++install(FILES ${PUBLIC_HEADERS} DESTINATION include/${TARGET_NAME})
++install(FILES
++    "${CMAKE_BINARY_DIR}/InferenceEngineConfig.cmake"
++    "${CMAKE_BINARY_DIR}/InferenceEngineConfig-version.cmake"
++    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake/Modules)
 diff --git a/inference-engine/thirdparty/mkl-dnn/cmake/platform.cmake b/inference-engine/thirdparty/mkl-dnn/cmake/platform.cmake
 index fa51aa7..e2f22c7 100644
 --- a/inference-engine/thirdparty/mkl-dnn/cmake/platform.cmake

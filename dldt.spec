@@ -4,12 +4,13 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 15
+Release  : 20
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause BSL-1.0 MIT
+Requires: dldt-data = %{version}-%{release}
 Requires: dldt-lib = %{version}-%{release}
 Requires: dldt-license = %{version}-%{release}
 Requires: networkx
@@ -41,10 +42,19 @@ Patch1: 0001-Build-fixes.patch
 The Google Mock class generator is an application that is part of cppclean.
 visit http://code.google.com/p/cppclean/
 
+%package data
+Summary: data components for the dldt package.
+Group: Data
+
+%description data
+data components for the dldt package.
+
+
 %package dev
 Summary: dev components for the dldt package.
 Group: Development
 Requires: dldt-lib = %{version}-%{release}
+Requires: dldt-data = %{version}-%{release}
 Provides: dldt-devel = %{version}-%{release}
 
 %description dev
@@ -54,6 +64,7 @@ dev components for the dldt package.
 %package lib
 Summary: lib components for the dldt package.
 Group: Libraries
+Requires: dldt-data = %{version}-%{release}
 Requires: dldt-license = %{version}-%{release}
 
 %description lib
@@ -77,7 +88,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540420330
+export SOURCE_DATE_EPOCH=1540422441
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -100,7 +111,7 @@ popd
 
 popd
 %install
-export SOURCE_DATE_EPOCH=1540420330
+export SOURCE_DATE_EPOCH=1540422441
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -122,6 +133,10 @@ popd
 
 %files
 %defattr(-,root,root,-)
+
+%files data
+%defattr(-,root,root,-)
+/usr/share/cmake/*
 
 %files dev
 %defattr(-,root,root,-)
