@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 7
+Release  : 8
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -82,7 +82,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540403877
+export SOURCE_DATE_EPOCH=1540404800
 mkdir -p clr-build
 pushd clr-build
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -94,7 +94,7 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1540403877
+export SOURCE_DATE_EPOCH=1540404800
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -170,6 +170,8 @@ popd
 %exclude /usr/include/gtest/internal/gtest-tuple.h.pump
 %exclude /usr/include/gtest/internal/gtest-type-util.h
 %exclude /usr/include/gtest/internal/gtest-type-util.h.pump
+%exclude /usr/include/pugiconfig.hpp
+%exclude /usr/include/pugixml.hpp
 %exclude /usr/lib64/cmake/pugixml/pugixml-config-relwithdebinfo.cmake
 %exclude /usr/lib64/cmake/pugixml/pugixml-config.cmake
 %exclude /usr/lib64/libgmock.so
@@ -181,13 +183,12 @@ popd
 %exclude /usr/lib64/pkgconfig/gmock_main.pc
 %exclude /usr/lib64/pkgconfig/gtest.pc
 %exclude /usr/lib64/pkgconfig/gtest_main.pc
-/usr/include/*.hpp
 /usr/lib64/libinference_engine.so
 
 %files lib
 %defattr(-,root,root,-)
+%exclude /usr/lib64/libpugixml.so.1
 /usr/lib64/libinference_engine.so.1
-/usr/lib64/libpugixml.so.1
 /usr/lib64/libpugixml.so.1.7
 
 %files license

@@ -62,3 +62,7 @@
 /usr/lib64/cmake/pugixml/pugixml-config-relwithdebinfo.cmake
 /usr/lib64/cmake/pugixml/pugixml-config.cmake
 /usr/lib64/libpugixml.so
+/usr/include/pugixml.hpp
+/usr/include/pugiconfig.hpp
+/usr/lib64/libpugixml.so.1
+/usr/lib64/libpugixml.so.1.7
