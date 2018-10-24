@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 6
+Release  : 7
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -17,6 +17,7 @@ Requires: numpy
 Requires: onnx
 Requires: opencv-python
 Requires: protobuf
+Requires: pugixml
 Requires: tensorflow
 BuildRequires : Cython
 BuildRequires : boost-dev
@@ -32,6 +33,7 @@ BuildRequires : openblas
 BuildRequires : opencv
 BuildRequires : opencv-dev
 BuildRequires : opencv-python
+BuildRequires : pugixml-dev
 BuildRequires : python3
 Patch1: build.patch
 Patch2: install.patch
@@ -80,7 +82,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540394285
+export SOURCE_DATE_EPOCH=1540403877
 mkdir -p clr-build
 pushd clr-build
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -92,7 +94,7 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1540394285
+export SOURCE_DATE_EPOCH=1540403877
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -117,70 +119,70 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
+%exclude /usr/include/gmock/gmock-actions.h
+%exclude /usr/include/gmock/gmock-cardinalities.h
+%exclude /usr/include/gmock/gmock-generated-actions.h
+%exclude /usr/include/gmock/gmock-generated-actions.h.pump
+%exclude /usr/include/gmock/gmock-generated-function-mockers.h
+%exclude /usr/include/gmock/gmock-generated-function-mockers.h.pump
+%exclude /usr/include/gmock/gmock-generated-matchers.h
+%exclude /usr/include/gmock/gmock-generated-matchers.h.pump
+%exclude /usr/include/gmock/gmock-generated-nice-strict.h
+%exclude /usr/include/gmock/gmock-generated-nice-strict.h.pump
+%exclude /usr/include/gmock/gmock-matchers.h
+%exclude /usr/include/gmock/gmock-more-actions.h
+%exclude /usr/include/gmock/gmock-more-matchers.h
+%exclude /usr/include/gmock/gmock-spec-builders.h
+%exclude /usr/include/gmock/gmock.h
+%exclude /usr/include/gmock/internal/custom/gmock-generated-actions.h
+%exclude /usr/include/gmock/internal/custom/gmock-generated-actions.h.pump
+%exclude /usr/include/gmock/internal/custom/gmock-matchers.h
+%exclude /usr/include/gmock/internal/custom/gmock-port.h
+%exclude /usr/include/gmock/internal/gmock-generated-internal-utils.h
+%exclude /usr/include/gmock/internal/gmock-generated-internal-utils.h.pump
+%exclude /usr/include/gmock/internal/gmock-internal-utils.h
+%exclude /usr/include/gmock/internal/gmock-port.h
+%exclude /usr/include/gtest/gtest-death-test.h
+%exclude /usr/include/gtest/gtest-message.h
+%exclude /usr/include/gtest/gtest-param-test.h
+%exclude /usr/include/gtest/gtest-param-test.h.pump
+%exclude /usr/include/gtest/gtest-printers.h
+%exclude /usr/include/gtest/gtest-spi.h
+%exclude /usr/include/gtest/gtest-test-part.h
+%exclude /usr/include/gtest/gtest-typed-test.h
+%exclude /usr/include/gtest/gtest.h
+%exclude /usr/include/gtest/gtest_pred_impl.h
+%exclude /usr/include/gtest/gtest_prod.h
+%exclude /usr/include/gtest/internal/custom/gtest-port.h
+%exclude /usr/include/gtest/internal/custom/gtest-printers.h
+%exclude /usr/include/gtest/internal/custom/gtest.h
+%exclude /usr/include/gtest/internal/gtest-death-test-internal.h
+%exclude /usr/include/gtest/internal/gtest-filepath.h
+%exclude /usr/include/gtest/internal/gtest-internal.h
+%exclude /usr/include/gtest/internal/gtest-linked_ptr.h
+%exclude /usr/include/gtest/internal/gtest-param-util-generated.h
+%exclude /usr/include/gtest/internal/gtest-param-util-generated.h.pump
+%exclude /usr/include/gtest/internal/gtest-param-util.h
+%exclude /usr/include/gtest/internal/gtest-port-arch.h
+%exclude /usr/include/gtest/internal/gtest-port.h
+%exclude /usr/include/gtest/internal/gtest-string.h
+%exclude /usr/include/gtest/internal/gtest-tuple.h
+%exclude /usr/include/gtest/internal/gtest-tuple.h.pump
+%exclude /usr/include/gtest/internal/gtest-type-util.h
+%exclude /usr/include/gtest/internal/gtest-type-util.h.pump
+%exclude /usr/lib64/cmake/pugixml/pugixml-config-relwithdebinfo.cmake
+%exclude /usr/lib64/cmake/pugixml/pugixml-config.cmake
 %exclude /usr/lib64/libgmock.so
 %exclude /usr/lib64/libgmock_main.so
 %exclude /usr/lib64/libgtest.so
 %exclude /usr/lib64/libgtest_main.so
+%exclude /usr/lib64/libpugixml.so
 %exclude /usr/lib64/pkgconfig/gmock.pc
 %exclude /usr/lib64/pkgconfig/gmock_main.pc
 %exclude /usr/lib64/pkgconfig/gtest.pc
 %exclude /usr/lib64/pkgconfig/gtest_main.pc
 /usr/include/*.hpp
-/usr/include/gmock/gmock-actions.h
-/usr/include/gmock/gmock-cardinalities.h
-/usr/include/gmock/gmock-generated-actions.h
-/usr/include/gmock/gmock-generated-actions.h.pump
-/usr/include/gmock/gmock-generated-function-mockers.h
-/usr/include/gmock/gmock-generated-function-mockers.h.pump
-/usr/include/gmock/gmock-generated-matchers.h
-/usr/include/gmock/gmock-generated-matchers.h.pump
-/usr/include/gmock/gmock-generated-nice-strict.h
-/usr/include/gmock/gmock-generated-nice-strict.h.pump
-/usr/include/gmock/gmock-matchers.h
-/usr/include/gmock/gmock-more-actions.h
-/usr/include/gmock/gmock-more-matchers.h
-/usr/include/gmock/gmock-spec-builders.h
-/usr/include/gmock/gmock.h
-/usr/include/gmock/internal/custom/gmock-generated-actions.h
-/usr/include/gmock/internal/custom/gmock-generated-actions.h.pump
-/usr/include/gmock/internal/custom/gmock-matchers.h
-/usr/include/gmock/internal/custom/gmock-port.h
-/usr/include/gmock/internal/gmock-generated-internal-utils.h
-/usr/include/gmock/internal/gmock-generated-internal-utils.h.pump
-/usr/include/gmock/internal/gmock-internal-utils.h
-/usr/include/gmock/internal/gmock-port.h
-/usr/include/gtest/gtest-death-test.h
-/usr/include/gtest/gtest-message.h
-/usr/include/gtest/gtest-param-test.h
-/usr/include/gtest/gtest-param-test.h.pump
-/usr/include/gtest/gtest-printers.h
-/usr/include/gtest/gtest-spi.h
-/usr/include/gtest/gtest-test-part.h
-/usr/include/gtest/gtest-typed-test.h
-/usr/include/gtest/gtest.h
-/usr/include/gtest/gtest_pred_impl.h
-/usr/include/gtest/gtest_prod.h
-/usr/include/gtest/internal/custom/gtest-port.h
-/usr/include/gtest/internal/custom/gtest-printers.h
-/usr/include/gtest/internal/custom/gtest.h
-/usr/include/gtest/internal/gtest-death-test-internal.h
-/usr/include/gtest/internal/gtest-filepath.h
-/usr/include/gtest/internal/gtest-internal.h
-/usr/include/gtest/internal/gtest-linked_ptr.h
-/usr/include/gtest/internal/gtest-param-util-generated.h
-/usr/include/gtest/internal/gtest-param-util-generated.h.pump
-/usr/include/gtest/internal/gtest-param-util.h
-/usr/include/gtest/internal/gtest-port-arch.h
-/usr/include/gtest/internal/gtest-port.h
-/usr/include/gtest/internal/gtest-string.h
-/usr/include/gtest/internal/gtest-tuple.h
-/usr/include/gtest/internal/gtest-tuple.h.pump
-/usr/include/gtest/internal/gtest-type-util.h
-/usr/include/gtest/internal/gtest-type-util.h.pump
-/usr/lib64/cmake/pugixml/pugixml-config-relwithdebinfo.cmake
-/usr/lib64/cmake/pugixml/pugixml-config.cmake
 /usr/lib64/libinference_engine.so
-/usr/lib64/libpugixml.so
 
 %files lib
 %defattr(-,root,root,-)

@@ -8,3 +8,4 @@ openblas
 mkl-dnn-dev
 googletest
 googletest-dev
+pugixml-dev
