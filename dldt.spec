@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 11
+Release  : 12
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -36,8 +36,6 @@ BuildRequires : opencv-python
 BuildRequires : pugixml-dev
 BuildRequires : python3
 Patch1: 0001-Build-fixes.patch
-Patch2: 0002-Install-fixes.patch
-Patch3: 0003-Enable-python-bindings-to-be-built-automatically.patch
 
 %description
 The Google Mock class generator is an application that is part of cppclean.
@@ -73,15 +71,13 @@ license components for the dldt package.
 %prep
 %setup -q -n dldt-2018_R3
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540413641
+export SOURCE_DATE_EPOCH=1540416733
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -100,7 +96,7 @@ popd
 
 popd
 %install
-export SOURCE_DATE_EPOCH=1540413641
+export SOURCE_DATE_EPOCH=1540416733
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -191,6 +187,37 @@ popd
 %exclude /usr/lib64/pkgconfig/gmock_main.pc
 %exclude /usr/lib64/pkgconfig/gtest.pc
 %exclude /usr/lib64/pkgconfig/gtest_main.pc
+/usr/include/inference_engine/ie_allocator.hpp
+/usr/include/inference_engine/ie_api.h
+/usr/include/inference_engine/ie_blob.h
+/usr/include/inference_engine/ie_common.h
+/usr/include/inference_engine/ie_data.h
+/usr/include/inference_engine/ie_device.hpp
+/usr/include/inference_engine/ie_error.hpp
+/usr/include/inference_engine/ie_extension.h
+/usr/include/inference_engine/ie_icnn_net_reader.h
+/usr/include/inference_engine/ie_icnn_network.hpp
+/usr/include/inference_engine/ie_icnn_network_stats.hpp
+/usr/include/inference_engine/ie_iexecutable_network.hpp
+/usr/include/inference_engine/ie_iextension.h
+/usr/include/inference_engine/ie_ihetero_plugin.hpp
+/usr/include/inference_engine/ie_iinfer_request.hpp
+/usr/include/inference_engine/ie_imemory_state.hpp
+/usr/include/inference_engine/ie_input_info.hpp
+/usr/include/inference_engine/ie_layers.h
+/usr/include/inference_engine/ie_layouts.h
+/usr/include/inference_engine/ie_locked_memory.hpp
+/usr/include/inference_engine/ie_plugin.hpp
+/usr/include/inference_engine/ie_plugin_config.hpp
+/usr/include/inference_engine/ie_plugin_dispatcher.hpp
+/usr/include/inference_engine/ie_plugin_ptr.hpp
+/usr/include/inference_engine/ie_precision.hpp
+/usr/include/inference_engine/ie_preprocess.hpp
+/usr/include/inference_engine/ie_primitive_info.hpp
+/usr/include/inference_engine/ie_tensor_info.hpp
+/usr/include/inference_engine/ie_utils.hpp
+/usr/include/inference_engine/ie_version.hpp
+/usr/include/inference_engine/inference_engine.hpp
 /usr/lib64/libinference_engine.so
 
 %files lib

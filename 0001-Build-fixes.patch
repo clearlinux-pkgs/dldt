@@ -1,17 +1,67 @@
-From bcfc45823addacfbac587a16fb1146d419ecb535 Mon Sep 17 00:00:00 2001
+From 5c9c1e51f7d8ebcba1ac93ec17ad345e0f30febc Mon Sep 17 00:00:00 2001
 From: Arjan van de Ven <arjan@linux.intel.com>
 Date: Wed, 24 Oct 2018 10:09:33 -0700
-Subject: [PATCH 1/3] Build fixes.
+Subject: [PATCH] Build fixes.
 
 ---
- inference-engine/cmake/linux_name.cmake                  | 2 +-
- inference-engine/cmake/os_flags.cmake                    | 2 +-
- inference-engine/cmake/share/InferenceEngineConfig.cmake | 2 +-
- inference-engine/samples/CMakeLists.txt                  | 2 +-
- inference-engine/src/extension/CMakeLists.txt            | 1 +
- inference-engine/thirdparty/mkl-dnn/cmake/platform.cmake | 4 ++--
- 6 files changed, 7 insertions(+), 6 deletions(-)
+ inference-engine/CMakeLists.txt                      | 10 ++++++++++
+ inference-engine/cmake/config.cmake.in               | 12 ++++++++++--
+ inference-engine/cmake/linux_name.cmake              |  2 +-
+ inference-engine/cmake/os_flags.cmake                |  2 +-
+ .../cmake/share/InferenceEngineConfig.cmake          |  2 +-
+ inference-engine/ie_bridges/python/CMakeLists.txt    |  8 +++++++-
+ .../python/inference_engine/CMakeLists.txt           |  7 ++++++-
+ inference-engine/samples/CMakeLists.txt              |  2 +-
+ inference-engine/src/extension/CMakeLists.txt        |  1 +
+ inference-engine/src/inference_engine/CMakeLists.txt | 10 +++++++---
+ .../thirdparty/mkl-dnn/cmake/platform.cmake          |  4 ++--
+ 11 files changed, 47 insertions(+), 13 deletions(-)
 
+diff --git a/inference-engine/CMakeLists.txt b/inference-engine/CMakeLists.txt
+index 2f561d9..6d15d21 100644
+--- a/inference-engine/CMakeLists.txt
++++ b/inference-engine/CMakeLists.txt
+@@ -127,6 +127,16 @@ endif(UNIX)
+ add_subdirectory(src)
+ add_subdirectory(tests)
+ add_subdirectory(thirdparty)
++
++option(ENABLE_PYTHON_BINDINGS "Build python bindings." OFF)
++if (ENABLE_PYTHON_BINDINGS)
++    set(InferenceEngine_DIR "${CMAKE_BINARY_DIR}")
++
++    #to be able to link
++    set (LIB_FOLDER ${IE_MAIN_SOURCE_DIR}/${BIN_FOLDER}/${CMAKE_BUILD_TYPE}/lib)
++    add_subdirectory(ie_bridges/python)
++endif()
++
+ if (ENABLE_SAMPLES_CORE)
+     set(InferenceEngine_DIR "${CMAKE_BINARY_DIR}")
+ 
+diff --git a/inference-engine/cmake/config.cmake.in b/inference-engine/cmake/config.cmake.in
+index a17d6da..02e6928 100644
+--- a/inference-engine/cmake/config.cmake.in
++++ b/inference-engine/cmake/config.cmake.in
+@@ -3,9 +3,17 @@
+ #
+ if(DEFINED IE_MAIN_SOURCE_DIR AND TARGET inference_engine)
+     set(InferenceEngine_INCLUDE_DIRS ${IE_MAIN_SOURCE_DIR}/include)
+-    set(InferenceEngine_LIBRARIES inference_engine)
++    if(NOT(UNIX))
++        set(InferenceEngine_LIBRARIES IE::inference_engine)
++    else()
++        set(InferenceEngine_LIBRARIES inference_engine)
++    endif()
+ else()
+     include("${CMAKE_CURRENT_LIST_DIR}/targets.cmake")
+     get_target_property(InferenceEngine_INCLUDE_DIRS IE::inference_engine INTERFACE_INCLUDE_DIRECTORIES)
+-    set(InferenceEngine_LIBRARIES IE::inference_engine)
++    if(NOT(UNIX))
++        set(InferenceEngine_LIBRARIES IE::inference_engine)
++    else()
++        set(InferenceEngine_LIBRARIES inference_engine)
++    endif()
+ endif()
 diff --git a/inference-engine/cmake/linux_name.cmake b/inference-engine/cmake/linux_name.cmake
 index 78b0c50..efd084f 100644
 --- a/inference-engine/cmake/linux_name.cmake
@@ -51,6 +101,50 @@ index 59d8260..f530f3d 100644
                              OUTPUT_VARIABLE release_data RESULT_VARIABLE result)
                  set(name_regex "NAME=\"([^ \"\n]*).*\"\n")
                  set(version_regex "VERSION=\"([0-9]+(\\.[0-9]+)?)[^\n]*\"")
+diff --git a/inference-engine/ie_bridges/python/CMakeLists.txt b/inference-engine/ie_bridges/python/CMakeLists.txt
+index 0fed229..e4d3449 100644
+--- a/inference-engine/ie_bridges/python/CMakeLists.txt
++++ b/inference-engine/ie_bridges/python/CMakeLists.txt
+@@ -13,6 +13,8 @@ set (IE_DEFAULT_PATH computer_vision_sdk/deployment_tools/inference_engine/share
+ 
+ find_package(InferenceEngine REQUIRED PATHS /opt/intel/${IE_DEFAULT_PATH} $ENV{HOME}/intel/${IE_DEFAULT_PATH})
+ 
++link_directories(${LIB_FOLDER})
++
+ # Make the scripts available in the 'cmake' directory available for the
+ # 'include()' command, 'find_package()' command.
+ set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
+@@ -36,7 +38,11 @@ add_custom_target( CopyIeLibs ${CMAKE_COMMAND} -P
+   ${IE_ROOT_DIR}/bin/${_ARCH}/Release ${_IE_ROOT_LIBRARY}
+   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ie_driver )
+ 
+-include_directories( IE::inference_engine )
++if(NOT(UNIX))
++    include_directories( IE::inference_engine )
++else()
++    include_directories( ${IE_MAIN_SOURCE_DIR}/include )
++endif()
+ 
+ # Process the CMakeLists.txt in the 'src' and 'bin' directory.
+ add_subdirectory( inference_engine )
+diff --git a/inference-engine/ie_bridges/python/inference_engine/CMakeLists.txt b/inference-engine/ie_bridges/python/inference_engine/CMakeLists.txt
+index 2835e04..f94e1da 100644
+--- a/inference-engine/ie_bridges/python/inference_engine/CMakeLists.txt
++++ b/inference-engine/ie_bridges/python/inference_engine/CMakeLists.txt
+@@ -33,7 +33,12 @@ cython_add_module(
+     ie_api.pyx
+ )
+ 
+-target_link_libraries(ie_api PRIVATE IE::inference_engine)
++if(NOT(UNIX))
++    target_link_libraries(ie_api PRIVATE IE::inference_engine)
++else()
++    target_link_libraries(ie_api PRIVATE inference_engine)
++endif()
++
+ set_target_properties(ie_api PROPERTIES CXX_STANDARD 11 LINKER_LANGUAGE CXX)
+ 
+ #if (NOT UNIX AND ${PYTHON_VERSION_STRING} MATCHES "^1.4")
 diff --git a/inference-engine/samples/CMakeLists.txt b/inference-engine/samples/CMakeLists.txt
 index 8360a77..630ec30 100644
 --- a/inference-engine/samples/CMakeLists.txt
@@ -76,6 +170,39 @@ index 6642ea1..9caa1cd 100644
  
  include_directories (PRIVATE
          ${CMAKE_CURRENT_SOURCE_DIR}/common
+diff --git a/inference-engine/src/inference_engine/CMakeLists.txt b/inference-engine/src/inference_engine/CMakeLists.txt
+index 3f4d678..3b7948f 100644
+--- a/inference-engine/src/inference_engine/CMakeLists.txt
++++ b/inference-engine/src/inference_engine/CMakeLists.txt
+@@ -61,7 +61,7 @@ target_include_directories(${TARGET_NAME} SYSTEM PRIVATE "${IE_MAIN_SOURCE_DIR}/
+ target_include_directories(${TARGET_NAME} SYSTEM PRIVATE "${IE_MAIN_SOURCE_DIR}/thirdparty/ade/ade/include")
+ target_include_directories(${TARGET_NAME} SYSTEM PRIVATE "${IE_MAIN_SOURCE_DIR}/thirdparty/ade/common/include")
+ 
+-set_target_properties(${TARGET_NAME} PROPERTIES COMPILE_PDB_NAME ${TARGET_NAME})
++set_target_properties(${TARGET_NAME} PROPERTIES COMPILE_PDB_NAME ${TARGET_NAME} SOVERSION 1)
+ 
+ # Static library used for unit tests which are always built
+ 
+@@ -81,7 +81,7 @@ target_include_directories(${TARGET_NAME}_s SYSTEM PRIVATE "${IE_MAIN_SOURCE_DIR
+ 
+ target_compile_definitions(${TARGET_NAME}_s PUBLIC -DUSE_STATIC_IE)
+ 
+-set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_PDB_NAME ${TARGET_NAME}_s)
++set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_PDB_NAME ${TARGET_NAME}_s SOVERSION 1)
+ 
+ # export targets
+ 
+@@ -95,4 +95,8 @@ configure_file(
+ configure_file(
+     "${CMAKE_SOURCE_DIR}/cmake/share/InferenceEngineConfig-version.cmake"
+     "${CMAKE_BINARY_DIR}/InferenceEngineConfig-version.cmake"
+-    COPYONLY)
+\ No newline at end of file
++    COPYONLY)
++
++install(TARGETS ${TARGET_NAME} LIBRARY DESTINATION lib64)
++install(FILES ${PUBLIC_HEADERS} DESTINATION include/${TARGET_NAME}
++)
 diff --git a/inference-engine/thirdparty/mkl-dnn/cmake/platform.cmake b/inference-engine/thirdparty/mkl-dnn/cmake/platform.cmake
 index fa51aa7..e2f22c7 100644
 --- a/inference-engine/thirdparty/mkl-dnn/cmake/platform.cmake
