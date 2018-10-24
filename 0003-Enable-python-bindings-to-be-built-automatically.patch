@@ -1,17 +1,20 @@
-From 796e0710da694f0bee32d70dbfecd83250fa5807 Mon Sep 17 00:00:00 2001
+From 96944b613139c64be328fcaa5780ec1233aff8cb Mon Sep 17 00:00:00 2001
 From: Auke Kok <auke-jan.h.kok@intel.com>
 Date: Wed, 24 Oct 2018 11:31:44 -0700
 Subject: [PATCH] Enable python bindings to be built automatically.
 
 ---
- inference-engine/CMakeLists.txt | 7 +++++++
- 1 file changed, 7 insertions(+)
+ inference-engine/CMakeLists.txt                      | 10 ++++++++++
+ inference-engine/cmake/config.cmake.in               | 12 ++++++++++--
+ inference-engine/ie_bridges/python/CMakeLists.txt    |  8 +++++++-
+ .../python/inference_engine/CMakeLists.txt           |  7 ++++++-
+ 4 files changed, 33 insertions(+), 4 deletions(-)
 
 diff --git a/inference-engine/CMakeLists.txt b/inference-engine/CMakeLists.txt
-index 2f561d9..9fbbb4e 100644
+index 2f561d9..6d15d21 100644
 --- a/inference-engine/CMakeLists.txt
 +++ b/inference-engine/CMakeLists.txt
-@@ -127,6 +127,13 @@ endif(UNIX)
+@@ -127,6 +127,16 @@ endif(UNIX)
  add_subdirectory(src)
  add_subdirectory(tests)
  add_subdirectory(thirdparty)
@@ -19,12 +22,83 @@ index 2f561d9..9fbbb4e 100644
 +option(ENABLE_PYTHON_BINDINGS "Build python bindings." OFF)
 +if (ENABLE_PYTHON_BINDINGS)
 +    set(InferenceEngine_DIR "${CMAKE_BINARY_DIR}")
++
++    #to be able to link
++    set (LIB_FOLDER ${IE_MAIN_SOURCE_DIR}/${BIN_FOLDER}/${CMAKE_BUILD_TYPE}/lib)
 +    add_subdirectory(ie_bridges/python)
 +endif()
 +
  if (ENABLE_SAMPLES_CORE)
      set(InferenceEngine_DIR "${CMAKE_BINARY_DIR}")
  
+diff --git a/inference-engine/cmake/config.cmake.in b/inference-engine/cmake/config.cmake.in
+index a17d6da..02e6928 100644
+--- a/inference-engine/cmake/config.cmake.in
++++ b/inference-engine/cmake/config.cmake.in
+@@ -3,9 +3,17 @@
+ #
+ if(DEFINED IE_MAIN_SOURCE_DIR AND TARGET inference_engine)
+     set(InferenceEngine_INCLUDE_DIRS ${IE_MAIN_SOURCE_DIR}/include)
+-    set(InferenceEngine_LIBRARIES inference_engine)
++    if(NOT(UNIX))
++        set(InferenceEngine_LIBRARIES IE::inference_engine)
++    else()
++        set(InferenceEngine_LIBRARIES inference_engine)
++    endif()
+ else()
+     include("${CMAKE_CURRENT_LIST_DIR}/targets.cmake")
+     get_target_property(InferenceEngine_INCLUDE_DIRS IE::inference_engine INTERFACE_INCLUDE_DIRECTORIES)
+-    set(InferenceEngine_LIBRARIES IE::inference_engine)
++    if(NOT(UNIX))
++        set(InferenceEngine_LIBRARIES IE::inference_engine)
++    else()
++        set(InferenceEngine_LIBRARIES inference_engine)
++    endif()
+ endif()
+diff --git a/inference-engine/ie_bridges/python/CMakeLists.txt b/inference-engine/ie_bridges/python/CMakeLists.txt
+index 0fed229..e4d3449 100644
+--- a/inference-engine/ie_bridges/python/CMakeLists.txt
++++ b/inference-engine/ie_bridges/python/CMakeLists.txt
+@@ -13,6 +13,8 @@ set (IE_DEFAULT_PATH computer_vision_sdk/deployment_tools/inference_engine/share
+ 
+ find_package(InferenceEngine REQUIRED PATHS /opt/intel/${IE_DEFAULT_PATH} $ENV{HOME}/intel/${IE_DEFAULT_PATH})
+ 
++link_directories(${LIB_FOLDER})
++
+ # Make the scripts available in the 'cmake' directory available for the
+ # 'include()' command, 'find_package()' command.
+ set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
+@@ -36,7 +38,11 @@ add_custom_target( CopyIeLibs ${CMAKE_COMMAND} -P
+   ${IE_ROOT_DIR}/bin/${_ARCH}/Release ${_IE_ROOT_LIBRARY}
+   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ie_driver )
+ 
+-include_directories( IE::inference_engine )
++if(NOT(UNIX))
++    include_directories( IE::inference_engine )
++else()
++    include_directories( ${IE_MAIN_SOURCE_DIR}/include )
++endif()
+ 
+ # Process the CMakeLists.txt in the 'src' and 'bin' directory.
+ add_subdirectory( inference_engine )
+diff --git a/inference-engine/ie_bridges/python/inference_engine/CMakeLists.txt b/inference-engine/ie_bridges/python/inference_engine/CMakeLists.txt
+index 2835e04..f94e1da 100644
+--- a/inference-engine/ie_bridges/python/inference_engine/CMakeLists.txt
++++ b/inference-engine/ie_bridges/python/inference_engine/CMakeLists.txt
+@@ -33,7 +33,12 @@ cython_add_module(
+     ie_api.pyx
+ )
+ 
+-target_link_libraries(ie_api PRIVATE IE::inference_engine)
++if(NOT(UNIX))
++    target_link_libraries(ie_api PRIVATE IE::inference_engine)
++else()
++    target_link_libraries(ie_api PRIVATE inference_engine)
++endif()
++
+ set_target_properties(ie_api PROPERTIES CXX_STANDARD 11 LINKER_LANGUAGE CXX)
+ 
+ #if (NOT UNIX AND ${PYTHON_VERSION_STRING} MATCHES "^1.4")
 -- 
 2.19.1
 
