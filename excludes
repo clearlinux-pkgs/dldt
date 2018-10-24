@@ -1,13 +1,5 @@
 # This file contains the output files that need %exclude. Full path
 # names, one per line.
-/usr/lib64/libgmock.so
-/usr/lib64/libgmock_main.so
-/usr/lib64/libgtest.so
-/usr/lib64/libgtest_main.so
-/usr/lib64/pkgconfig/gmock.pc
-/usr/lib64/pkgconfig/gmock_main.pc
-/usr/lib64/pkgconfig/gtest.pc
-/usr/lib64/pkgconfig/gtest_main.pc
 /usr/include/gmock/gmock-actions.h
 /usr/include/gmock/gmock-cardinalities.h
 /usr/include/gmock/gmock-generated-actions.h
@@ -59,10 +51,22 @@
 /usr/include/gtest/internal/gtest-tuple.h.pump
 /usr/include/gtest/internal/gtest-type-util.h
 /usr/include/gtest/internal/gtest-type-util.h.pump
+/usr/include/pugiconfig.hpp
+/usr/include/pugixml.hpp
 /usr/lib64/cmake/pugixml/pugixml-config-relwithdebinfo.cmake
 /usr/lib64/cmake/pugixml/pugixml-config.cmake
+/usr/lib64/libgflags_nothreads.so
+/usr/lib64/libgflags_nothreads.so.2.2
+/usr/lib64/libgflags_nothreads.so.2.2.1
+/usr/lib64/libgmock.so
+/usr/lib64/libgmock_main.so
+/usr/lib64/libgtest.so
+/usr/lib64/libgtest_main.so
 /usr/lib64/libpugixml.so
-/usr/include/pugixml.hpp
-/usr/include/pugiconfig.hpp
 /usr/lib64/libpugixml.so.1
 /usr/lib64/libpugixml.so.1.7
+/usr/lib64/pkgconfig/gflags.pc
+/usr/lib64/pkgconfig/gmock.pc
+/usr/lib64/pkgconfig/gmock_main.pc
+/usr/lib64/pkgconfig/gtest.pc
+/usr/lib64/pkgconfig/gtest_main.pc

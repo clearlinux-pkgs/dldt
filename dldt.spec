@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 10
+Release  : 11
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -81,7 +81,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540413358
+export SOURCE_DATE_EPOCH=1540413641
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -100,7 +100,7 @@ popd
 
 popd
 %install
-export SOURCE_DATE_EPOCH=1540413358
+export SOURCE_DATE_EPOCH=1540413641
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -180,25 +180,25 @@ popd
 %exclude /usr/include/pugixml.hpp
 %exclude /usr/lib64/cmake/pugixml/pugixml-config-relwithdebinfo.cmake
 %exclude /usr/lib64/cmake/pugixml/pugixml-config.cmake
+%exclude /usr/lib64/libgflags_nothreads.so
 %exclude /usr/lib64/libgmock.so
 %exclude /usr/lib64/libgmock_main.so
 %exclude /usr/lib64/libgtest.so
 %exclude /usr/lib64/libgtest_main.so
 %exclude /usr/lib64/libpugixml.so
+%exclude /usr/lib64/pkgconfig/gflags.pc
 %exclude /usr/lib64/pkgconfig/gmock.pc
 %exclude /usr/lib64/pkgconfig/gmock_main.pc
 %exclude /usr/lib64/pkgconfig/gtest.pc
 %exclude /usr/lib64/pkgconfig/gtest_main.pc
-/usr/lib64/libgflags_nothreads.so
 /usr/lib64/libinference_engine.so
-/usr/lib64/pkgconfig/gflags.pc
 
 %files lib
 %defattr(-,root,root,-)
+%exclude /usr/lib64/libgflags_nothreads.so.2.2
+%exclude /usr/lib64/libgflags_nothreads.so.2.2.1
 %exclude /usr/lib64/libpugixml.so.1
 %exclude /usr/lib64/libpugixml.so.1.7
-/usr/lib64/libgflags_nothreads.so.2.2
-/usr/lib64/libgflags_nothreads.so.2.2.1
 /usr/lib64/libinference_engine.so.1
 
 %files license
