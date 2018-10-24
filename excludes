@@ -1,2 +1,10 @@
 # This file contains the output files that need %exclude. Full path
 # names, one per line.
+/usr/lib64/libgmock.so
+/usr/lib64/libgmock_main.so
+/usr/lib64/libgtest.so
+/usr/lib64/libgtest_main.so
+/usr/lib64/pkgconfig/gmock.pc
+/usr/lib64/pkgconfig/gmock_main.pc
+/usr/lib64/pkgconfig/gtest.pc
+/usr/lib64/pkgconfig/gtest_main.pc

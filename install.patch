@@ -1,0 +1,12 @@
+--- dldt-2018_R3/inference-engine/src/inference_engine/CMakeLists.txt~	2018-10-16 11:00:32.000000000 +0000
++++ dldt-2018_R3/inference-engine/src/inference_engine/CMakeLists.txt	2018-10-24 13:58:31.491843624 +0000
+@@ -95,4 +95,6 @@
+ configure_file(
+     "${CMAKE_SOURCE_DIR}/cmake/share/InferenceEngineConfig-version.cmake"
+     "${CMAKE_BINARY_DIR}/InferenceEngineConfig-version.cmake"
+-    COPYONLY)
+\ No newline at end of file
++    COPYONLY)
++
++install(TARGETS ${TARGET_NAME} LIBRARY DESTINATION lib64)
+\ No newline at end of file
