@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 22
+Release  : 23
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -37,6 +37,7 @@ BuildRequires : opencv-python
 BuildRequires : pugixml-dev
 BuildRequires : python3
 Patch1: 0001-Build-fixes.patch
+Patch2: 0002-Add-fopenmp.patch
 
 %description
 The Google Mock class generator is an application that is part of cppclean.
@@ -82,13 +83,14 @@ license components for the dldt package.
 %prep
 %setup -q -n dldt-2018_R3
 %patch1 -p1
+%patch2 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540493301
+export SOURCE_DATE_EPOCH=1540497533
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -112,7 +114,7 @@ popd
 
 popd
 %install
-export SOURCE_DATE_EPOCH=1540493301
+export SOURCE_DATE_EPOCH=1540497533
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE

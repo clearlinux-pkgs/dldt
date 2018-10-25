@@ -1,0 +1,25 @@
+From f61855e036ae11e2df14ea06a53f5a6b45105d6d Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Thu, 25 Oct 2018 12:37:33 -0700
+Subject: [PATCH] Add -fopenmp
+
+---
+ inference-engine/src/mkldnn_plugin/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/inference-engine/src/mkldnn_plugin/CMakeLists.txt b/inference-engine/src/mkldnn_plugin/CMakeLists.txt
+index c24c5aa..de29e20 100644
+--- a/inference-engine/src/mkldnn_plugin/CMakeLists.txt
++++ b/inference-engine/src/mkldnn_plugin/CMakeLists.txt
+@@ -23,7 +23,7 @@ file(GLOB HEADERS
+         ${CMAKE_CURRENT_SOURCE_DIR}/nodes/*.h
+ )
+ 
+-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.2")
++set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.2 -fopenmp")
+ 
+ addVersionDefines(mkldnn_plugin.cpp CI_BUILD_NUMBER MKL_VERSION)
+ 
+-- 
+2.19.1
+
