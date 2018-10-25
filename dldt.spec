@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 21
+Release  : 22
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -88,7 +88,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540422441
+export SOURCE_DATE_EPOCH=1540493301
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -105,13 +105,14 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semanti
 -DINSTALL_GMOCK=0 \
 -DINSTALL_GTEST=0 \
 -DBUILD_GMOCK=1 \
--DBUILD_GTEST=0
+-DBUILD_GTEST=0 \
+-DENABLE_PLUGIN_RPATH=0
 make  %{?_smp_mflags} VERBOSE=1
 popd
 
 popd
 %install
-export SOURCE_DATE_EPOCH=1540422441
+export SOURCE_DATE_EPOCH=1540493301
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -130,6 +131,11 @@ pushd clr-build
 %make_install
 popd
 popd
+## install_append content
+mkdir -p %{buildroot}/usr/lib64
+install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libMKLDNNPlugin.so  %{buildroot}/usr/lib64
+install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libcpu_extension.so %{buildroot}/usr/lib64
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -178,6 +184,8 @@ popd
 /usr/include/inference_engine/ie_utils.hpp
 /usr/include/inference_engine/ie_version.hpp
 /usr/include/inference_engine/inference_engine.hpp
+/usr/lib64/libMKLDNNPlugin.so
+/usr/lib64/libcpu_extension.so
 /usr/lib64/libinference_engine.so
 
 %files lib
