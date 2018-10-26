@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 28
+Release  : 29
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -77,13 +77,16 @@ license components for the dldt package.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+pushd ..
+cp -a dldt-2018_R3 buildavx512
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540583298
+export SOURCE_DATE_EPOCH=1540584557
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -104,10 +107,31 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semanti
 -DENABLE_PLUGIN_RPATH=0
 make  %{?_smp_mflags} VERBOSE=1
 popd
+mkdir -p clr-build-avx512
+pushd clr-build-avx512
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
+export CFLAGS="$CFLAGS -march=skylake-avx512 -m64 "
+export CXXFLAGS="$CXXFLAGS -march=skylake-avx512 -m64 "
+%cmake .. -DENABLE_CLDNN=0 \
+-DENABLE_INTEL_OMP=0 \
+-DENABLE_OPENCV=0 \
+-DENABLE_CLDNN_BUILD=1 \
+-DENABLE_SAMPLES_CORE=1 \
+-DENABLE_PYTHON_BINDINGS=1 \
+-DINSTALL_GMOCK=0 \
+-DINSTALL_GTEST=0 \
+-DBUILD_GMOCK=1 \
+-DBUILD_GTEST=0 \
+-DENABLE_PLUGIN_RPATH=0
+make  %{?_smp_mflags} VERBOSE=1
+popd
 
 popd
 %install
-export SOURCE_DATE_EPOCH=1540583298
+export SOURCE_DATE_EPOCH=1540584557
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -122,6 +146,9 @@ cp inference-engine/thirdparty/mkl-dnn/LICENSE %{buildroot}/usr/share/package-li
 cp inference-engine/thirdparty/mkl-dnn/src/cpu/xbyak/COPYRIGHT %{buildroot}/usr/share/package-licenses/dldt/inference-engine_thirdparty_mkl-dnn_src_cpu_xbyak_COPYRIGHT
 cp inference-engine/thirdparty/mkl-dnn/tests/gtests/gtest/LICENSE %{buildroot}/usr/share/package-licenses/dldt/inference-engine_thirdparty_mkl-dnn_tests_gtests_gtest_LICENSE
 pushd inference-engine
+pushd clr-build-avx512
+%make_install_avx512  || :
+popd
 pushd clr-build
 %make_install
 popd
@@ -215,6 +242,14 @@ install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libHeteroPlugin.
 %exclude /usr/lib64/libgflags_nothreads.so.2.2.1
 %exclude /usr/lib64/libpugixml.so.1
 %exclude /usr/lib64/libpugixml.so.1.7
+/usr/lib64/haswell/avx512_1/libgflags_nothreads.so
+/usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2
+/usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2.1
+/usr/lib64/haswell/avx512_1/libinference_engine.so
+/usr/lib64/haswell/avx512_1/libinference_engine.so.1
+/usr/lib64/haswell/avx512_1/libpugixml.so
+/usr/lib64/haswell/avx512_1/libpugixml.so.1
+/usr/lib64/haswell/avx512_1/libpugixml.so.1.7
 /usr/lib64/libinference_engine.so.1
 
 %files license
