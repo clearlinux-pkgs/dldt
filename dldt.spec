@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 27
+Release  : 28
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -38,6 +38,7 @@ BuildRequires : python3
 Patch1: 0001-Build-fixes.patch
 Patch2: 0002-Add-fopenmp.patch
 Patch3: 0003-Fixups-for-cmake-library-configuration.patch
+Patch4: 0004-Fix-install-of-public-headers-within-subdirectories.patch
 
 %description
 The Google Mock class generator is an application that is part of cppclean.
@@ -75,13 +76,14 @@ license components for the dldt package.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540580199
+export SOURCE_DATE_EPOCH=1540583298
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -105,7 +107,7 @@ popd
 
 popd
 %install
-export SOURCE_DATE_EPOCH=1540580199
+export SOURCE_DATE_EPOCH=1540583298
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -143,6 +145,26 @@ install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libHeteroPlugin.
 %exclude /usr/lib64/libgflags_nothreads.so
 %exclude /usr/lib64/libpugixml.so
 %exclude /usr/lib64/pkgconfig/gflags.pc
+/usr/include/inference_engine/cldnn/cldnn_config.hpp
+/usr/include/inference_engine/cpp/ie_cnn_net_reader.h
+/usr/include/inference_engine/cpp/ie_cnn_network.h
+/usr/include/inference_engine/cpp/ie_executable_network.hpp
+/usr/include/inference_engine/cpp/ie_infer_request.hpp
+/usr/include/inference_engine/cpp/ie_memory_state.hpp
+/usr/include/inference_engine/cpp/ie_plugin_cpp.hpp
+/usr/include/inference_engine/details/ie_blob_iterator.hpp
+/usr/include/inference_engine/details/ie_cnn_network_iterator.hpp
+/usr/include/inference_engine/details/ie_exception.hpp
+/usr/include/inference_engine/details/ie_exception_conversion.hpp
+/usr/include/inference_engine/details/ie_irelease.hpp
+/usr/include/inference_engine/details/ie_no_copy.hpp
+/usr/include/inference_engine/details/ie_no_release.hpp
+/usr/include/inference_engine/details/ie_pre_allocator.hpp
+/usr/include/inference_engine/details/ie_so_loader.h
+/usr/include/inference_engine/details/ie_so_pointer.hpp
+/usr/include/inference_engine/details/os/lin_shared_object_loader.h
+/usr/include/inference_engine/details/os/win_shared_object_loader.h
+/usr/include/inference_engine/hetero/hetero_plugin_config.hpp
 /usr/include/inference_engine/ie_allocator.hpp
 /usr/include/inference_engine/ie_api.h
 /usr/include/inference_engine/ie_blob.h
@@ -174,6 +196,10 @@ install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libHeteroPlugin.
 /usr/include/inference_engine/ie_utils.hpp
 /usr/include/inference_engine/ie_version.hpp
 /usr/include/inference_engine/inference_engine.hpp
+/usr/include/inference_engine/mkldnn/mkldnn_extension.hpp
+/usr/include/inference_engine/mkldnn/mkldnn_extension_ptr.hpp
+/usr/include/inference_engine/mkldnn/mkldnn_extension_types.hpp
+/usr/include/inference_engine/mkldnn/mkldnn_generic_primitive.hpp
 /usr/lib64/cmake/InferenceEngine/InferenceEngineConfig-version.cmake
 /usr/lib64/cmake/InferenceEngine/InferenceEngineConfig.cmake
 /usr/lib64/cmake/InferenceEngine/targets-relwithdebinfo.cmake
