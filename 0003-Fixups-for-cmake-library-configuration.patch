@@ -1,0 +1,83 @@
+From 1ee9e05b959dee271d096f88735e31191b28e1d7 Mon Sep 17 00:00:00 2001
+From: Patrick McCarty <patrick.mccarty@intel.com>
+Date: Fri, 26 Oct 2018 09:52:57 -0700
+Subject: [PATCH 3/3] Fixups for cmake library configuration
+
+- Install cmake config-file package to proper location
+- Install library export file (targets.cmake)
+- Restore IE:: namespacing to fix use of the config-file package
+- Fix issue with build-time vs install-time header locations
+
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ inference-engine/cmake/config.cmake.in             | 12 ++----------
+ .../src/inference_engine/CMakeLists.txt            | 14 ++++++++++----
+ 2 files changed, 12 insertions(+), 14 deletions(-)
+
+diff --git a/inference-engine/cmake/config.cmake.in b/inference-engine/cmake/config.cmake.in
+index 02e6928..a17d6da 100644
+--- a/inference-engine/cmake/config.cmake.in
++++ b/inference-engine/cmake/config.cmake.in
+@@ -3,17 +3,9 @@
+ #
+ if(DEFINED IE_MAIN_SOURCE_DIR AND TARGET inference_engine)
+     set(InferenceEngine_INCLUDE_DIRS ${IE_MAIN_SOURCE_DIR}/include)
+-    if(NOT(UNIX))
+-        set(InferenceEngine_LIBRARIES IE::inference_engine)
+-    else()
+-        set(InferenceEngine_LIBRARIES inference_engine)
+-    endif()
++    set(InferenceEngine_LIBRARIES inference_engine)
+ else()
+     include("${CMAKE_CURRENT_LIST_DIR}/targets.cmake")
+     get_target_property(InferenceEngine_INCLUDE_DIRS IE::inference_engine INTERFACE_INCLUDE_DIRECTORIES)
+-    if(NOT(UNIX))
+-        set(InferenceEngine_LIBRARIES IE::inference_engine)
+-    else()
+-        set(InferenceEngine_LIBRARIES inference_engine)
+-    endif()
++    set(InferenceEngine_LIBRARIES IE::inference_engine)
+ endif()
+diff --git a/inference-engine/src/inference_engine/CMakeLists.txt b/inference-engine/src/inference_engine/CMakeLists.txt
+index 8741e51..46eb091 100644
+--- a/inference-engine/src/inference_engine/CMakeLists.txt
++++ b/inference-engine/src/inference_engine/CMakeLists.txt
+@@ -53,7 +53,9 @@ add_library(${TARGET_NAME} SHARED
+ target_link_libraries(${TARGET_NAME} PRIVATE pugixml ade ${CMAKE_DL_LIBS} ${INTEL_ITT_LIBS})
+ 
+ # Properties->C/C++->General->Additional Include Directories
+-target_include_directories(${TARGET_NAME} PUBLIC ${PUBLIC_HEADERS_DIR}
++target_include_directories(${TARGET_NAME} PUBLIC
++                                          $<BUILD_INTERFACE:${IE_MAIN_SOURCE_DIR}/include>
++                                          $<INSTALL_INTERFACE:include/${TARGET_NAME}>
+                                           PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}"
+                                                   "${IE_MAIN_SOURCE_DIR}/src/dumper")
+ 
+@@ -71,7 +73,9 @@ add_library(${TARGET_NAME}_s STATIC
+             ${PUBLIC_HEADERS})
+ 
+ # Properties->C/C++->General->Additional Include Directories
+-target_include_directories(${TARGET_NAME}_s PUBLIC ${PUBLIC_HEADERS_DIR}
++target_include_directories(${TARGET_NAME}_s PUBLIC
++                                          $<BUILD_INTERFACE:${IE_MAIN_SOURCE_DIR}/include>
++                                          $<INSTALL_INTERFACE:include/${TARGET_NAME}>
+                                           PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}"
+                                                   "${IE_MAIN_SOURCE_DIR}/src/dumper")
+ 
+@@ -97,9 +101,11 @@ configure_file(
+     "${CMAKE_BINARY_DIR}/InferenceEngineConfig-version.cmake"
+     COPYONLY)
+ 
+-install(TARGETS ${TARGET_NAME} LIBRARY DESTINATION lib64)
++set(ConfigPackageLocation lib64/cmake/InferenceEngine)
++install(TARGETS ${TARGET_NAME} EXPORT ${TARGET_NAME} LIBRARY DESTINATION lib64)
++install(EXPORT ${TARGET_NAME} DESTINATION ${ConfigPackageLocation} NAMESPACE IE:: FILE targets.cmake)
+ install(FILES ${PUBLIC_HEADERS} DESTINATION include/${TARGET_NAME})
+ install(FILES
+     "${CMAKE_BINARY_DIR}/InferenceEngineConfig.cmake"
+     "${CMAKE_BINARY_DIR}/InferenceEngineConfig-version.cmake"
+-    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake/Modules)
++    DESTINATION ${ConfigPackageLocation})
+-- 
+2.19.1
+

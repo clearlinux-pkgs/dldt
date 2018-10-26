@@ -1,2 +1,3 @@
 0001-Build-fixes.patch
 0002-Add-fopenmp.patch
+0003-Fixups-for-cmake-library-configuration.patch
