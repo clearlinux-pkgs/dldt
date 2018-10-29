@@ -1,4 +1,4 @@
 mkdir -p %{buildroot}/usr/lib64
-install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libMKLDNNPlugin.so  %{buildroot}/usr/lib64
-install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libcpu_extension.so %{buildroot}/usr/lib64
-install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libHeteroPlugin.so  %{buildroot}/usr/lib64
+install -m 0755 inference-engine/clr-build/src/extension/libcpu_extension.so    %{buildroot}/usr/lib64
+install -m 0755 inference-engine/clr-build/src/hetero_plugin/libHeteroPlugin.so %{buildroot}/usr/lib64
+install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so %{buildroot}/usr/lib64

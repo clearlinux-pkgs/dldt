@@ -1,0 +1,40 @@
+From f0097d225496607db8facc0a24d4bdea35600e4a Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Mon, 29 Oct 2018 10:23:33 -0700
+Subject: [PATCH 5/5] Don't override cmake paths
+
+Also disable building tests
+---
+ inference-engine/CMakeLists.txt | 9 ---------
+ 1 file changed, 9 deletions(-)
+
+diff --git a/inference-engine/CMakeLists.txt b/inference-engine/CMakeLists.txt
+index 6d15d21..b20dd28 100644
+--- a/inference-engine/CMakeLists.txt
++++ b/inference-engine/CMakeLists.txt
+@@ -74,14 +74,6 @@ if(NOT(UNIX))
+     set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_ROOT}/${BIN_FOLDER})
+     set (LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_ROOT}/${BIN_FOLDER})
+     set (LIBRARY_OUTPUT_PATH ${LIBRARY_OUTPUT_DIRECTORY}) # compatibility issue: linux uses LIBRARY_OUTPUT_PATH, windows uses LIBRARY_OUTPUT_DIRECTORY
+-else ()
+-    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_ROOT}/${BIN_FOLDER}/${CMAKE_BUILD_TYPE}/lib)
+-    set (CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${OUTPUT_ROOT}/${BIN_FOLDER}/${CMAKE_BUILD_TYPE}/lib)
+-    set (CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY ${OUTPUT_ROOT}/${BIN_FOLDER}/${CMAKE_BUILD_TYPE})
+-    set (CMAKE_PDB_OUTPUT_DIRECTORY ${OUTPUT_ROOT}/${BIN_FOLDER}/${CMAKE_BUILD_TYPE})
+-    set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_ROOT}/${BIN_FOLDER}/${CMAKE_BUILD_TYPE})
+-    set (LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_ROOT}/${BIN_FOLDER}/${CMAKE_BUILD_TYPE}/lib)
+-    set (LIBRARY_OUTPUT_PATH ${LIBRARY_OUTPUT_DIRECTORY}/lib)
+ endif()
+ 
+ include(os_flags)
+@@ -125,7 +117,6 @@ if(UNIX)
+ endif(UNIX)
+ 
+ add_subdirectory(src)
+-add_subdirectory(tests)
+ add_subdirectory(thirdparty)
+ 
+ option(ENABLE_PYTHON_BINDINGS "Build python bindings." OFF)
+-- 
+2.19.1
+

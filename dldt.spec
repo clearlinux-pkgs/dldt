@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 29
+Release  : 30
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -39,6 +39,7 @@ Patch1: 0001-Build-fixes.patch
 Patch2: 0002-Add-fopenmp.patch
 Patch3: 0003-Fixups-for-cmake-library-configuration.patch
 Patch4: 0004-Fix-install-of-public-headers-within-subdirectories.patch
+Patch5: 0005-Don-t-override-cmake-paths.patch
 
 %description
 The Google Mock class generator is an application that is part of cppclean.
@@ -77,6 +78,10 @@ license components for the dldt package.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
+%patch5 -p1
+pushd ..
+cp -a dldt-2018_R3 buildavx2
+popd
 pushd ..
 cp -a dldt-2018_R3 buildavx512
 popd
@@ -86,7 +91,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540584557
+export SOURCE_DATE_EPOCH=1540842966
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -94,6 +99,27 @@ export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-in
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+%cmake .. -DENABLE_CLDNN=0 \
+-DENABLE_INTEL_OMP=0 \
+-DENABLE_OPENCV=0 \
+-DENABLE_CLDNN_BUILD=1 \
+-DENABLE_SAMPLES_CORE=1 \
+-DENABLE_PYTHON_BINDINGS=1 \
+-DINSTALL_GMOCK=0 \
+-DINSTALL_GTEST=0 \
+-DBUILD_GMOCK=1 \
+-DBUILD_GTEST=0 \
+-DENABLE_PLUGIN_RPATH=0
+make  %{?_smp_mflags} VERBOSE=1
+popd
+mkdir -p clr-build-avx2
+pushd clr-build-avx2
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
+export CFLAGS="$CFLAGS -march=haswell -m64"
+export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
 %cmake .. -DENABLE_CLDNN=0 \
 -DENABLE_INTEL_OMP=0 \
 -DENABLE_OPENCV=0 \
@@ -131,7 +157,7 @@ popd
 
 popd
 %install
-export SOURCE_DATE_EPOCH=1540584557
+export SOURCE_DATE_EPOCH=1540842966
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -149,15 +175,18 @@ pushd inference-engine
 pushd clr-build-avx512
 %make_install_avx512  || :
 popd
+pushd clr-build-avx2
+%make_install_avx2  || :
+popd
 pushd clr-build
 %make_install
 popd
 popd
 ## install_append content
 mkdir -p %{buildroot}/usr/lib64
-install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libMKLDNNPlugin.so  %{buildroot}/usr/lib64
-install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libcpu_extension.so %{buildroot}/usr/lib64
-install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libHeteroPlugin.so  %{buildroot}/usr/lib64
+install -m 0755 inference-engine/clr-build/src/extension/libcpu_extension.so    %{buildroot}/usr/lib64
+install -m 0755 inference-engine/clr-build/src/hetero_plugin/libHeteroPlugin.so %{buildroot}/usr/lib64
+install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so %{buildroot}/usr/lib64
 ## install_append end
 
 %files
@@ -169,6 +198,8 @@ install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libHeteroPlugin.
 %exclude /usr/include/pugixml.hpp
 %exclude /usr/lib64/cmake/pugixml/pugixml-config-relwithdebinfo.cmake
 %exclude /usr/lib64/cmake/pugixml/pugixml-config.cmake
+%exclude /usr/lib64/haswell/libgflags_nothreads.so
+%exclude /usr/lib64/haswell/libpugixml.so
 %exclude /usr/lib64/libgflags_nothreads.so
 %exclude /usr/lib64/libpugixml.so
 %exclude /usr/lib64/pkgconfig/gflags.pc
@@ -231,6 +262,7 @@ install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libHeteroPlugin.
 /usr/lib64/cmake/InferenceEngine/InferenceEngineConfig.cmake
 /usr/lib64/cmake/InferenceEngine/targets-relwithdebinfo.cmake
 /usr/lib64/cmake/InferenceEngine/targets.cmake
+/usr/lib64/haswell/libinference_engine.so
 /usr/lib64/libHeteroPlugin.so
 /usr/lib64/libMKLDNNPlugin.so
 /usr/lib64/libcpu_extension.so
@@ -238,18 +270,23 @@ install -m 0755 inference-engine/bin/intel64/RelWithDebInfo/lib/libHeteroPlugin.
 
 %files lib
 %defattr(-,root,root,-)
+%exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so
+%exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2
+%exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2.1
+%exclude /usr/lib64/haswell/avx512_1/libpugixml.so
+%exclude /usr/lib64/haswell/avx512_1/libpugixml.so.1
+%exclude /usr/lib64/haswell/avx512_1/libpugixml.so.1.7
+%exclude /usr/lib64/haswell/libgflags_nothreads.so.2.2
+%exclude /usr/lib64/haswell/libgflags_nothreads.so.2.2.1
+%exclude /usr/lib64/haswell/libpugixml.so.1
+%exclude /usr/lib64/haswell/libpugixml.so.1.7
 %exclude /usr/lib64/libgflags_nothreads.so.2.2
 %exclude /usr/lib64/libgflags_nothreads.so.2.2.1
 %exclude /usr/lib64/libpugixml.so.1
 %exclude /usr/lib64/libpugixml.so.1.7
-/usr/lib64/haswell/avx512_1/libgflags_nothreads.so
-/usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2
-/usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2.1
 /usr/lib64/haswell/avx512_1/libinference_engine.so
 /usr/lib64/haswell/avx512_1/libinference_engine.so.1
-/usr/lib64/haswell/avx512_1/libpugixml.so
-/usr/lib64/haswell/avx512_1/libpugixml.so.1
-/usr/lib64/haswell/avx512_1/libpugixml.so.1.7
+/usr/lib64/haswell/libinference_engine.so.1
 /usr/lib64/libinference_engine.so.1
 
 %files license
