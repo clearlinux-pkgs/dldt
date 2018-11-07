@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 30
+Release  : 31
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -44,6 +44,14 @@ Patch5: 0005-Don-t-override-cmake-paths.patch
 %description
 The Google Mock class generator is an application that is part of cppclean.
 visit http://code.google.com/p/cppclean/
+
+%package abi
+Summary: abi components for the dldt package.
+Group: Default
+
+%description abi
+abi components for the dldt package.
+
 
 %package dev
 Summary: dev components for the dldt package.
@@ -91,7 +99,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1540842966
+export SOURCE_DATE_EPOCH=1541611597
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -154,10 +162,10 @@ export CXXFLAGS="$CXXFLAGS -march=skylake-avx512 -m64 "
 -DENABLE_PLUGIN_RPATH=0
 make  %{?_smp_mflags} VERBOSE=1
 popd
-
 popd
+
 %install
-export SOURCE_DATE_EPOCH=1540842966
+export SOURCE_DATE_EPOCH=1541611597
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -192,12 +200,22 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 %files
 %defattr(-,root,root,-)
 
+%files abi
+%defattr(-,root,root,-)
+/usr/share/abi/libgflags_nothreads.so.2.2.1.abi
+/usr/share/abi/libgflags_nothreads.so.2.2.abi
+/usr/share/abi/libinference_engine.so.1.abi
+/usr/share/abi/libpugixml.so.1.7.abi
+/usr/share/abi/libpugixml.so.1.abi
+
 %files dev
 %defattr(-,root,root,-)
 %exclude /usr/include/pugiconfig.hpp
 %exclude /usr/include/pugixml.hpp
 %exclude /usr/lib64/cmake/pugixml/pugixml-config-relwithdebinfo.cmake
 %exclude /usr/lib64/cmake/pugixml/pugixml-config.cmake
+%exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so
+%exclude /usr/lib64/haswell/avx512_1/libpugixml.so
 %exclude /usr/lib64/haswell/libgflags_nothreads.so
 %exclude /usr/lib64/haswell/libpugixml.so
 %exclude /usr/lib64/libgflags_nothreads.so
@@ -262,6 +280,7 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 /usr/lib64/cmake/InferenceEngine/InferenceEngineConfig.cmake
 /usr/lib64/cmake/InferenceEngine/targets-relwithdebinfo.cmake
 /usr/lib64/cmake/InferenceEngine/targets.cmake
+/usr/lib64/haswell/avx512_1/libinference_engine.so
 /usr/lib64/haswell/libinference_engine.so
 /usr/lib64/libHeteroPlugin.so
 /usr/lib64/libMKLDNNPlugin.so
@@ -270,10 +289,8 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 
 %files lib
 %defattr(-,root,root,-)
-%exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so
 %exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2
 %exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2.1
-%exclude /usr/lib64/haswell/avx512_1/libpugixml.so
 %exclude /usr/lib64/haswell/avx512_1/libpugixml.so.1
 %exclude /usr/lib64/haswell/avx512_1/libpugixml.so.1.7
 %exclude /usr/lib64/haswell/libgflags_nothreads.so.2.2
@@ -284,7 +301,6 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 %exclude /usr/lib64/libgflags_nothreads.so.2.2.1
 %exclude /usr/lib64/libpugixml.so.1
 %exclude /usr/lib64/libpugixml.so.1.7
-/usr/lib64/haswell/avx512_1/libinference_engine.so
 /usr/lib64/haswell/avx512_1/libinference_engine.so.1
 /usr/lib64/haswell/libinference_engine.so.1
 /usr/lib64/libinference_engine.so.1
