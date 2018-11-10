@@ -1,0 +1,28 @@
+From f8999c929f28a8856e8c684c9762be41e1069d01 Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Fri, 9 Nov 2018 17:05:07 -0800
+Subject: [PATCH 7/7] Statically link common sample app lib
+
+---
+ inference-engine/samples/common/format_reader/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/inference-engine/samples/common/format_reader/CMakeLists.txt b/inference-engine/samples/common/format_reader/CMakeLists.txt
+index 5aa0209..ba1ec72 100644
+--- a/inference-engine/samples/common/format_reader/CMakeLists.txt
++++ b/inference-engine/samples/common/format_reader/CMakeLists.txt
+@@ -33,8 +33,8 @@ include_directories (
+         ${CMAKE_CURRENT_SOURCE_DIR})
+ 
+ # Create library file from sources.
+-add_library(${TARGET_NAME} SHARED ${MAIN_SRC} ${LIBRARY_HEADERS})
++add_library(${TARGET_NAME} STATIC ${MAIN_SRC} ${LIBRARY_HEADERS})
+ target_link_libraries(${TARGET_NAME} ${OpenCV_LIBRARIES})
+ 
+ set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
+-COMPILE_PDB_NAME ${TARGET_NAME})
+\ No newline at end of file
++COMPILE_PDB_NAME ${TARGET_NAME})
+-- 
+2.19.1
+

@@ -1,7 +1,6 @@
 ld-linux-x86-64.so.2
 libc.so.6
 libdl.so.2
-libformat_reader.so
 libgcc_s.so.1
 libgomp.so.1
 libm.so.6
