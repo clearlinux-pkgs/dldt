@@ -4,13 +4,14 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 31
+Release  : 32
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause BSL-1.0 MIT
 Requires: dldt-lib = %{version}-%{release}
+Requires: dldt-libexec = %{version}-%{release}
 Requires: dldt-license = %{version}-%{release}
 Requires: networkx
 Requires: numpy
@@ -40,6 +41,7 @@ Patch2: 0002-Add-fopenmp.patch
 Patch3: 0003-Fixups-for-cmake-library-configuration.patch
 Patch4: 0004-Fix-install-of-public-headers-within-subdirectories.patch
 Patch5: 0005-Don-t-override-cmake-paths.patch
+Patch6: 0006-Install-sample-apps.patch
 
 %description
 The Google Mock class generator is an application that is part of cppclean.
@@ -66,10 +68,20 @@ dev components for the dldt package.
 %package lib
 Summary: lib components for the dldt package.
 Group: Libraries
+Requires: dldt-libexec = %{version}-%{release}
 Requires: dldt-license = %{version}-%{release}
 
 %description lib
 lib components for the dldt package.
+
+
+%package libexec
+Summary: libexec components for the dldt package.
+Group: Default
+Requires: dldt-license = %{version}-%{release}
+
+%description libexec
+libexec components for the dldt package.
 
 
 %package license
@@ -87,6 +99,7 @@ license components for the dldt package.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
 pushd ..
 cp -a dldt-2018_R3 buildavx2
 popd
@@ -99,7 +112,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1541611597
+export SOURCE_DATE_EPOCH=1541809040
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -165,7 +178,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1541611597
+export SOURCE_DATE_EPOCH=1541809040
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -202,11 +215,12 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 
 %files abi
 %defattr(-,root,root,-)
+/usr/share/abi/libHeteroPlugin.so.abi
+/usr/share/abi/libMKLDNNPlugin.so.abi
+/usr/share/abi/libcpu_extension.so.abi
 /usr/share/abi/libgflags_nothreads.so.2.2.1.abi
-/usr/share/abi/libgflags_nothreads.so.2.2.abi
 /usr/share/abi/libinference_engine.so.1.abi
 /usr/share/abi/libpugixml.so.1.7.abi
-/usr/share/abi/libpugixml.so.1.abi
 
 %files dev
 %defattr(-,root,root,-)
@@ -304,6 +318,17 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 /usr/lib64/haswell/avx512_1/libinference_engine.so.1
 /usr/lib64/haswell/libinference_engine.so.1
 /usr/lib64/libinference_engine.so.1
+
+%files libexec
+%defattr(-,root,root,-)
+/usr/libexec/openvino/samples/classification_sample
+/usr/libexec/openvino/samples/classification_sample_async
+/usr/libexec/openvino/samples/hello_autoresize_classification
+/usr/libexec/openvino/samples/hello_classification
+/usr/libexec/openvino/samples/hello_request_classification
+/usr/libexec/openvino/samples/object_detection_sample_ssd
+/usr/libexec/openvino/samples/style_transfer_sample
+/usr/libexec/openvino/samples/validation_app
 
 %files license
 %defattr(0644,root,root,0755)

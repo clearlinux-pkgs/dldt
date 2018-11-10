@@ -3,3 +3,4 @@
 0003-Fixups-for-cmake-library-configuration.patch
 0004-Fix-install-of-public-headers-within-subdirectories.patch
 0005-Don-t-override-cmake-paths.patch
+0006-Install-sample-apps.patch
