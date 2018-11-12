@@ -4,14 +4,14 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 33
+Release  : 34
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause BSL-1.0 MIT
+Requires: dldt-bin = %{version}-%{release}
 Requires: dldt-lib = %{version}-%{release}
-Requires: dldt-libexec = %{version}-%{release}
 Requires: dldt-license = %{version}-%{release}
 Requires: networkx
 Requires: numpy
@@ -56,33 +56,41 @@ Group: Default
 abi components for the dldt package.
 
 
+%package bin
+Summary: bin components for the dldt package.
+Group: Binaries
+Requires: dldt-license = %{version}-%{release}
+
+%description bin
+bin components for the dldt package.
+
+
 %package dev
 Summary: dev components for the dldt package.
 Group: Development
 Requires: dldt-lib = %{version}-%{release}
+Requires: dldt-bin = %{version}-%{release}
 Provides: dldt-devel = %{version}-%{release}
 
 %description dev
 dev components for the dldt package.
 
 
+%package extras
+Summary: extras components for the dldt package.
+Group: Default
+
+%description extras
+extras components for the dldt package.
+
+
 %package lib
 Summary: lib components for the dldt package.
 Group: Libraries
-Requires: dldt-libexec = %{version}-%{release}
 Requires: dldt-license = %{version}-%{release}
 
 %description lib
 lib components for the dldt package.
-
-
-%package libexec
-Summary: libexec components for the dldt package.
-Group: Default
-Requires: dldt-license = %{version}-%{release}
-
-%description libexec
-libexec components for the dldt package.
 
 
 %package license
@@ -114,7 +122,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1541812397
+export SOURCE_DATE_EPOCH=1542057308
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -180,7 +188,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1541812397
+export SOURCE_DATE_EPOCH=1542057308
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -223,6 +231,33 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 /usr/share/abi/libgflags_nothreads.so.2.2.1.abi
 /usr/share/abi/libinference_engine.so.1.abi
 /usr/share/abi/libpugixml.so.1.7.abi
+
+%files bin
+%defattr(-,root,root,-)
+%exclude /usr/bin/classification_sample
+%exclude /usr/bin/classification_sample_async
+%exclude /usr/bin/haswell/avx512_1/classification_sample
+%exclude /usr/bin/haswell/avx512_1/classification_sample_async
+%exclude /usr/bin/haswell/avx512_1/hello_autoresize_classification
+%exclude /usr/bin/haswell/avx512_1/hello_classification
+%exclude /usr/bin/haswell/avx512_1/hello_request_classification
+%exclude /usr/bin/haswell/avx512_1/object_detection_sample_ssd
+%exclude /usr/bin/haswell/avx512_1/style_transfer_sample
+%exclude /usr/bin/haswell/avx512_1/validation_app
+%exclude /usr/bin/haswell/classification_sample
+%exclude /usr/bin/haswell/classification_sample_async
+%exclude /usr/bin/haswell/hello_autoresize_classification
+%exclude /usr/bin/haswell/hello_classification
+%exclude /usr/bin/haswell/hello_request_classification
+%exclude /usr/bin/haswell/object_detection_sample_ssd
+%exclude /usr/bin/haswell/style_transfer_sample
+%exclude /usr/bin/haswell/validation_app
+%exclude /usr/bin/hello_autoresize_classification
+%exclude /usr/bin/hello_classification
+%exclude /usr/bin/hello_request_classification
+%exclude /usr/bin/object_detection_sample_ssd
+%exclude /usr/bin/style_transfer_sample
+%exclude /usr/bin/validation_app
 
 %files dev
 %defattr(-,root,root,-)
@@ -303,6 +338,33 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 /usr/lib64/libcpu_extension.so
 /usr/lib64/libinference_engine.so
 
+%files extras
+%defattr(-,root,root,-)
+/usr/bin/classification_sample
+/usr/bin/classification_sample_async
+/usr/bin/haswell/avx512_1/classification_sample
+/usr/bin/haswell/avx512_1/classification_sample_async
+/usr/bin/haswell/avx512_1/hello_autoresize_classification
+/usr/bin/haswell/avx512_1/hello_classification
+/usr/bin/haswell/avx512_1/hello_request_classification
+/usr/bin/haswell/avx512_1/object_detection_sample_ssd
+/usr/bin/haswell/avx512_1/style_transfer_sample
+/usr/bin/haswell/avx512_1/validation_app
+/usr/bin/haswell/classification_sample
+/usr/bin/haswell/classification_sample_async
+/usr/bin/haswell/hello_autoresize_classification
+/usr/bin/haswell/hello_classification
+/usr/bin/haswell/hello_request_classification
+/usr/bin/haswell/object_detection_sample_ssd
+/usr/bin/haswell/style_transfer_sample
+/usr/bin/haswell/validation_app
+/usr/bin/hello_autoresize_classification
+/usr/bin/hello_classification
+/usr/bin/hello_request_classification
+/usr/bin/object_detection_sample_ssd
+/usr/bin/style_transfer_sample
+/usr/bin/validation_app
+
 %files lib
 %defattr(-,root,root,-)
 %exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2
@@ -320,17 +382,6 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 /usr/lib64/haswell/avx512_1/libinference_engine.so.1
 /usr/lib64/haswell/libinference_engine.so.1
 /usr/lib64/libinference_engine.so.1
-
-%files libexec
-%defattr(-,root,root,-)
-/usr/libexec/openvino/samples/classification_sample
-/usr/libexec/openvino/samples/classification_sample_async
-/usr/libexec/openvino/samples/hello_autoresize_classification
-/usr/libexec/openvino/samples/hello_classification
-/usr/libexec/openvino/samples/hello_request_classification
-/usr/libexec/openvino/samples/object_detection_sample_ssd
-/usr/libexec/openvino/samples/style_transfer_sample
-/usr/libexec/openvino/samples/validation_app
 
 %files license
 %defattr(0644,root,root,0755)

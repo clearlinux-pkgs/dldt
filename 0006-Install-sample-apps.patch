@@ -22,7 +22,7 @@ index 5107636..ac76418 100644
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${SRC})
-+install(TARGETS ${TARGET_NAME} DESTINATION libexec/openvino/samples)
++install(TARGETS ${TARGET_NAME} DESTINATION bin)
  
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
  COMPILE_PDB_NAME ${TARGET_NAME})
@@ -34,7 +34,7 @@ index 0422b93..1e72b8d 100644
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${SRC})
-+install(TARGETS ${TARGET_NAME} DESTINATION libexec/openvino/samples)
++install(TARGETS ${TARGET_NAME} DESTINATION bin)
  
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
  COMPILE_PDB_NAME ${TARGET_NAME})
@@ -46,7 +46,7 @@ index 5e890f3..9ba2ba3 100644
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${SRC})
-+install(TARGETS ${TARGET_NAME} DESTINATION libexec/openvino/samples)
++install(TARGETS ${TARGET_NAME} DESTINATION bin)
  
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
                        COMPILE_PDB_NAME ${TARGET_NAME})
@@ -58,7 +58,7 @@ index 015e60f..112f064 100644
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${SRC})
-+install(TARGETS ${TARGET_NAME} DESTINATION libexec/openvino/samples)
++install(TARGETS ${TARGET_NAME} DESTINATION bin)
  
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
  COMPILE_PDB_NAME ${TARGET_NAME})
@@ -70,7 +70,7 @@ index 7f36e54..3ba9198 100644
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${SRC})
-+install(TARGETS ${TARGET_NAME} DESTINATION libexec/openvino/samples)
++install(TARGETS ${TARGET_NAME} DESTINATION bin)
  
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
  COMPILE_PDB_NAME ${TARGET_NAME})
@@ -82,7 +82,7 @@ index e6bd39c..357b22b 100644
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${MAIN_SRC} ${MAIN_HEADERS})
-+install(TARGETS ${TARGET_NAME} DESTINATION libexec/openvino/samples)
++install(TARGETS ${TARGET_NAME} DESTINATION bin)
  
  add_dependencies(${TARGET_NAME} gflags)
  
@@ -94,7 +94,7 @@ index 849fd23..73495c2 100644
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${MAIN_SRC} ${MAIN_HEADERS})
-+install(TARGETS ${TARGET_NAME} DESTINATION libexec/openvino/samples)
++install(TARGETS ${TARGET_NAME} DESTINATION bin)
  
  add_dependencies(${TARGET_NAME} gflags)
  
@@ -106,7 +106,7 @@ index 38d976c..d94755b 100644
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${MAIN_SRC} ${MAIN_HEADERS})
-+install(TARGETS ${TARGET_NAME} DESTINATION libexec/openvino/samples)
++install(TARGETS ${TARGET_NAME} DESTINATION bin)
  
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE" 
  COMPILE_PDB_NAME ${TARGET_NAME})
