@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 34
+Release  : 35
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -13,6 +13,7 @@ License  : Apache-2.0 BSD-3-Clause BSL-1.0 MIT
 Requires: dldt-bin = %{version}-%{release}
 Requires: dldt-lib = %{version}-%{release}
 Requires: dldt-license = %{version}-%{release}
+Requires: mxnet
 Requires: networkx
 Requires: numpy
 Requires: onnx
@@ -43,6 +44,7 @@ Patch4: 0004-Fix-install-of-public-headers-within-subdirectories.patch
 Patch5: 0005-Don-t-override-cmake-paths.patch
 Patch6: 0006-Install-sample-apps.patch
 Patch7: 0007-Statically-link-common-sample-app-lib.patch
+Patch8: 0008-Don-t-override-cmake-paths-for-samples.patch
 
 %description
 The Google Mock class generator is an application that is part of cppclean.
@@ -110,6 +112,7 @@ license components for the dldt package.
 %patch5 -p1
 %patch6 -p1
 %patch7 -p1
+%patch8 -p1
 pushd ..
 cp -a dldt-2018_R3 buildavx2
 popd
@@ -122,7 +125,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1542057308
+export SOURCE_DATE_EPOCH=1542234876
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -188,7 +191,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1542057308
+export SOURCE_DATE_EPOCH=1542234876
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -228,9 +231,9 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 /usr/share/abi/libHeteroPlugin.so.abi
 /usr/share/abi/libMKLDNNPlugin.so.abi
 /usr/share/abi/libcpu_extension.so.abi
-/usr/share/abi/libgflags_nothreads.so.2.2.1.abi
+/usr/share/abi/libgflags_nothreads.so.2.2.abi
 /usr/share/abi/libinference_engine.so.1.abi
-/usr/share/abi/libpugixml.so.1.7.abi
+/usr/share/abi/libpugixml.so.1.abi
 
 %files bin
 %defattr(-,root,root,-)
