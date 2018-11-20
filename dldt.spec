@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 36
+Release  : 37
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -27,6 +27,7 @@ BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
 BuildRequires : cmake
 BuildRequires : doxygen
+BuildRequires : gflags-dev
 BuildRequires : glibc-dev
 BuildRequires : googletest
 BuildRequires : googletest-dev
@@ -117,7 +118,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1542741169
+export SOURCE_DATE_EPOCH=1542742438
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -183,7 +184,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1542741169
+export SOURCE_DATE_EPOCH=1542742438
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -213,6 +214,12 @@ mkdir -p %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/extension/libcpu_extension.so    %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/hetero_plugin/libHeteroPlugin.so %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so %{buildroot}/usr/lib64
+rm -f %{buildroot}/usr/lib64/libgflags_nothreads.so*
+rm -f %{buildroot}/usr/lib64/libpugixml.so*
+rm -f %{buildroot}/usr/lib64/haswell/libgflags_nothreads.so*
+rm -f %{buildroot}/usr/lib64/haswell/libpugixml.so*
+rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libgflags_nothreads.so*
+rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 ## install_append end
 
 %files
@@ -251,12 +258,6 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 %exclude /usr/include/pugixml.hpp
 %exclude /usr/lib64/cmake/pugixml/pugixml-config-relwithdebinfo.cmake
 %exclude /usr/lib64/cmake/pugixml/pugixml-config.cmake
-%exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so
-%exclude /usr/lib64/haswell/avx512_1/libpugixml.so
-%exclude /usr/lib64/haswell/libgflags_nothreads.so
-%exclude /usr/lib64/haswell/libpugixml.so
-%exclude /usr/lib64/libgflags_nothreads.so
-%exclude /usr/lib64/libpugixml.so
 %exclude /usr/lib64/pkgconfig/gflags.pc
 /usr/include/inference_engine/cldnn/cldnn_config.hpp
 /usr/include/inference_engine/cpp/ie_cnn_net_reader.h
@@ -353,18 +354,6 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 
 %files lib
 %defattr(-,root,root,-)
-%exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2
-%exclude /usr/lib64/haswell/avx512_1/libgflags_nothreads.so.2.2.1
-%exclude /usr/lib64/haswell/avx512_1/libpugixml.so.1
-%exclude /usr/lib64/haswell/avx512_1/libpugixml.so.1.7
-%exclude /usr/lib64/haswell/libgflags_nothreads.so.2.2
-%exclude /usr/lib64/haswell/libgflags_nothreads.so.2.2.1
-%exclude /usr/lib64/haswell/libpugixml.so.1
-%exclude /usr/lib64/haswell/libpugixml.so.1.7
-%exclude /usr/lib64/libgflags_nothreads.so.2.2
-%exclude /usr/lib64/libgflags_nothreads.so.2.2.1
-%exclude /usr/lib64/libpugixml.so.1
-%exclude /usr/lib64/libpugixml.so.1.7
 /usr/lib64/haswell/avx512_1/libinference_engine.so.1
 /usr/lib64/haswell/libinference_engine.so.1
 /usr/lib64/libinference_engine.so.1

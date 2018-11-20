@@ -2,3 +2,10 @@ mkdir -p %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/extension/libcpu_extension.so    %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/hetero_plugin/libHeteroPlugin.so %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so %{buildroot}/usr/lib64
+
+rm -f %{buildroot}/usr/lib64/libgflags_nothreads.so*
+rm -f %{buildroot}/usr/lib64/libpugixml.so*
+rm -f %{buildroot}/usr/lib64/haswell/libgflags_nothreads.so*
+rm -f %{buildroot}/usr/lib64/haswell/libpugixml.so*
+rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libgflags_nothreads.so*
+rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
