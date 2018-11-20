@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 35
+Release  : 36
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -49,14 +49,6 @@ Patch8: 0008-Don-t-override-cmake-paths-for-samples.patch
 %description
 The Google Mock class generator is an application that is part of cppclean.
 visit http://code.google.com/p/cppclean/
-
-%package abi
-Summary: abi components for the dldt package.
-Group: Default
-
-%description abi
-abi components for the dldt package.
-
 
 %package bin
 Summary: bin components for the dldt package.
@@ -125,7 +117,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1542234876
+export SOURCE_DATE_EPOCH=1542741169
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -191,7 +183,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1542234876
+export SOURCE_DATE_EPOCH=1542741169
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -225,15 +217,6 @@ install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so 
 
 %files
 %defattr(-,root,root,-)
-
-%files abi
-%defattr(-,root,root,-)
-/usr/share/abi/libHeteroPlugin.so.abi
-/usr/share/abi/libMKLDNNPlugin.so.abi
-/usr/share/abi/libcpu_extension.so.abi
-/usr/share/abi/libgflags_nothreads.so.2.2.abi
-/usr/share/abi/libinference_engine.so.1.abi
-/usr/share/abi/libpugixml.so.1.abi
 
 %files bin
 %defattr(-,root,root,-)
