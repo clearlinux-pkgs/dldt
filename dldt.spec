@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r3
-Release  : 37
+Release  : 38
 URL      : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R3.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -31,6 +31,7 @@ BuildRequires : gflags-dev
 BuildRequires : glibc-dev
 BuildRequires : googletest
 BuildRequires : googletest-dev
+BuildRequires : llvm
 BuildRequires : mkl-dnn-dev
 BuildRequires : openblas
 BuildRequires : opencv
@@ -46,6 +47,8 @@ Patch5: 0005-Don-t-override-cmake-paths.patch
 Patch6: 0006-Install-sample-apps.patch
 Patch7: 0007-Statically-link-common-sample-app-lib.patch
 Patch8: 0008-Don-t-override-cmake-paths-for-samples.patch
+Patch9: 0009-Remove-OpenCV-version-dependency.patch
+Patch10: 0010-Include-OpenCV-legacy-constants.patch
 
 %description
 The Google Mock class generator is an application that is part of cppclean.
@@ -106,6 +109,8 @@ license components for the dldt package.
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
+%patch9 -p1
+%patch10 -p1
 pushd ..
 cp -a dldt-2018_R3 buildavx2
 popd
@@ -118,14 +123,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1542742438
+export SOURCE_DATE_EPOCH=1548200101
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CC=clang
+export CXX=clang++
+export LD=ld.gold
+unset LDFLAGS
 %cmake .. -DENABLE_CLDNN=0 \
 -DENABLE_INTEL_OMP=0 \
 -DENABLE_OPENCV=0 \
@@ -141,10 +146,14 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 mkdir -p clr-build-avx2
 pushd clr-build-avx2
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
+export CC=clang
+export CXX=clang++
+export LD=ld.gold
+unset LDFLAGS
+export CFLAGS="$CFLAGS -O3 -march=haswell "
+export FCFLAGS="$CFLAGS -O3 -march=haswell "
+export FFLAGS="$CFLAGS -O3 -march=haswell "
+export CXXFLAGS="$CXXFLAGS -O3 -march=haswell "
 export CFLAGS="$CFLAGS -march=haswell -m64"
 export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
 %cmake .. -DENABLE_CLDNN=0 \
@@ -162,10 +171,14 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 mkdir -p clr-build-avx512
 pushd clr-build-avx512
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
+export CC=clang
+export CXX=clang++
+export LD=ld.gold
+unset LDFLAGS
+export CFLAGS="$CFLAGS -O3 -march=skylake-avx512 "
+export FCFLAGS="$CFLAGS -O3 -march=skylake-avx512 "
+export FFLAGS="$CFLAGS -O3 -march=skylake-avx512 "
+export CXXFLAGS="$CXXFLAGS -O3 -march=skylake-avx512 "
 export CFLAGS="$CFLAGS -march=skylake-avx512 -m64 "
 export CXXFLAGS="$CXXFLAGS -march=skylake-avx512 -m64 "
 %cmake .. -DENABLE_CLDNN=0 \
@@ -184,7 +197,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1542742438
+export SOURCE_DATE_EPOCH=1548200101
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
