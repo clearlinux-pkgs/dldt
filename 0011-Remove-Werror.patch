@@ -1,0 +1,25 @@
+From 9f264bf2d240763282f57f9161c235c127b21e41 Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Tue, 29 Jan 2019 11:37:20 -0800
+Subject: [PATCH 11/11] Remove -Werror
+
+---
+ inference-engine/samples/CMakeLists.txt | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/inference-engine/samples/CMakeLists.txt b/inference-engine/samples/CMakeLists.txt
+index 61704b6..70133e5 100644
+--- a/inference-engine/samples/CMakeLists.txt
++++ b/inference-engine/samples/CMakeLists.txt
+@@ -87,8 +87,6 @@ set (HAVE_INTTYPES_H 1)
+ 
+ if (WIN32)
+     # add_compile_options("/WX")
+-else()
+-    add_compile_options("-Werror")
+ endif()
+ 
+ # Properties->C/C++->General->Additional Include Directories
+-- 
+2.20.1
+

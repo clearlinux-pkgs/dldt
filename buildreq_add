@@ -1,12 +1,13 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
 Cython
+ade-dev
+gflags-dev
+googletest
+googletest-dev
+mkl-dnn-dev
 opencv-dev
 opencv
 opencv-python
 openblas
-mkl-dnn-dev
-googletest
-googletest-dev
 pugixml-dev
-gflags-dev

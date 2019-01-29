@@ -1,7 +1,7 @@
-From cdf486d8a7ff8745c7fa84dc4b79bb9506ec3498 Mon Sep 17 00:00:00 2001
+From 102ad5b272f1b4ccaa33e94bb36d47378d4fa18c Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 13:54:13 -0800
-Subject: [PATCH 04/10] Fix install of public headers within subdirectories
+Subject: [PATCH 04/11] Fix install of public headers within subdirectories
 
 There are several more public headers to install that live within
 subdirectories, not at toplevel.

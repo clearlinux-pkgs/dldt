@@ -1,7 +1,7 @@
-From 55a16ac1f56598f5f01ad15beef4a308318de65c Mon Sep 17 00:00:00 2001
+From ee07d2c675791473099eb3781ed205ab79eaa09d Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 13:58:03 -0800
-Subject: [PATCH 06/10] Install sample apps
+Subject: [PATCH 06/11] Install sample apps
 
 ---
  inference-engine/samples/classification_sample/CMakeLists.txt    | 1 +

@@ -1,7 +1,7 @@
-From d61da0069fadbf4700f759dfe0f14e7c87c22a57 Mon Sep 17 00:00:00 2001
+From 62a7b4164c0cc939c0fd6382fd357a9cffedcaed Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 14:03:46 -0800
-Subject: [PATCH 08/10] Don't override cmake paths for samples
+Subject: [PATCH 08/11] Don't override cmake paths for samples
 
 ---
  inference-engine/samples/CMakeLists.txt | 8 --------
