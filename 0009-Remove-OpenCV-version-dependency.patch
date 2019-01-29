@@ -1,28 +1,19 @@
-From b2d72a0d6b3cb48bf926fabcc6fab8f6ad7ff205 Mon Sep 17 00:00:00 2001
+From 41cad2abeabf1544ed7eccac65a604d5653b3595 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
-Date: Thu, 17 Jan 2019 14:55:20 -0800
-Subject: [PATCH] Remove OpenCV version dependency
+Date: Mon, 28 Jan 2019 14:05:45 -0800
+Subject: [PATCH 09/10] Remove OpenCV version dependency
 
 ---
- inference-engine/samples/validation_app/CMakeLists.txt | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ FAKE | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/inference-engine/samples/validation_app/CMakeLists.txt b/inference-engine/samples/validation_app/CMakeLists.txt
-index 00bd22b..ba6c609 100644
---- a/inference-engine/samples/validation_app/CMakeLists.txt
-+++ b/inference-engine/samples/validation_app/CMakeLists.txt
-@@ -32,9 +32,9 @@ source_group("include" FILES ${MAIN_HEADERS})
- 
- # opencv include folders
- set(OpenCV_STATIC OFF)
--find_package(OpenCV 3.3 COMPONENTS core imgproc highgui imgcodecs)
-+find_package(OpenCV COMPONENTS core imgproc highgui imgcodecs)
- if(NOT(OpenCV_FOUND))
--    find_package(OpenCV 3.3 REQUIRED world)
-+    find_package(OpenCV REQUIRED world)
- endif()
- 
- # Properties->C/C++->General->Additional Include Directories
+diff --git a/FAKE b/FAKE
+index 76688b7..22131db 100644
+--- a/FAKE
++++ b/FAKE
+@@ -1 +1,2 @@
+ Placeholder for empty commits.
++Another one.
 -- 
-2.20.0
+2.20.1
 

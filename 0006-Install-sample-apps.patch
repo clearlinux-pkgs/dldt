@@ -1,7 +1,7 @@
-From f3b61536cf7e3c608f7bd8a74c7edfd517424ccd Mon Sep 17 00:00:00 2001
+From 55a16ac1f56598f5f01ad15beef4a308318de65c Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
-Date: Fri, 9 Nov 2018 16:09:07 -0800
-Subject: [PATCH 6/6] Install sample apps
+Date: Mon, 28 Jan 2019 13:58:03 -0800
+Subject: [PATCH 06/10] Install sample apps
 
 ---
  inference-engine/samples/classification_sample/CMakeLists.txt    | 1 +
@@ -15,10 +15,10 @@ Subject: [PATCH 6/6] Install sample apps
  8 files changed, 8 insertions(+)
 
 diff --git a/inference-engine/samples/classification_sample/CMakeLists.txt b/inference-engine/samples/classification_sample/CMakeLists.txt
-index 5107636..ac76418 100644
+index 4c80190..ccab3ed 100644
 --- a/inference-engine/samples/classification_sample/CMakeLists.txt
 +++ b/inference-engine/samples/classification_sample/CMakeLists.txt
-@@ -32,6 +32,7 @@ link_directories(${LIB_FOLDER})
+@@ -18,6 +18,7 @@ link_directories(${LIB_FOLDER})
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${SRC})
@@ -27,10 +27,10 @@ index 5107636..ac76418 100644
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
  COMPILE_PDB_NAME ${TARGET_NAME})
 diff --git a/inference-engine/samples/classification_sample_async/CMakeLists.txt b/inference-engine/samples/classification_sample_async/CMakeLists.txt
-index 0422b93..1e72b8d 100644
+index 96e6e41..2ba8b20 100644
 --- a/inference-engine/samples/classification_sample_async/CMakeLists.txt
 +++ b/inference-engine/samples/classification_sample_async/CMakeLists.txt
-@@ -32,6 +32,7 @@ link_directories(${LIB_FOLDER})
+@@ -18,6 +18,7 @@ link_directories(${LIB_FOLDER})
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${SRC})
@@ -39,10 +39,10 @@ index 0422b93..1e72b8d 100644
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
  COMPILE_PDB_NAME ${TARGET_NAME})
 diff --git a/inference-engine/samples/hello_autoresize_classification/CMakeLists.txt b/inference-engine/samples/hello_autoresize_classification/CMakeLists.txt
-index 5e890f3..9ba2ba3 100644
+index d70a974..7bfb5ab 100644
 --- a/inference-engine/samples/hello_autoresize_classification/CMakeLists.txt
 +++ b/inference-engine/samples/hello_autoresize_classification/CMakeLists.txt
-@@ -39,6 +39,7 @@ link_directories(${LIB_FOLDER})
+@@ -23,6 +23,7 @@ link_directories(${LIB_FOLDER})
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${SRC})
@@ -51,22 +51,22 @@ index 5e890f3..9ba2ba3 100644
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
                        COMPILE_PDB_NAME ${TARGET_NAME})
 diff --git a/inference-engine/samples/hello_classification/CMakeLists.txt b/inference-engine/samples/hello_classification/CMakeLists.txt
-index 015e60f..112f064 100644
+index 9531a21..ac9084f 100644
 --- a/inference-engine/samples/hello_classification/CMakeLists.txt
 +++ b/inference-engine/samples/hello_classification/CMakeLists.txt
-@@ -41,6 +41,7 @@ link_directories(${LIB_FOLDER})
+@@ -25,6 +25,7 @@ link_directories(${LIB_FOLDER})
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${SRC})
 +install(TARGETS ${TARGET_NAME} DESTINATION bin)
  
- set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
- COMPILE_PDB_NAME ${TARGET_NAME})
+ if(WIN32)
+ 	# This target supports UNICODE on Windows
 diff --git a/inference-engine/samples/hello_request_classification/CMakeLists.txt b/inference-engine/samples/hello_request_classification/CMakeLists.txt
-index 7f36e54..3ba9198 100644
+index 8818453..44d66a6 100644
 --- a/inference-engine/samples/hello_request_classification/CMakeLists.txt
 +++ b/inference-engine/samples/hello_request_classification/CMakeLists.txt
-@@ -41,6 +41,7 @@ link_directories(${LIB_FOLDER})
+@@ -25,6 +25,7 @@ link_directories(${LIB_FOLDER})
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${SRC})
@@ -75,10 +75,10 @@ index 7f36e54..3ba9198 100644
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
  COMPILE_PDB_NAME ${TARGET_NAME})
 diff --git a/inference-engine/samples/object_detection_sample_ssd/CMakeLists.txt b/inference-engine/samples/object_detection_sample_ssd/CMakeLists.txt
-index e6bd39c..357b22b 100644
+index 60cd38e..24b8b6f 100644
 --- a/inference-engine/samples/object_detection_sample_ssd/CMakeLists.txt
 +++ b/inference-engine/samples/object_detection_sample_ssd/CMakeLists.txt
-@@ -37,6 +37,7 @@ link_directories(${LIB_FOLDER})
+@@ -23,6 +23,7 @@ link_directories(${LIB_FOLDER})
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${MAIN_SRC} ${MAIN_HEADERS})
@@ -87,10 +87,10 @@ index e6bd39c..357b22b 100644
  add_dependencies(${TARGET_NAME} gflags)
  
 diff --git a/inference-engine/samples/style_transfer_sample/CMakeLists.txt b/inference-engine/samples/style_transfer_sample/CMakeLists.txt
-index 849fd23..73495c2 100644
+index bbc971e..f519998 100644
 --- a/inference-engine/samples/style_transfer_sample/CMakeLists.txt
 +++ b/inference-engine/samples/style_transfer_sample/CMakeLists.txt
-@@ -34,6 +34,7 @@ link_directories(${LIB_FOLDER})
+@@ -24,6 +24,7 @@ link_directories(${LIB_FOLDER})
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${MAIN_SRC} ${MAIN_HEADERS})
@@ -99,10 +99,10 @@ index 849fd23..73495c2 100644
  add_dependencies(${TARGET_NAME} gflags)
  
 diff --git a/inference-engine/samples/validation_app/CMakeLists.txt b/inference-engine/samples/validation_app/CMakeLists.txt
-index 38d976c..d94755b 100644
+index 898256e..3705147 100644
 --- a/inference-engine/samples/validation_app/CMakeLists.txt
 +++ b/inference-engine/samples/validation_app/CMakeLists.txt
-@@ -48,6 +48,7 @@ link_directories(${LIB_FOLDER})
+@@ -38,6 +38,7 @@ link_directories(${LIB_FOLDER})
  
  # Create library file from sources.
  add_executable(${TARGET_NAME} ${MAIN_SRC} ${MAIN_HEADERS})
@@ -111,5 +111,5 @@ index 38d976c..d94755b 100644
  set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE" 
  COMPILE_PDB_NAME ${TARGET_NAME})
 -- 
-2.19.1
+2.20.1
 

@@ -1,25 +1,20 @@
-From 12096442e26d50c6d88bc00a2da28842563c2d82 Mon Sep 17 00:00:00 2001
+From d3554ee25d68ba576fdc5a0044d45528e3a580a1 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
-Date: Thu, 25 Oct 2018 12:37:33 -0700
-Subject: [PATCH 2/4] Add -fopenmp
+Date: Mon, 28 Jan 2019 13:46:42 -0800
+Subject: [PATCH 02/10] Add -fopenmp
 
 ---
- inference-engine/src/mkldnn_plugin/CMakeLists.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ FAKE | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 FAKE
 
-diff --git a/inference-engine/src/mkldnn_plugin/CMakeLists.txt b/inference-engine/src/mkldnn_plugin/CMakeLists.txt
-index c24c5aa..de29e20 100644
---- a/inference-engine/src/mkldnn_plugin/CMakeLists.txt
-+++ b/inference-engine/src/mkldnn_plugin/CMakeLists.txt
-@@ -23,7 +23,7 @@ file(GLOB HEADERS
-         ${CMAKE_CURRENT_SOURCE_DIR}/nodes/*.h
- )
- 
--set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.2")
-+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse4.2 -fopenmp")
- 
- addVersionDefines(mkldnn_plugin.cpp CI_BUILD_NUMBER MKL_VERSION)
- 
+diff --git a/FAKE b/FAKE
+new file mode 100644
+index 0000000..76688b7
+--- /dev/null
++++ b/FAKE
+@@ -0,0 +1 @@
++Placeholder for empty commits.
 -- 
-2.19.1
+2.20.1
 
