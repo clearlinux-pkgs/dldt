@@ -6,5 +6,6 @@
 0006-Install-sample-apps.patch
 0007-Statically-link-common-sample-app-lib.patch
 0008-Don-t-override-cmake-paths-for-samples.patch
-0009-Remove-OpenCV-version-dependency.patch
-0010-Include-OpenCV-legacy-constants.patch
+0009-Include-OpenCV-legacy-constants.patch
+0010-Don-t-look-for-ade-in-a-subdir.patch
+0011-Remove-Werror.patch
