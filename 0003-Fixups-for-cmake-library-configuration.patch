@@ -1,7 +1,7 @@
-From 111a097ef34f1bb1bc36c585fe19caef2f1ef2c9 Mon Sep 17 00:00:00 2001
+From 9368c13bfe049d278175596f44a895ab7e338463 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 13:51:41 -0800
-Subject: [PATCH 03/11] Fixups for cmake library configuration
+Subject: [PATCH 03/12] Fixups for cmake library configuration
 
 - Install cmake config-file package to proper location
 - Install library export file (targets.cmake)

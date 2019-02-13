@@ -9,3 +9,4 @@
 0009-Include-OpenCV-legacy-constants.patch
 0010-Don-t-look-for-ade-in-a-subdir.patch
 0011-Remove-Werror.patch
+0012-Add-fopenmp-to-mkldnn_plugin.patch

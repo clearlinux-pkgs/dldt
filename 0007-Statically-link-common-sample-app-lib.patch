@@ -1,7 +1,7 @@
-From f1db692f7b70a5d38485ef74af5d9e6278610f3c Mon Sep 17 00:00:00 2001
+From d3db61df3d2e8e0cb61f71e3b572717822c333ee Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 14:02:06 -0800
-Subject: [PATCH 07/11] Statically link common sample app lib
+Subject: [PATCH 07/12] Statically link common sample app lib
 
 ---
  inference-engine/samples/common/format_reader/CMakeLists.txt | 2 +-

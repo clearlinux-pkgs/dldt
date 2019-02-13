@@ -1,7 +1,7 @@
-From 4fc61aba0a1aa8190c0ad065988aa270fb00b9ec Mon Sep 17 00:00:00 2001
+From 370cde8983422f703833c7b15aaf4fc5bce35b91 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 13:56:16 -0800
-Subject: [PATCH 05/11] Don't override cmake paths
+Subject: [PATCH 05/12] Don't override cmake paths
 
 Also disable building tests
 ---

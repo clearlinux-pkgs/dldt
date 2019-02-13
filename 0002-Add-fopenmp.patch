@@ -1,7 +1,7 @@
-From 50a69c0981a9be9519d5d4945fc446a42f966440 Mon Sep 17 00:00:00 2001
+From e7cdbeb0ac180e17a6a8a366c1b1aae9fba927bc Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Tue, 29 Jan 2019 08:51:05 -0800
-Subject: [PATCH 02/11] Add -fopenmp
+Subject: [PATCH 02/12] Add -fopenmp
 
 ---
  inference-engine/cmake/dependencies.cmake | 6 +-----

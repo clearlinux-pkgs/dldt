@@ -1,7 +1,7 @@
-From 9f264bf2d240763282f57f9161c235c127b21e41 Mon Sep 17 00:00:00 2001
+From 9604980408c9b0dbefb5a22db8c2f4026d57650f Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Tue, 29 Jan 2019 11:37:20 -0800
-Subject: [PATCH 11/11] Remove -Werror
+Subject: [PATCH 11/12] Remove -Werror
 
 ---
  inference-engine/samples/CMakeLists.txt | 2 --

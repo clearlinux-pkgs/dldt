@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r5
-Release  : 39
+Release  : 40
 URL      : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -51,6 +51,7 @@ Patch8: 0008-Don-t-override-cmake-paths-for-samples.patch
 Patch9: 0009-Include-OpenCV-legacy-constants.patch
 Patch10: 0010-Don-t-look-for-ade-in-a-subdir.patch
 Patch11: 0011-Remove-Werror.patch
+Patch12: 0012-Add-fopenmp-to-mkldnn_plugin.patch
 
 %description
 The Google Mock class generator is an application that is part of cppclean.
@@ -114,6 +115,7 @@ license components for the dldt package.
 %patch9 -p1
 %patch10 -p1
 %patch11 -p1
+%patch12 -p1
 pushd ..
 cp -a dldt-2018_R5 buildavx2
 popd
@@ -126,7 +128,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1549326755
+export SOURCE_DATE_EPOCH=1550016401
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -203,7 +205,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1549326755
+export SOURCE_DATE_EPOCH=1550016401
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
