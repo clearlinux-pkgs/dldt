@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r5
-Release  : 40
+Release  : 45
 URL      : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Summary  : GoogleTest (with main() function)
@@ -13,6 +13,7 @@ License  : Apache-2.0 BSD-3-Clause MIT
 Requires: dldt-bin = %{version}-%{release}
 Requires: dldt-lib = %{version}-%{release}
 Requires: dldt-license = %{version}-%{release}
+Requires: intel-compute-runtime
 Requires: mxnet
 Requires: networkx
 Requires: numpy
@@ -30,10 +31,12 @@ BuildRequires : cmake
 BuildRequires : doxygen
 BuildRequires : gflags-dev
 BuildRequires : glibc-dev
+BuildRequires : glibc-staticdev
 BuildRequires : googletest
 BuildRequires : googletest-dev
 BuildRequires : llvm
 BuildRequires : mkl-dnn-dev
+BuildRequires : ocl-icd-dev
 BuildRequires : openblas
 BuildRequires : opencv
 BuildRequires : opencv-dev
@@ -52,6 +55,7 @@ Patch9: 0009-Include-OpenCV-legacy-constants.patch
 Patch10: 0010-Don-t-look-for-ade-in-a-subdir.patch
 Patch11: 0011-Remove-Werror.patch
 Patch12: 0012-Add-fopenmp-to-mkldnn_plugin.patch
+Patch13: 0001-Werror-is-evil.patch
 
 %description
 The Google Mock class generator is an application that is part of cppclean.
@@ -116,6 +120,7 @@ license components for the dldt package.
 %patch10 -p1
 %patch11 -p1
 %patch12 -p1
+%patch13 -p1
 pushd ..
 cp -a dldt-2018_R5 buildavx2
 popd
@@ -128,7 +133,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1550016401
+export SOURCE_DATE_EPOCH=1553270120
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -136,10 +141,9 @@ export CC=clang
 export CXX=clang++
 export LD=ld.gold
 unset LDFLAGS
-%cmake .. -DENABLE_CLDNN=0 \
+%cmake .. -DENABLE_CLDNN=1 \
 -DENABLE_INTEL_OMP=0 \
 -DENABLE_OPENCV=0 \
--DENABLE_CLDNN_BUILD=1 \
 -DENABLE_SAMPLES_CORE=1 \
 -DENABLE_PYTHON_BINDINGS=1 \
 -DINSTALL_GMOCK=0 \
@@ -147,7 +151,8 @@ unset LDFLAGS
 -DBUILD_GMOCK=1 \
 -DBUILD_GTEST=0 \
 -DENABLE_PLUGIN_RPATH=0 \
--DENABLE_GNA=0
+-DENABLE_GNA=0 \
+-DLLVM_LINK_LLVM_DYLIB=ON
 make  %{?_smp_mflags} VERBOSE=1
 popd
 mkdir -p clr-build-avx2
@@ -162,10 +167,9 @@ export FFLAGS="$CFLAGS -O3 -march=haswell "
 export CXXFLAGS="$CXXFLAGS -O3 -march=haswell "
 export CFLAGS="$CFLAGS -march=haswell -m64"
 export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
-%cmake .. -DENABLE_CLDNN=0 \
+%cmake .. -DENABLE_CLDNN=1 \
 -DENABLE_INTEL_OMP=0 \
 -DENABLE_OPENCV=0 \
--DENABLE_CLDNN_BUILD=1 \
 -DENABLE_SAMPLES_CORE=1 \
 -DENABLE_PYTHON_BINDINGS=1 \
 -DINSTALL_GMOCK=0 \
@@ -173,7 +177,8 @@ export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
 -DBUILD_GMOCK=1 \
 -DBUILD_GTEST=0 \
 -DENABLE_PLUGIN_RPATH=0 \
--DENABLE_GNA=0
+-DENABLE_GNA=0 \
+-DLLVM_LINK_LLVM_DYLIB=ON
 make  %{?_smp_mflags} VERBOSE=1
 popd
 mkdir -p clr-build-avx512
@@ -188,10 +193,9 @@ export FFLAGS="$CFLAGS -O3 -march=skylake-avx512 "
 export CXXFLAGS="$CXXFLAGS -O3 -march=skylake-avx512 "
 export CFLAGS="$CFLAGS -march=skylake-avx512 -m64 "
 export CXXFLAGS="$CXXFLAGS -march=skylake-avx512 -m64 "
-%cmake .. -DENABLE_CLDNN=0 \
+%cmake .. -DENABLE_CLDNN=1 \
 -DENABLE_INTEL_OMP=0 \
 -DENABLE_OPENCV=0 \
--DENABLE_CLDNN_BUILD=1 \
 -DENABLE_SAMPLES_CORE=1 \
 -DENABLE_PYTHON_BINDINGS=1 \
 -DINSTALL_GMOCK=0 \
@@ -199,13 +203,14 @@ export CXXFLAGS="$CXXFLAGS -march=skylake-avx512 -m64 "
 -DBUILD_GMOCK=1 \
 -DBUILD_GTEST=0 \
 -DENABLE_PLUGIN_RPATH=0 \
--DENABLE_GNA=0
+-DENABLE_GNA=0 \
+-DLLVM_LINK_LLVM_DYLIB=ON
 make  %{?_smp_mflags} VERBOSE=1
 popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1550016401
+export SOURCE_DATE_EPOCH=1553270120
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -234,6 +239,8 @@ mkdir -p %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/extension/libcpu_extension.so    %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/hetero_plugin/libHeteroPlugin.so %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so %{buildroot}/usr/lib64
+install -m 0755 inference-engine/clr-build/src/cldnn_engine/libclDNNPlugin.so %{buildroot}/usr/lib64
+mv %{buildroot}/usr/lib/libclDNN64.so %{buildroot}/usr/lib64
 rm -f %{buildroot}/usr/lib64/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/libpugixml.so*
 rm -f %{buildroot}/usr/lib64/haswell/libgflags_nothreads.so*
@@ -276,9 +283,124 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 %defattr(-,root,root,-)
 %exclude /usr/include/pugiconfig.hpp
 %exclude /usr/include/pugixml.hpp
-%exclude /usr/lib64/cmake/pugixml/pugixml-config-relwithdebinfo.cmake
 %exclude /usr/lib64/cmake/pugixml/pugixml-config.cmake
 %exclude /usr/lib64/pkgconfig/gflags.pc
+/usr/include/clDNN/C/activation.h
+/usr/include/clDNN/C/activation_grad.h
+/usr/include/clDNN/C/apply_adam.h
+/usr/include/clDNN/C/arg_max_min.h
+/usr/include/clDNN/C/average_unpooling.h
+/usr/include/clDNN/C/batch_norm.h
+/usr/include/clDNN/C/batch_norm_grad.h
+/usr/include/clDNN/C/border.h
+/usr/include/clDNN/C/broadcast.h
+/usr/include/clDNN/C/cldnn.h
+/usr/include/clDNN/C/concatenation.h
+/usr/include/clDNN/C/convolution.h
+/usr/include/clDNN/C/convolution_grad_input.h
+/usr/include/clDNN/C/convolution_grad_weights.h
+/usr/include/clDNN/C/crop.h
+/usr/include/clDNN/C/custom_gpu_primitive.h
+/usr/include/clDNN/C/data.h
+/usr/include/clDNN/C/deconvolution.h
+/usr/include/clDNN/C/detection_output.h
+/usr/include/clDNN/C/eltwise.h
+/usr/include/clDNN/C/embed.h
+/usr/include/clDNN/C/fully_connected.h
+/usr/include/clDNN/C/fully_connected_grad_input.h
+/usr/include/clDNN/C/fully_connected_grad_weights.h
+/usr/include/clDNN/C/gemm.h
+/usr/include/clDNN/C/index_select.h
+/usr/include/clDNN/C/input_layout.h
+/usr/include/clDNN/C/lookup_table.h
+/usr/include/clDNN/C/lrn.h
+/usr/include/clDNN/C/lstm.h
+/usr/include/clDNN/C/max_unpooling.h
+/usr/include/clDNN/C/mutable_data.h
+/usr/include/clDNN/C/mvn.h
+/usr/include/clDNN/C/normalize.h
+/usr/include/clDNN/C/permute.h
+/usr/include/clDNN/C/pooling.h
+/usr/include/clDNN/C/prior_box.h
+/usr/include/clDNN/C/proposal.h
+/usr/include/clDNN/C/region_yolo.h
+/usr/include/clDNN/C/reorder.h
+/usr/include/clDNN/C/reorg_yolo.h
+/usr/include/clDNN/C/reshape.h
+/usr/include/clDNN/C/roi_pooling.h
+/usr/include/clDNN/C/scale.h
+/usr/include/clDNN/C/scale_grad_input.h
+/usr/include/clDNN/C/scale_grad_weights.h
+/usr/include/clDNN/C/select.h
+/usr/include/clDNN/C/softmax.h
+/usr/include/clDNN/C/softmax_loss_grad.h
+/usr/include/clDNN/C/split.h
+/usr/include/clDNN/C/tile.h
+/usr/include/clDNN/C/upsampling.h
+/usr/include/clDNN/CPP/activation.hpp
+/usr/include/clDNN/CPP/activation_grad.hpp
+/usr/include/clDNN/CPP/apply_adam.hpp
+/usr/include/clDNN/CPP/arg_max_min.hpp
+/usr/include/clDNN/CPP/average_unpooling.hpp
+/usr/include/clDNN/CPP/batch_norm.hpp
+/usr/include/clDNN/CPP/batch_norm_grad.hpp
+/usr/include/clDNN/CPP/border.hpp
+/usr/include/clDNN/CPP/broadcast.hpp
+/usr/include/clDNN/CPP/cldnn_defs.h
+/usr/include/clDNN/CPP/compounds.h
+/usr/include/clDNN/CPP/concatenation.hpp
+/usr/include/clDNN/CPP/convolution.hpp
+/usr/include/clDNN/CPP/convolution_grad_input.hpp
+/usr/include/clDNN/CPP/convolution_grad_weights.hpp
+/usr/include/clDNN/CPP/crop.hpp
+/usr/include/clDNN/CPP/custom_gpu_primitive.hpp
+/usr/include/clDNN/CPP/data.hpp
+/usr/include/clDNN/CPP/deconvolution.hpp
+/usr/include/clDNN/CPP/detection_output.hpp
+/usr/include/clDNN/CPP/eltwise.hpp
+/usr/include/clDNN/CPP/embed.hpp
+/usr/include/clDNN/CPP/engine.hpp
+/usr/include/clDNN/CPP/event.hpp
+/usr/include/clDNN/CPP/fully_connected.hpp
+/usr/include/clDNN/CPP/fully_connected_grad_input.hpp
+/usr/include/clDNN/CPP/fully_connected_grad_weights.hpp
+/usr/include/clDNN/CPP/gemm.hpp
+/usr/include/clDNN/CPP/index_select.hpp
+/usr/include/clDNN/CPP/input_layout.hpp
+/usr/include/clDNN/CPP/layout.hpp
+/usr/include/clDNN/CPP/lookup_table.hpp
+/usr/include/clDNN/CPP/lrn.hpp
+/usr/include/clDNN/CPP/lstm.hpp
+/usr/include/clDNN/CPP/max_unpooling.hpp
+/usr/include/clDNN/CPP/memory.hpp
+/usr/include/clDNN/CPP/meta_utils.hpp
+/usr/include/clDNN/CPP/mutable_data.hpp
+/usr/include/clDNN/CPP/mvn.hpp
+/usr/include/clDNN/CPP/network.hpp
+/usr/include/clDNN/CPP/normalize.hpp
+/usr/include/clDNN/CPP/permute.hpp
+/usr/include/clDNN/CPP/pooling.hpp
+/usr/include/clDNN/CPP/primitive.hpp
+/usr/include/clDNN/CPP/prior_box.hpp
+/usr/include/clDNN/CPP/profiling.hpp
+/usr/include/clDNN/CPP/program.hpp
+/usr/include/clDNN/CPP/proposal.hpp
+/usr/include/clDNN/CPP/region_yolo.hpp
+/usr/include/clDNN/CPP/reorder.hpp
+/usr/include/clDNN/CPP/reorg_yolo.hpp
+/usr/include/clDNN/CPP/reshape.hpp
+/usr/include/clDNN/CPP/roi_pooling.hpp
+/usr/include/clDNN/CPP/scale.hpp
+/usr/include/clDNN/CPP/scale_grad_input.hpp
+/usr/include/clDNN/CPP/scale_grad_weights.hpp
+/usr/include/clDNN/CPP/select.hpp
+/usr/include/clDNN/CPP/softmax.hpp
+/usr/include/clDNN/CPP/softmax_loss_grad.hpp
+/usr/include/clDNN/CPP/split.hpp
+/usr/include/clDNN/CPP/tensor.hpp
+/usr/include/clDNN/CPP/tile.hpp
+/usr/include/clDNN/CPP/topology.hpp
+/usr/include/clDNN/CPP/upsampling.hpp
 /usr/include/inference_engine/builders/ie_argmax_layer.hpp
 /usr/include/inference_engine/builders/ie_batch_normalization_layer.hpp
 /usr/include/inference_engine/builders/ie_clamp_layer.hpp
@@ -387,14 +509,9 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 /usr/include/inference_engine/inference_engine.hpp
 /usr/lib64/cmake/InferenceEngine/InferenceEngineConfig-version.cmake
 /usr/lib64/cmake/InferenceEngine/InferenceEngineConfig.cmake
-/usr/lib64/cmake/InferenceEngine/targets-relwithdebinfo.cmake
+/usr/lib64/cmake/InferenceEngine/targets-debug.cmake
 /usr/lib64/cmake/InferenceEngine/targets.cmake
-/usr/lib64/haswell/avx512_1/libinference_engine.so
-/usr/lib64/haswell/libinference_engine.so
-/usr/lib64/libHeteroPlugin.so
-/usr/lib64/libMKLDNNPlugin.so
-/usr/lib64/libcpu_extension.so
-/usr/lib64/libinference_engine.so
+/usr/lib64/cmake/pugixml/pugixml-config-debug.cmake
 
 %files extras
 %defattr(-,root,root,-)
@@ -425,8 +542,16 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/haswell/avx512_1/libinference_engine.so
 /usr/lib64/haswell/avx512_1/libinference_engine.so.1
+/usr/lib64/haswell/libinference_engine.so
 /usr/lib64/haswell/libinference_engine.so.1
+/usr/lib64/libHeteroPlugin.so
+/usr/lib64/libMKLDNNPlugin.so
+/usr/lib64/libclDNN64.so
+/usr/lib64/libclDNNPlugin.so
+/usr/lib64/libcpu_extension.so
+/usr/lib64/libinference_engine.so
 /usr/lib64/libinference_engine.so.1
 
 %files license

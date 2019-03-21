@@ -10,3 +10,4 @@
 0010-Don-t-look-for-ade-in-a-subdir.patch
 0011-Remove-Werror.patch
 0012-Add-fopenmp-to-mkldnn_plugin.patch
+0001-Werror-is-evil.patch
