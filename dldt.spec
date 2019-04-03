@@ -4,10 +4,10 @@
 #
 Name     : dldt
 Version  : 2018.r5
-Release  : 45
+Release  : 46
 URL      : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
-Summary  : GoogleTest (with main() function)
+Summary  : @PACKAGE_DESCRIPTION@
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause MIT
 Requires: dldt-bin = %{version}-%{release}
@@ -56,10 +56,12 @@ Patch10: 0010-Don-t-look-for-ade-in-a-subdir.patch
 Patch11: 0011-Remove-Werror.patch
 Patch12: 0012-Add-fopenmp-to-mkldnn_plugin.patch
 Patch13: 0001-Werror-is-evil.patch
+Patch14: 0001-use-GNUInstallDirs-on-nix.patch
 
 %description
-The Google Mock class generator is an application that is part of cppclean.
-visit http://code.google.com/p/cppclean/
+# [OpenVINOâ¢ Toolkit](https://01.org/openvinotoolkit) - Deep Learning Deployment Toolkit repository
+[![Stable release](https://img.shields.io/badge/version-2018.R5-green.svg)](https://github.com/opencv/dldt/releases/tag/2018_R5)
+[![Apache License Version 2.0](https://img.shields.io/badge/license-Apache_2.0-green.svg)](LICENSE)
 
 %package bin
 Summary: bin components for the dldt package.
@@ -121,6 +123,7 @@ license components for the dldt package.
 %patch11 -p1
 %patch12 -p1
 %patch13 -p1
+%patch14 -p1 -d inference-engine/thirdparty/clDNN
 pushd ..
 cp -a dldt-2018_R5 buildavx2
 popd
@@ -133,7 +136,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1553270120
+export SOURCE_DATE_EPOCH=1554312569
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -210,7 +213,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1553270120
+export SOURCE_DATE_EPOCH=1554312569
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -240,7 +243,6 @@ install -m 0755 inference-engine/clr-build/src/extension/libcpu_extension.so    
 install -m 0755 inference-engine/clr-build/src/hetero_plugin/libHeteroPlugin.so %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/cldnn_engine/libclDNNPlugin.so %{buildroot}/usr/lib64
-mv %{buildroot}/usr/lib/libclDNN64.so %{buildroot}/usr/lib64
 rm -f %{buildroot}/usr/lib64/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/libpugixml.so*
 rm -f %{buildroot}/usr/lib64/haswell/libgflags_nothreads.so*
@@ -544,6 +546,7 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 %defattr(-,root,root,-)
 /usr/lib64/haswell/avx512_1/libinference_engine.so
 /usr/lib64/haswell/avx512_1/libinference_engine.so.1
+/usr/lib64/haswell/libclDNN64.so
 /usr/lib64/haswell/libinference_engine.so
 /usr/lib64/haswell/libinference_engine.so.1
 /usr/lib64/libHeteroPlugin.so

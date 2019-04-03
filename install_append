@@ -3,7 +3,6 @@ install -m 0755 inference-engine/clr-build/src/extension/libcpu_extension.so    
 install -m 0755 inference-engine/clr-build/src/hetero_plugin/libHeteroPlugin.so %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so %{buildroot}/usr/lib64
 install -m 0755 inference-engine/clr-build/src/cldnn_engine/libclDNNPlugin.so %{buildroot}/usr/lib64
-mv %{buildroot}/usr/lib/libclDNN64.so %{buildroot}/usr/lib64
 
 rm -f %{buildroot}/usr/lib64/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/libpugixml.so*

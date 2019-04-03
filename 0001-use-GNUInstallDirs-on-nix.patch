@@ -1,0 +1,63 @@
+From 134abb64aa51d150e11c3285e40ffce758d17faa Mon Sep 17 00:00:00 2001
+From: Kevron Rees <kevron.m.rees@intel.com>
+Date: Wed, 3 Apr 2019 09:20:48 -0700
+Subject: [PATCH] use GNUInstallDirs on *nix
+
+---
+ src/CMakeLists.txt | 36 +++++++++++++++++++++++++++++-------
+ 1 file changed, 29 insertions(+), 7 deletions(-)
+
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 6313d50..d8c8d66 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -247,17 +247,39 @@ target_link_libraries("${CLDNN_BUILD__PROJ}" ${CLDNN__SYSTEM_LINK_LIBRARIES})
+ 
+ # ========================================== Installation ==============================================
+ 
++if(UNIX)
++  include(GNUInstallDirs)
++endif(UNIX)
++
++
+ # API headers.
+-install(DIRECTORY "${CLDNN__API_DIR}/"
++if(UNIX)
++  install(DIRECTORY "${CLDNN__API_DIR}/"
++      DESTINATION "${CMAKE_INSTALL_FULL_INCLUDEDIR}/clDNN"
++      FILE_PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
++    )
++else()
++  install(DIRECTORY "${CLDNN__API_DIR}/"
+     DESTINATION "include/clDNN"
+     FILE_PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ WORLD_READ
+   )
++endif(UNIX)
++
+ # Binaries.
+-install(TARGETS "${CLDNN_BUILD__PROJ}"
+-    ARCHIVE DESTINATION "lib"
+-    LIBRARY DESTINATION "lib"
+-    RUNTIME DESTINATION "bin"
+-    INCLUDES DESTINATION "include/clDNN"
+-  )
++if(UNIX)
++  install(TARGETS "${CLDNN_BUILD__PROJ}"
++      ARCHIVE DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}"
++      LIBRARY DESTINATION "${CMAKE_INSTALL_FULL_LIBDIR}"
++      RUNTIME DESTINATION "${CMAKE_INSTALL_FULL_BINDIR}"
++      INCLUDES DESTINATION "${CMAKE_INSTALL_FULL_INCLUDEDIR}/clDNN"
++    )
++else()
++  install(TARGETS "${CLDNN_BUILD__PROJ}"
++      ARCHIVE DESTINATION "lib"
++      LIBRARY DESTINATION "lib"
++      RUNTIME DESTINATION "bin"
++      INCLUDES DESTINATION "include/clDNN"
++    )
++endif(UNIX)
+ 
+ # ======================================================================================================
+-- 
+2.17.1
+
