@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r5
-Release  : 46
+Release  : 47
 URL      : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Summary  : @PACKAGE_DESCRIPTION@
@@ -57,6 +57,7 @@ Patch11: 0011-Remove-Werror.patch
 Patch12: 0012-Add-fopenmp-to-mkldnn_plugin.patch
 Patch13: 0001-Werror-is-evil.patch
 Patch14: 0001-use-GNUInstallDirs-on-nix.patch
+Patch15: 0001-do-not-put-binaries-in-src-dir.patch
 
 %description
 # [OpenVINOâ¢ Toolkit](https://01.org/openvinotoolkit) - Deep Learning Deployment Toolkit repository
@@ -124,6 +125,7 @@ license components for the dldt package.
 %patch12 -p1
 %patch13 -p1
 %patch14 -p1 -d inference-engine/thirdparty/clDNN
+%patch15 -p1 -d inference-engine/thirdparty/clDNN
 pushd ..
 cp -a dldt-2018_R5 buildavx2
 popd
@@ -136,7 +138,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1554312569
+export SOURCE_DATE_EPOCH=1554322199
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -213,7 +215,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1554312569
+export SOURCE_DATE_EPOCH=1554322199
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE

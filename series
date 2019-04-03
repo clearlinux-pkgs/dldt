@@ -12,3 +12,5 @@
 0012-Add-fopenmp-to-mkldnn_plugin.patch
 0001-Werror-is-evil.patch
 0001-use-GNUInstallDirs-on-nix.patch -p1 -d inference-engine/thirdparty/clDNN
+0001-do-not-put-binaries-in-src-dir.patch -p1 -d inference-engine/thirdparty/clDNN
+
