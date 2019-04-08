@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r5
-Release  : 47
+Release  : 48
 URL      : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Summary  : @PACKAGE_DESCRIPTION@
