@@ -12,3 +12,4 @@ opencv-python
 openblas
 pugixml-dev
 ocl-icd-dev
+llvm-dev

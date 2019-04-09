@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2018.r5
-Release  : 48
+Release  : 49
 URL      : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2018_R5.tar.gz
 Summary  : @PACKAGE_DESCRIPTION@
@@ -35,6 +35,7 @@ BuildRequires : glibc-staticdev
 BuildRequires : googletest
 BuildRequires : googletest-dev
 BuildRequires : llvm
+BuildRequires : llvm-dev
 BuildRequires : mkl-dnn-dev
 BuildRequires : ocl-icd-dev
 BuildRequires : openblas
@@ -79,6 +80,7 @@ Group: Development
 Requires: dldt-lib = %{version}-%{release}
 Requires: dldt-bin = %{version}-%{release}
 Provides: dldt-devel = %{version}-%{release}
+Requires: dldt = %{version}-%{release}
 
 %description dev
 dev components for the dldt package.
@@ -138,7 +140,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1554322199
+export SOURCE_DATE_EPOCH=1554828995
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -215,7 +217,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1554322199
+export SOURCE_DATE_EPOCH=1554828995
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
