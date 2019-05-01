@@ -1,7 +1,7 @@
-From e9f5c4aeba1841e67ce3dcc0dddb8862a4e3f593 Mon Sep 17 00:00:00 2001
+From f1ab06e551a5ac4332d549d3b81404205c2dfb9e Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 13:54:13 -0800
-Subject: [PATCH 04/12] Fix install of public headers within subdirectories
+Subject: [PATCH 04/14] Fix install of public headers within subdirectories
 
 There are several more public headers to install that live within
 subdirectories, not at toplevel.
@@ -10,10 +10,10 @@ subdirectories, not at toplevel.
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/inference-engine/src/inference_engine/CMakeLists.txt b/inference-engine/src/inference_engine/CMakeLists.txt
-index 4559789..c71408e 100644
+index 4a1e3c8..32f8173 100644
 --- a/inference-engine/src/inference_engine/CMakeLists.txt
 +++ b/inference-engine/src/inference_engine/CMakeLists.txt
-@@ -127,7 +127,7 @@ configure_file(
+@@ -140,7 +140,7 @@ add_cpplint_target(${TARGET_NAME}_cpplint FOR_TARGETS ${TARGET_NAME})
  set(ConfigPackageLocation lib64/cmake/InferenceEngine)
  install(TARGETS ${TARGET_NAME} EXPORT ${TARGET_NAME} LIBRARY DESTINATION lib64)
  install(EXPORT ${TARGET_NAME} DESTINATION ${ConfigPackageLocation} NAMESPACE IE:: FILE targets.cmake)
@@ -23,5 +23,5 @@ index 4559789..c71408e 100644
      "${CMAKE_BINARY_DIR}/InferenceEngineConfig.cmake"
      "${CMAKE_BINARY_DIR}/InferenceEngineConfig-version.cmake"
 -- 
-2.20.1
+2.21.0
 

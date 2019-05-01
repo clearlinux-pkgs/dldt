@@ -1,24 +1,24 @@
-From 9b8f797282df219c91e8025431487e1b71e117f3 Mon Sep 17 00:00:00 2001
+From cf64fd9b0565a1f29d3f99667a00a0fbda97fde4 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Tue, 29 Jan 2019 11:04:44 -0800
-Subject: [PATCH 10/12] Don't look for ade in a subdir
+Subject: [PATCH 10/14] Don't look for ade in a subdir
 
 ---
  inference-engine/thirdparty/CMakeLists.txt | 1 -
  1 file changed, 1 deletion(-)
 
 diff --git a/inference-engine/thirdparty/CMakeLists.txt b/inference-engine/thirdparty/CMakeLists.txt
-index 8277d6c..5b50147 100644
+index f65f38c..c8b0bf9 100644
 --- a/inference-engine/thirdparty/CMakeLists.txt
 +++ b/inference-engine/thirdparty/CMakeLists.txt
-@@ -9,7 +9,6 @@ endif()
+@@ -11,7 +11,6 @@ add_subdirectory(pugixml)
+ export(TARGETS pugixml NAMESPACE IE:: APPEND FILE "${CMAKE_BINARY_DIR}/targets.cmake")
  
- add_subdirectory(pugixml)
  add_subdirectory(stb_lib)
 -add_subdirectory(ade)
  
  if (ENABLE_CLDNN)
-     set(CLDNN__OUTPUT_DIR ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+     set(CLDNN__OUTPUT_BIN_DIR ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 -- 
-2.20.1
+2.21.0
 

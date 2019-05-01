@@ -8,9 +8,7 @@
 0008-Don-t-override-cmake-paths-for-samples.patch
 0009-Include-OpenCV-legacy-constants.patch
 0010-Don-t-look-for-ade-in-a-subdir.patch
-0011-Remove-Werror.patch
-0012-Add-fopenmp-to-mkldnn_plugin.patch
-0001-Werror-is-evil.patch
-0001-use-GNUInstallDirs-on-nix.patch -p1 -d inference-engine/thirdparty/clDNN
-0001-do-not-put-binaries-in-src-dir.patch -p1 -d inference-engine/thirdparty/clDNN
-
+0011-Add-fopenmp-to-mkldnn_plugin.patch
+0012-Werror-is-evil.patch
+0013-use-GNUInstallDirs-on-nix.patch
+0014-do-not-put-binaries-in-src-dir.patch

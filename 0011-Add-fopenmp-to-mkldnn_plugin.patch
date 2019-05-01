@@ -1,17 +1,17 @@
-From 3879451d206e44f869f12734c4add412b2269fce Mon Sep 17 00:00:00 2001
+From a04dc0638c469a68d5a6f394adb8d123702d67f8 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Tue, 12 Feb 2019 15:37:22 -0800
-Subject: [PATCH 12/12] Add -fopenmp to mkldnn_plugin
+Subject: [PATCH 11/14] Add -fopenmp to mkldnn_plugin
 
 ---
  inference-engine/src/mkldnn_plugin/CMakeLists.txt | 7 +++++++
  1 file changed, 7 insertions(+)
 
 diff --git a/inference-engine/src/mkldnn_plugin/CMakeLists.txt b/inference-engine/src/mkldnn_plugin/CMakeLists.txt
-index 5997f7d..fd05d68 100644
+index df81a5a..6cd9347 100644
 --- a/inference-engine/src/mkldnn_plugin/CMakeLists.txt
 +++ b/inference-engine/src/mkldnn_plugin/CMakeLists.txt
-@@ -48,6 +48,13 @@ if (THREADING STREQUAL "TBB")
+@@ -50,6 +50,13 @@ if (THREADING STREQUAL "TBB")
      set(MKLDNN_THR MKLDNN_THR_TBB)
  elseif (THREADING STREQUAL "OMP")
      set(MKLDNN_THR MKLDNN_THR_OMP)
@@ -26,5 +26,5 @@ index 5997f7d..fd05d68 100644
      set(MKLDNN_THR MKLDNN_THR_SEQ)
  endif()
 -- 
-2.20.1
+2.21.0
 

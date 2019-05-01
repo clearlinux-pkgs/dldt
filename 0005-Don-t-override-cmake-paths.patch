@@ -1,18 +1,18 @@
-From 370cde8983422f703833c7b15aaf4fc5bce35b91 Mon Sep 17 00:00:00 2001
+From 77f71d4565a9f1cb68f3a217331b26bb273d9521 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 13:56:16 -0800
-Subject: [PATCH 05/12] Don't override cmake paths
+Subject: [PATCH 05/14] Don't override cmake paths
 
 Also disable building tests
 ---
- inference-engine/CMakeLists.txt | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ inference-engine/CMakeLists.txt | 9 ---------
+ 1 file changed, 9 deletions(-)
 
 diff --git a/inference-engine/CMakeLists.txt b/inference-engine/CMakeLists.txt
-index af64443..fa44b40 100644
+index d65c86a..e899bcc 100644
 --- a/inference-engine/CMakeLists.txt
 +++ b/inference-engine/CMakeLists.txt
-@@ -97,14 +97,6 @@ if(NOT(UNIX))
+@@ -99,14 +99,6 @@ if(NOT(UNIX))
      set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${OUTPUT_ROOT}/${BIN_FOLDER})
      set (LIBRARY_OUTPUT_DIRECTORY ${OUTPUT_ROOT}/${BIN_FOLDER})
      set (LIBRARY_OUTPUT_PATH ${LIBRARY_OUTPUT_DIRECTORY}) # compatibility issue: linux uses LIBRARY_OUTPUT_PATH, windows uses LIBRARY_OUTPUT_DIRECTORY
@@ -27,21 +27,14 @@ index af64443..fa44b40 100644
  endif()
  
  if (APPLE)
-@@ -142,7 +134,6 @@ if(UNIX)
- endif(UNIX)
+@@ -139,7 +131,6 @@ include(CheckCXXCompilerFlag)
+ include(cpplint)
  
  add_subdirectory(src)
 -add_subdirectory(tests)
  add_subdirectory(thirdparty)
  
  option(ENABLE_PYTHON_BINDINGS "Build python bindings." OFF)
-@@ -164,4 +155,4 @@ endif()
- 
- if (ENABLE_PYTHON)
-     add_subdirectory(ie_bridges/python)
--endif()
-\ No newline at end of file
-+endif()
 -- 
-2.20.1
+2.21.0
 

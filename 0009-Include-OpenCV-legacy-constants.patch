@@ -1,14 +1,14 @@
-From 91574ff38d04ceb297979abd4e11a9670ab84470 Mon Sep 17 00:00:00 2001
+From 44b2637b29e1f367a8711ba4faf3a28cbd1dffdf Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 14:06:31 -0800
-Subject: [PATCH 09/12] Include OpenCV legacy constants
+Subject: [PATCH 09/14] Include OpenCV legacy constants
 
 ---
  inference-engine/samples/validation_app/image_decoder.cpp | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/inference-engine/samples/validation_app/image_decoder.cpp b/inference-engine/samples/validation_app/image_decoder.cpp
-index 7ca0894..a1792eb 100644
+index b977b63..214f3dd 100644
 --- a/inference-engine/samples/validation_app/image_decoder.cpp
 +++ b/inference-engine/samples/validation_app/image_decoder.cpp
 @@ -13,6 +13,7 @@
@@ -20,5 +20,5 @@ index 7ca0894..a1792eb 100644
  using namespace cv;
  
 -- 
-2.20.1
+2.21.0
 

@@ -1,7 +1,7 @@
-From 9368c13bfe049d278175596f44a895ab7e338463 Mon Sep 17 00:00:00 2001
+From 63223a76d56a2b8c9907cb317837347f78d683e0 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 13:51:41 -0800
-Subject: [PATCH 03/12] Fixups for cmake library configuration
+Subject: [PATCH 03/14] Fixups for cmake library configuration
 
 - Install cmake config-file package to proper location
 - Install library export file (targets.cmake)
@@ -13,7 +13,7 @@ Subject: [PATCH 03/12] Fixups for cmake library configuration
  2 files changed, 12 insertions(+), 14 deletions(-)
 
 diff --git a/inference-engine/cmake/config.cmake.in b/inference-engine/cmake/config.cmake.in
-index 84ea39d..ed3c880 100644
+index b32d288..7c3459f 100644
 --- a/inference-engine/cmake/config.cmake.in
 +++ b/inference-engine/cmake/config.cmake.in
 @@ -5,17 +5,9 @@
@@ -37,11 +37,11 @@ index 84ea39d..ed3c880 100644
 +    set(InferenceEngine_LIBRARIES IE::inference_engine)
  endif()
 diff --git a/inference-engine/src/inference_engine/CMakeLists.txt b/inference-engine/src/inference_engine/CMakeLists.txt
-index ccc518e..4559789 100644
+index 8c18f0b..4a1e3c8 100644
 --- a/inference-engine/src/inference_engine/CMakeLists.txt
 +++ b/inference-engine/src/inference_engine/CMakeLists.txt
-@@ -67,7 +67,9 @@ set_ie_threading_interface_for(${TARGET_NAME})
- target_link_libraries(${TARGET_NAME} PRIVATE pugixml fluid ade ${CMAKE_DL_LIBS} ${INTEL_ITT_LIBS})
+@@ -77,7 +77,9 @@ set_ie_threading_interface_for(${TARGET_NAME})
+ target_link_libraries(${TARGET_NAME} PRIVATE fluid ade ${INTEL_ITT_LIBS} PUBLIC pugixml ${CMAKE_DL_LIBS})
  
  # Properties->C/C++->General->Additional Include Directories
 -target_include_directories(${TARGET_NAME} PUBLIC ${PUBLIC_HEADERS_DIR}
@@ -51,7 +51,7 @@ index ccc518e..4559789 100644
                                            PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}"
                                                    "${IE_MAIN_SOURCE_DIR}/src/dumper")
  
-@@ -89,7 +91,9 @@ add_library(${TARGET_NAME}_s STATIC
+@@ -99,7 +101,9 @@ add_library(${TARGET_NAME}_s STATIC
  set_ie_threading_interface_for(${TARGET_NAME}_s)
  
  # Properties->C/C++->General->Additional Include Directories
@@ -62,9 +62,9 @@ index ccc518e..4559789 100644
                                            PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}"
                                                    "${IE_MAIN_SOURCE_DIR}/src/dumper")
  
-@@ -120,9 +124,11 @@ configure_file(
-     "${CMAKE_BINARY_DIR}/InferenceEngineConfig-version.cmake"
-     COPYONLY)
+@@ -133,9 +137,11 @@ configure_file(
+ 
+ add_cpplint_target(${TARGET_NAME}_cpplint FOR_TARGETS ${TARGET_NAME})
  
 -install(TARGETS ${TARGET_NAME} LIBRARY DESTINATION lib64)
 +set(ConfigPackageLocation lib64/cmake/InferenceEngine)
@@ -77,5 +77,5 @@ index ccc518e..4559789 100644
 -    DESTINATION ${CMAKE_INSTALL_PREFIX}/share/cmake/Modules)
 +    DESTINATION ${ConfigPackageLocation})
 -- 
-2.20.1
+2.21.0
 

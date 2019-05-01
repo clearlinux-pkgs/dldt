@@ -1,17 +1,17 @@
-From f77566b10132d0ccb6467b54fd4724d834cd4434 Mon Sep 17 00:00:00 2001
+From f2c257274d153556678afe2f7a8d66b3aae1ea7c Mon Sep 17 00:00:00 2001
 From: Kevron Rees <tripzero.kev@gmail.com>
 Date: Thu, 21 Mar 2019 21:03:55 -0700
-Subject: [PATCH] Werror is evil
+Subject: [PATCH 12/14] Werror is evil
 
 ---
- inference-engine/thirdparty/clDNN/CMakeLists.txt | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ inference-engine/thirdparty/clDNN/CMakeLists.txt | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/inference-engine/thirdparty/clDNN/CMakeLists.txt b/inference-engine/thirdparty/clDNN/CMakeLists.txt
-index 6ce8119..1992422 100644
+index 624d95c..d0774f8 100644
 --- a/inference-engine/thirdparty/clDNN/CMakeLists.txt
 +++ b/inference-engine/thirdparty/clDNN/CMakeLists.txt
-@@ -729,8 +729,6 @@ foreach(__CLDNN_CompilerFlagName IN ITEMS "CMAKE_CXX_FLAGS" "CMAKE_C_FLAGS")
+@@ -757,8 +757,6 @@ foreach(__CLDNN_CompilerFlagName IN ITEMS "CMAKE_CXX_FLAGS" "CMAKE_C_FLAGS")
          MultiProcessorCompilation
          DeadCodeEliminate
          ExtensionsEnabled
@@ -20,7 +20,7 @@ index 6ce8119..1992422 100644
          NoFastMath
          StackProtector
      )
-@@ -886,7 +884,7 @@ if((CMAKE_C_COMPILER_ID MATCHES "^Clang$") OR (CMAKE_CXX_COMPILER_ID MATCHES "^C
+@@ -914,7 +912,7 @@ if((CMAKE_C_COMPILER_ID MATCHES "^Clang$") OR (CMAKE_CXX_COMPILER_ID MATCHES "^C
        CMAKE_CXX_FLAGS
        ALL_PATTERN ""
        SET_RAW
@@ -29,15 +29,14 @@ index 6ce8119..1992422 100644
      )
  endif()
  
-@@ -944,7 +942,7 @@ if((CMAKE_C_COMPILER_ID MATCHES "^Clang$") OR (CMAKE_CXX_COMPILER_ID MATCHES "^C
+@@ -973,7 +971,6 @@ if((CMAKE_C_COMPILER_ID MATCHES "^Clang$") OR (CMAKE_CXX_COMPILER_ID MATCHES "^C
          -Wl,-headerpad_max_install_names
      )
  
--  list(APPEND CLDNN__SYSTEM_LINK_LIBRARIES "c++" "c++abi" "supc++")
-+  #list(APPEND CLDNN__SYSTEM_LINK_LIBRARIES "c++" "c++abi" "supc++")
+-  list(APPEND CLDNN__SYSTEM_LINK_LIBRARIES "c++" "c++abi" "supc++" "dl")
  endif()
  
  unset(__CLDNN_LinkerFlagName)
 -- 
-2.19.1
+2.21.0
 
