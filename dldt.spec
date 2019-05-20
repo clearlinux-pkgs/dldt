@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r1.0.1
-Release  : 52
+Release  : 53
 URL      : https://github.com/opencv/dldt/archive/2019_R1.0.1/dldt-2019.R1.0.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R1.0.1/dldt-2019.R1.0.1.tar.gz
 Summary  : @PACKAGE_DESCRIPTION@
@@ -27,6 +27,7 @@ Requires: pugixml
 Requires: scikit-learn
 Requires: scipy
 Requires: tensorflow
+Requires: test-generator
 Requires: tqdm
 Requires: xmltodict
 BuildRequires : Cython
@@ -138,10 +139,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1556757035
+export SOURCE_DATE_EPOCH=1558378305
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
+export GCC_IGNORE_WERROR=1
 export LDFLAGS="${LDFLAGS} -fno-lto"
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
@@ -164,6 +166,7 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 mkdir -p clr-build-avx2
 pushd clr-build-avx2
+export GCC_IGNORE_WERROR=1
 export LDFLAGS="${LDFLAGS} -fno-lto"
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
@@ -188,6 +191,7 @@ make  %{?_smp_mflags} VERBOSE=1
 popd
 mkdir -p clr-build-avx512
 pushd clr-build-avx512
+export GCC_IGNORE_WERROR=1
 export LDFLAGS="${LDFLAGS} -fno-lto"
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
@@ -213,7 +217,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1556757035
+export SOURCE_DATE_EPOCH=1558378305
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
