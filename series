@@ -12,3 +12,4 @@
 0012-Werror-is-evil.patch
 0013-use-GNUInstallDirs-on-nix.patch
 0014-do-not-put-binaries-in-src-dir.patch
+0015-Enable-benchmark_app-for-inference-measurement.patch

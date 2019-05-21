@@ -1,0 +1,24 @@
+From 5b26c849fbd0a8dea96fb82f4703c9b61a767a71 Mon Sep 17 00:00:00 2001
+From: Erin Park <erin.park@intel.com>
+Date: Tue, 21 May 2019 14:08:03 +0000
+Subject: [PATCH] Enable benchmark_app for inference measurement
+
+---
+ inference-engine/samples/benchmark_app/CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/inference-engine/samples/benchmark_app/CMakeLists.txt b/inference-engine/samples/benchmark_app/CMakeLists.txt
+index c142ea6..6f0c156 100644
+--- a/inference-engine/samples/benchmark_app/CMakeLists.txt
++++ b/inference-engine/samples/benchmark_app/CMakeLists.txt
+@@ -16,6 +16,7 @@ link_directories(${LIB_FOLDER})
+ 
+ # Create library file from sources.
+ add_executable(${TARGET_NAME} ${SRC})
++install(TARGETS ${TARGET_NAME} DESTINATION bin)
+ 
+ set_target_properties(${TARGET_NAME} PROPERTIES "CMAKE_CXX_FLAGS" "${CMAKE_CXX_FLAGS} -fPIE"
+ COMPILE_PDB_NAME ${TARGET_NAME})
+-- 
+2.21.0
+

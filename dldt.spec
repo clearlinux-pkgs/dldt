@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r1.0.1
-Release  : 53
+Release  : 54
 URL      : https://github.com/opencv/dldt/archive/2019_R1.0.1/dldt-2019.R1.0.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R1.0.1/dldt-2019.R1.0.1.tar.gz
 Summary  : @PACKAGE_DESCRIPTION@
@@ -65,6 +65,7 @@ Patch11: 0011-Add-fopenmp-to-mkldnn_plugin.patch
 Patch12: 0012-Werror-is-evil.patch
 Patch13: 0013-use-GNUInstallDirs-on-nix.patch
 Patch14: 0014-do-not-put-binaries-in-src-dir.patch
+Patch15: 0015-Enable-benchmark_app-for-inference-measurement.patch
 
 %description
 # [OpenVINOâ¢ Toolkit](https://01.org/openvinotoolkit) - Deep Learning Deployment Toolkit repository
@@ -133,13 +134,14 @@ license components for the dldt package.
 %patch12 -p1
 %patch13 -p1
 %patch14 -p1
+%patch15 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1558378305
+export SOURCE_DATE_EPOCH=1558459835
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -217,7 +219,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1558378305
+export SOURCE_DATE_EPOCH=1558459835
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -284,6 +286,9 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 %exclude /usr/bin/object_detection_sample_ssd
 %exclude /usr/bin/style_transfer_sample
 %exclude /usr/bin/validation_app
+/usr/bin/benchmark_app
+/usr/bin/haswell/avx512_1/benchmark_app
+/usr/bin/haswell/benchmark_app
 
 %files dev
 %defattr(-,root,root,-)
