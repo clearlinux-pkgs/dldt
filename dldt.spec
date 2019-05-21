@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r1.0.1
-Release  : 54
+Release  : 55
 URL      : https://github.com/opencv/dldt/archive/2019_R1.0.1/dldt-2019.R1.0.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R1.0.1/dldt-2019.R1.0.1.tar.gz
 Summary  : @PACKAGE_DESCRIPTION@
@@ -141,7 +141,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1558459835
+export SOURCE_DATE_EPOCH=1558474170
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -219,7 +219,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1558459835
+export SOURCE_DATE_EPOCH=1558474170
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -262,8 +262,10 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 
 %files bin
 %defattr(-,root,root,-)
+%exclude /usr/bin/benchmark_app
 %exclude /usr/bin/classification_sample
 %exclude /usr/bin/classification_sample_async
+%exclude /usr/bin/haswell/avx512_1/benchmark_app
 %exclude /usr/bin/haswell/avx512_1/classification_sample
 %exclude /usr/bin/haswell/avx512_1/classification_sample_async
 %exclude /usr/bin/haswell/avx512_1/hello_autoresize_classification
@@ -272,6 +274,7 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 %exclude /usr/bin/haswell/avx512_1/object_detection_sample_ssd
 %exclude /usr/bin/haswell/avx512_1/style_transfer_sample
 %exclude /usr/bin/haswell/avx512_1/validation_app
+%exclude /usr/bin/haswell/benchmark_app
 %exclude /usr/bin/haswell/classification_sample
 %exclude /usr/bin/haswell/classification_sample_async
 %exclude /usr/bin/haswell/hello_autoresize_classification
@@ -286,9 +289,6 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 %exclude /usr/bin/object_detection_sample_ssd
 %exclude /usr/bin/style_transfer_sample
 %exclude /usr/bin/validation_app
-/usr/bin/benchmark_app
-/usr/bin/haswell/avx512_1/benchmark_app
-/usr/bin/haswell/benchmark_app
 
 %files dev
 %defattr(-,root,root,-)
@@ -551,8 +551,10 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 
 %files extras
 %defattr(-,root,root,-)
+/usr/bin/benchmark_app
 /usr/bin/classification_sample
 /usr/bin/classification_sample_async
+/usr/bin/haswell/avx512_1/benchmark_app
 /usr/bin/haswell/avx512_1/classification_sample
 /usr/bin/haswell/avx512_1/classification_sample_async
 /usr/bin/haswell/avx512_1/hello_autoresize_classification
@@ -561,6 +563,7 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 /usr/bin/haswell/avx512_1/object_detection_sample_ssd
 /usr/bin/haswell/avx512_1/style_transfer_sample
 /usr/bin/haswell/avx512_1/validation_app
+/usr/bin/haswell/benchmark_app
 /usr/bin/haswell/classification_sample
 /usr/bin/haswell/classification_sample_async
 /usr/bin/haswell/hello_autoresize_classification
