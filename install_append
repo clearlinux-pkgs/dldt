@@ -1,8 +1,16 @@
-mkdir -p %{buildroot}/usr/lib64
-install -m 0755 inference-engine/clr-build/src/extension/libcpu_extension.so    %{buildroot}/usr/lib64
-install -m 0755 inference-engine/clr-build/src/hetero_plugin/libHeteroPlugin.so %{buildroot}/usr/lib64
-install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so %{buildroot}/usr/lib64
-install -m 0755 inference-engine/clr-build/src/cldnn_engine/libclDNNPlugin.so %{buildroot}/usr/lib64
+SO_FILES=" \
+	libcpu_extension.so \
+	libHeteroPlugin.so \
+	libMKLDNNPlugin.so \
+	libclDNNPlugin.so \
+	libmyriadPlugin.so \
+"
+mkdir -p %{buildroot}/usr/lib64/haswell/avx512_1
+for so in ${SO_FILES}; do
+  find inference-engine/clr-build/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64 \;
+  find inference-engine/clr-build-avx2/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64/haswell \;
+  find inference-engine/clr-build-avx512/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64/haswell/avx512_1 \;
+done
 
 rm -f %{buildroot}/usr/lib64/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/libpugixml.so*

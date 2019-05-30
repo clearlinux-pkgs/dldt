@@ -11,3 +11,4 @@ libopencv_imgproc.so.4.1
 libpthread.so.0
 libpugixml.so.1
 libstdc++.so.6
+libusb-1.0.so.0

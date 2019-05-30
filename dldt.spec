@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r1.1
-Release  : 56
+Release  : 57
 URL      : https://github.com/opencv/dldt/archive/2019_R1.1/dldt-2019.R1.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R1.1/dldt-2019.R1.1.tar.gz
 Source1  : https://download.01.org/opencv/2019/openvinotoolkit/R1/inference_engine/firmware_ma2450_491.zip
@@ -175,7 +175,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1559184566
+export SOURCE_DATE_EPOCH=1559259351
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -256,7 +256,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1559184566
+export SOURCE_DATE_EPOCH=1559259351
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -281,11 +281,19 @@ pushd clr-build
 popd
 popd
 ## install_append content
-mkdir -p %{buildroot}/usr/lib64
-install -m 0755 inference-engine/clr-build/src/extension/libcpu_extension.so    %{buildroot}/usr/lib64
-install -m 0755 inference-engine/clr-build/src/hetero_plugin/libHeteroPlugin.so %{buildroot}/usr/lib64
-install -m 0755 inference-engine/clr-build/src/mkldnn_plugin/libMKLDNNPlugin.so %{buildroot}/usr/lib64
-install -m 0755 inference-engine/clr-build/src/cldnn_engine/libclDNNPlugin.so %{buildroot}/usr/lib64
+SO_FILES=" \
+libcpu_extension.so \
+libHeteroPlugin.so \
+libMKLDNNPlugin.so \
+libclDNNPlugin.so \
+libmyriadPlugin.so \
+"
+mkdir -p %{buildroot}/usr/lib64/haswell/avx512_1
+for so in ${SO_FILES}; do
+find inference-engine/clr-build/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64 \;
+find inference-engine/clr-build-avx2/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64/haswell \;
+find inference-engine/clr-build-avx512/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64/haswell/avx512_1 \;
+done
 rm -f %{buildroot}/usr/lib64/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/libpugixml.so*
 rm -f %{buildroot}/usr/lib64/haswell/libgflags_nothreads.so*
@@ -618,10 +626,20 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 
 %files lib
 %defattr(-,root,root,-)
+/usr/lib64/haswell/avx512_1/libHeteroPlugin.so
+/usr/lib64/haswell/avx512_1/libMKLDNNPlugin.so
+/usr/lib64/haswell/avx512_1/libclDNNPlugin.so
+/usr/lib64/haswell/avx512_1/libcpu_extension.so
 /usr/lib64/haswell/avx512_1/libinference_engine.so
 /usr/lib64/haswell/avx512_1/libinference_engine.so.1
+/usr/lib64/haswell/avx512_1/libmyriadPlugin.so
+/usr/lib64/haswell/libHeteroPlugin.so
+/usr/lib64/haswell/libMKLDNNPlugin.so
+/usr/lib64/haswell/libclDNNPlugin.so
+/usr/lib64/haswell/libcpu_extension.so
 /usr/lib64/haswell/libinference_engine.so
 /usr/lib64/haswell/libinference_engine.so.1
+/usr/lib64/haswell/libmyriadPlugin.so
 /usr/lib64/libHeteroPlugin.so
 /usr/lib64/libMKLDNNPlugin.so
 /usr/lib64/libclDNN64.so
@@ -629,6 +647,7 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 /usr/lib64/libcpu_extension.so
 /usr/lib64/libinference_engine.so
 /usr/lib64/libinference_engine.so.1
+/usr/lib64/libmyriadPlugin.so
 
 %files license
 %defattr(0644,root,root,0755)
