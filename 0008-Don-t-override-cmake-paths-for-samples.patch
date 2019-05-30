@@ -1,14 +1,14 @@
-From 93ab8464cf5efc62a0cc84ecb5d9685938d4f838 Mon Sep 17 00:00:00 2001
+From 07e9fc439f93c6d1c45bbb9ffa75585c211eace4 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 14:03:46 -0800
-Subject: [PATCH 08/14] Don't override cmake paths for samples
+Subject: [PATCH 08/16] Don't override cmake paths for samples
 
 ---
  inference-engine/samples/CMakeLists.txt | 8 --------
  1 file changed, 8 deletions(-)
 
 diff --git a/inference-engine/samples/CMakeLists.txt b/inference-engine/samples/CMakeLists.txt
-index 88368ac..7e4c734 100644
+index 8f8944f..e3d5232 100644
 --- a/inference-engine/samples/CMakeLists.txt
 +++ b/inference-engine/samples/CMakeLists.txt
 @@ -40,14 +40,6 @@ if(NOT(UNIX))

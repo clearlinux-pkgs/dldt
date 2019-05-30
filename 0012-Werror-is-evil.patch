@@ -1,7 +1,7 @@
-From f2c257274d153556678afe2f7a8d66b3aae1ea7c Mon Sep 17 00:00:00 2001
+From 23a79aa75cacf429c171525acc05ae409381d4ef Mon Sep 17 00:00:00 2001
 From: Kevron Rees <tripzero.kev@gmail.com>
 Date: Thu, 21 Mar 2019 21:03:55 -0700
-Subject: [PATCH 12/14] Werror is evil
+Subject: [PATCH 12/16] Werror is evil
 
 ---
  inference-engine/thirdparty/clDNN/CMakeLists.txt | 5 +----

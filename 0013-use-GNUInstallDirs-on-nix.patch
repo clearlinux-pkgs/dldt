@@ -1,7 +1,7 @@
-From cb241997820d4caafae214b42e923951e514d992 Mon Sep 17 00:00:00 2001
+From 1ebd69950997290f33dc12860ce98167cfd049c1 Mon Sep 17 00:00:00 2001
 From: Kevron Rees <kevron.m.rees@intel.com>
 Date: Wed, 3 Apr 2019 09:20:48 -0700
-Subject: [PATCH 13/14] use GNUInstallDirs on *nix
+Subject: [PATCH 13/16] use GNUInstallDirs on *nix
 
 ---
  .../thirdparty/clDNN/src/CMakeLists.txt       | 36 +++++++++++++++----

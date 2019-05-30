@@ -1,7 +1,7 @@
-From a04dc0638c469a68d5a6f394adb8d123702d67f8 Mon Sep 17 00:00:00 2001
+From c59672cec2ce166179cd01126d294d8248d0b723 Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Tue, 12 Feb 2019 15:37:22 -0800
-Subject: [PATCH 11/14] Add -fopenmp to mkldnn_plugin
+Subject: [PATCH 11/16] Add -fopenmp to mkldnn_plugin
 
 ---
  inference-engine/src/mkldnn_plugin/CMakeLists.txt | 7 +++++++

@@ -1,7 +1,7 @@
-From a7375da631748d7736d90b9ea08541b2107db1f0 Mon Sep 17 00:00:00 2001
+From 264c56a922c88afc9046100338faf4e8a29891dd Mon Sep 17 00:00:00 2001
 From: Kevron Rees <kevron.m.rees@intel.com>
 Date: Wed, 3 Apr 2019 12:32:20 -0700
-Subject: [PATCH 14/14] do not put binaries in src dir
+Subject: [PATCH 14/16] do not put binaries in src dir
 
 ---
  inference-engine/thirdparty/clDNN/CMakeLists.txt | 3 ++-

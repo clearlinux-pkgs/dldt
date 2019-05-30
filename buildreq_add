@@ -5,6 +5,7 @@ ade-dev
 gflags-dev
 googletest
 googletest-dev
+libusb-dev
 mkl-dnn-dev
 opencv-dev
 opencv

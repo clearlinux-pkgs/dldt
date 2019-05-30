@@ -1,7 +1,7 @@
-From 8a9a76ee0db8bf4508021ec541f93cfbb2e50d4d Mon Sep 17 00:00:00 2001
+From e406c6d94b4ccfc0dae6f30437c30cd697f9f66c Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 13:37:59 -0800
-Subject: [PATCH 01/14] Build fixes.
+Subject: [PATCH 01/16] Build fixes.
 
 ---
  inference-engine/CMakeLists.txt                      | 10 +++++++++-
@@ -16,7 +16,7 @@ Subject: [PATCH 01/14] Build fixes.
  9 files changed, 35 insertions(+), 11 deletions(-)
 
 diff --git a/inference-engine/CMakeLists.txt b/inference-engine/CMakeLists.txt
-index 9e639ff..d65c86a 100644
+index 1c3d6ea..7952fc7 100644
 --- a/inference-engine/CMakeLists.txt
 +++ b/inference-engine/CMakeLists.txt
 @@ -141,7 +141,15 @@ include(cpplint)
@@ -101,10 +101,10 @@ index 6176ccc..8155753 100644
 \ No newline at end of file
 +add_subdirectory (src/openvino/inference_engine)
 diff --git a/inference-engine/samples/CMakeLists.txt b/inference-engine/samples/CMakeLists.txt
-index da00b43..88368ac 100644
+index 4e13c11..8f8944f 100644
 --- a/inference-engine/samples/CMakeLists.txt
 +++ b/inference-engine/samples/CMakeLists.txt
-@@ -63,7 +63,6 @@ if (WIN32)
+@@ -68,7 +68,6 @@ if (WIN32)
          set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4251 /wd4275 /wd4267") #disable some warnings
      endif()
  else()
@@ -113,10 +113,10 @@ index da00b43..88368ac 100644
          set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=unused-command-line-argument")
      elseif(UNIX)
 diff --git a/inference-engine/src/extension/CMakeLists.txt b/inference-engine/src/extension/CMakeLists.txt
-index b0078e2..cf3b451 100644
+index 19e7573..b97969d 100644
 --- a/inference-engine/src/extension/CMakeLists.txt
 +++ b/inference-engine/src/extension/CMakeLists.txt
-@@ -28,6 +28,7 @@ endif()
+@@ -31,6 +31,7 @@ endif()
  if (${CMAKE_CXX_COMPILER_ID} STREQUAL GNU)
      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
  endif()

@@ -1,7 +1,7 @@
-From 77f71d4565a9f1cb68f3a217331b26bb273d9521 Mon Sep 17 00:00:00 2001
+From 33e08f22eadc7ab1b0217136667ffdb0a7e642fe Mon Sep 17 00:00:00 2001
 From: "Brett T. Warden" <brett.t.warden@intel.com>
 Date: Mon, 28 Jan 2019 13:56:16 -0800
-Subject: [PATCH 05/14] Don't override cmake paths
+Subject: [PATCH 05/16] Don't override cmake paths
 
 Also disable building tests
 ---
@@ -9,7 +9,7 @@ Also disable building tests
  1 file changed, 9 deletions(-)
 
 diff --git a/inference-engine/CMakeLists.txt b/inference-engine/CMakeLists.txt
-index d65c86a..e899bcc 100644
+index 7952fc7..c98c2fe 100644
 --- a/inference-engine/CMakeLists.txt
 +++ b/inference-engine/CMakeLists.txt
 @@ -99,14 +99,6 @@ if(NOT(UNIX))
