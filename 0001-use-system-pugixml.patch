@@ -1,0 +1,27 @@
+From 1c3989b9bb080175c8d90c8e51d2f9fd09bd77ef Mon Sep 17 00:00:00 2001
+From: Kevron Rees <kevron.m.rees@intel.com>
+Date: Wed, 29 May 2019 11:28:38 -0700
+Subject: [PATCH] use system pugixml
+
+---
+ inference-engine/thirdparty/CMakeLists.txt | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/inference-engine/thirdparty/CMakeLists.txt b/inference-engine/thirdparty/CMakeLists.txt
+index f65f38c7..4435a172 100644
+--- a/inference-engine/thirdparty/CMakeLists.txt
++++ b/inference-engine/thirdparty/CMakeLists.txt
+@@ -7,8 +7,8 @@ if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+   set(CMAKE_CC_FLAGS "${CMAKE_CC_FLAGS} -Wno-unknown-warning-option -Wno-inconsistent-missing-override -Wno-pass-failed")
+ endif()
+ 
+-add_subdirectory(pugixml)
+-export(TARGETS pugixml NAMESPACE IE:: APPEND FILE "${CMAKE_BINARY_DIR}/targets.cmake")
++# add_subdirectory(pugixml)
++# export(TARGETS pugixml NAMESPACE IE:: APPEND FILE "${CMAKE_BINARY_DIR}/targets.cmake")
+ 
+ add_subdirectory(stb_lib)
+ add_subdirectory(ade)
+-- 
+2.17.1
+
