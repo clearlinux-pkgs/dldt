@@ -12,6 +12,9 @@ for so in ${SO_FILES}; do
   find inference-engine/clr-build-avx512/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64/haswell/avx512_1 \;
 done
 
+mkdir -p %{buildroot}/usr/lib/udev/rules.d
+install -m 0644 inference-engine/thirdparty/movidius/mvnc/src/97-myriad-usbboot.rules %{buildroot}/usr/lib/udev/rules.d
+
 rm -f %{buildroot}/usr/lib64/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/libpugixml.so*
 rm -f %{buildroot}/usr/lib64/haswell/libgflags_nothreads.so*

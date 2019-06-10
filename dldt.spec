@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r1.1
-Release  : 58
+Release  : 59
 URL      : https://github.com/opencv/dldt/archive/2019_R1.1/dldt-2019.R1.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R1.1/dldt-2019.R1.1.tar.gz
 Source1  : https://download.01.org/opencv/2019/openvinotoolkit/R1/inference_engine/firmware_ma2450_491.zip
@@ -13,6 +13,7 @@ Summary  : @PACKAGE_DESCRIPTION@
 Group    : Development/Tools
 License  : Apache-2.0 BSD-3-Clause MIT
 Requires: dldt-bin = %{version}-%{release}
+Requires: dldt-config = %{version}-%{release}
 Requires: dldt-lib = %{version}-%{release}
 Requires: dldt-license = %{version}-%{release}
 Requires: Cython
@@ -101,10 +102,19 @@ Patch17: 0001-use-system-pugixml.patch
 %package bin
 Summary: bin components for the dldt package.
 Group: Binaries
+Requires: dldt-config = %{version}-%{release}
 Requires: dldt-license = %{version}-%{release}
 
 %description bin
 bin components for the dldt package.
+
+
+%package config
+Summary: config components for the dldt package.
+Group: Default
+
+%description config
+config components for the dldt package.
 
 
 %package dev
@@ -177,7 +187,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1559320934
+export SOURCE_DATE_EPOCH=1560193949
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -258,7 +268,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1559320934
+export SOURCE_DATE_EPOCH=1560193949
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -296,6 +306,8 @@ find inference-engine/clr-build/ -type f -name "${so}" -exec install -m 0755 {} 
 find inference-engine/clr-build-avx2/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64/haswell \;
 find inference-engine/clr-build-avx512/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64/haswell/avx512_1 \;
 done
+mkdir -p %{buildroot}/usr/lib/udev/rules.d
+install -m 0644 inference-engine/thirdparty/movidius/mvnc/src/97-myriad-usbboot.rules %{buildroot}/usr/lib/udev/rules.d
 rm -f %{buildroot}/usr/lib64/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/libpugixml.so*
 rm -f %{buildroot}/usr/lib64/haswell/libgflags_nothreads.so*
@@ -336,6 +348,10 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 %exclude /usr/bin/object_detection_sample_ssd
 %exclude /usr/bin/style_transfer_sample
 %exclude /usr/bin/validation_app
+
+%files config
+%defattr(-,root,root,-)
+/usr/lib/udev/rules.d/97-myriad-usbboot.rules
 
 %files dev
 %defattr(-,root,root,-)
