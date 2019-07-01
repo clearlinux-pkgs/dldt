@@ -4,7 +4,6 @@
 0004-Fix-install-of-public-headers-within-subdirectories.patch
 0005-Don-t-override-cmake-paths.patch
 0006-Install-sample-apps.patch
-0007-Statically-link-common-sample-app-lib.patch
 0008-Don-t-override-cmake-paths-for-samples.patch
 0009-Include-OpenCV-legacy-constants.patch
 0010-Don-t-look-for-ade-in-a-subdir.patch
@@ -14,4 +13,5 @@
 0014-do-not-put-binaries-in-src-dir.patch
 0015-Enable-benchmark_app-for-inference-measurement.patch
 0016-Remove-RESOLVE_DEPENDENCY-for-VPU-firmware.patch
-0001-use-system-pugixml.patch
+0017-use-system-pugixml.patch
+0018-Expose-libraries-for-OpenVino-App.patch

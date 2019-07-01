@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r1.1
-Release  : 59
+Release  : 60
 URL      : https://github.com/opencv/dldt/archive/2019_R1.1/dldt-2019.R1.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R1.1/dldt-2019.R1.1.tar.gz
 Source1  : https://download.01.org/opencv/2019/openvinotoolkit/R1/inference_engine/firmware_ma2450_491.zip
@@ -21,6 +21,7 @@ Requires: Pillow
 Requires: PyYAML
 Requires: Shapely
 Requires: defusedxml
+Requires: gflags
 Requires: intel-compute-runtime
 Requires: mxnet
 Requires: networkx
@@ -29,7 +30,7 @@ Requires: onnx
 Requires: opencv-python
 Requires: progress
 Requires: protobuf
-Requires: pugixml
+Requires: pugixml-dev
 Requires: scikit-learn
 Requires: scipy
 Requires: tensorflow
@@ -47,6 +48,7 @@ BuildRequires : buildreq-distutils3
 BuildRequires : cmake
 BuildRequires : defusedxml
 BuildRequires : doxygen
+BuildRequires : gflags
 BuildRequires : gflags-dev
 BuildRequires : git
 BuildRequires : glibc-dev
@@ -67,7 +69,6 @@ BuildRequires : opencv-dev
 BuildRequires : opencv-python
 BuildRequires : progress
 BuildRequires : protobuf
-BuildRequires : pugixml
 BuildRequires : pugixml-dev
 BuildRequires : python3
 BuildRequires : scikit-learn
@@ -82,20 +83,20 @@ Patch3: 0003-Fixups-for-cmake-library-configuration.patch
 Patch4: 0004-Fix-install-of-public-headers-within-subdirectories.patch
 Patch5: 0005-Don-t-override-cmake-paths.patch
 Patch6: 0006-Install-sample-apps.patch
-Patch7: 0007-Statically-link-common-sample-app-lib.patch
-Patch8: 0008-Don-t-override-cmake-paths-for-samples.patch
-Patch9: 0009-Include-OpenCV-legacy-constants.patch
-Patch10: 0010-Don-t-look-for-ade-in-a-subdir.patch
-Patch11: 0011-Add-fopenmp-to-mkldnn_plugin.patch
-Patch12: 0012-Werror-is-evil.patch
-Patch13: 0013-use-GNUInstallDirs-on-nix.patch
-Patch14: 0014-do-not-put-binaries-in-src-dir.patch
-Patch15: 0015-Enable-benchmark_app-for-inference-measurement.patch
-Patch16: 0016-Remove-RESOLVE_DEPENDENCY-for-VPU-firmware.patch
-Patch17: 0001-use-system-pugixml.patch
+Patch7: 0008-Don-t-override-cmake-paths-for-samples.patch
+Patch8: 0009-Include-OpenCV-legacy-constants.patch
+Patch9: 0010-Don-t-look-for-ade-in-a-subdir.patch
+Patch10: 0011-Add-fopenmp-to-mkldnn_plugin.patch
+Patch11: 0012-Werror-is-evil.patch
+Patch12: 0013-use-GNUInstallDirs-on-nix.patch
+Patch13: 0014-do-not-put-binaries-in-src-dir.patch
+Patch14: 0015-Enable-benchmark_app-for-inference-measurement.patch
+Patch15: 0016-Remove-RESOLVE_DEPENDENCY-for-VPU-firmware.patch
+Patch16: 0017-use-system-pugixml.patch
+Patch17: 0018-Expose-libraries-for-OpenVino-App.patch
 
 %description
-# [OpenVINOâ¢ Toolkit](https://01.org/openvinotoolkit) - Deep Learning Deployment Toolkit repository
+# [OpenVINO™ Toolkit](https://01.org/openvinotoolkit) - Deep Learning Deployment Toolkit repository
 [![Stable release](https://img.shields.io/badge/version-2019.R1-green.svg)](https://github.com/opencv/dldt/releases/tag/2019_R1)
 [![Apache License Version 2.0](https://img.shields.io/badge/license-Apache_2.0-green.svg)](LICENSE)
 
@@ -187,7 +188,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1560193949
+export SOURCE_DATE_EPOCH=1562005565
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -268,7 +269,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1560193949
+export SOURCE_DATE_EPOCH=1562005565
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -607,6 +608,8 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 /usr/lib64/cmake/InferenceEngine/InferenceEngineConfig.cmake
 /usr/lib64/cmake/InferenceEngine/targets-debug.cmake
 /usr/lib64/cmake/InferenceEngine/targets.cmake
+/usr/lib64/cmake/InferenceEngine/targets_cpu_extension-debug.cmake
+/usr/lib64/cmake/InferenceEngine/targets_cpu_extension.cmake
 
 %files extras
 %defattr(-,root,root,-)
@@ -651,6 +654,7 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 /usr/lib64/haswell/libMKLDNNPlugin.so
 /usr/lib64/haswell/libclDNNPlugin.so
 /usr/lib64/haswell/libcpu_extension.so
+/usr/lib64/haswell/libformat_reader.so
 /usr/lib64/haswell/libinference_engine.so
 /usr/lib64/haswell/libinference_engine.so.1
 /usr/lib64/haswell/libmyriadPlugin.so
@@ -659,6 +663,7 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 /usr/lib64/libclDNN64.so
 /usr/lib64/libclDNNPlugin.so
 /usr/lib64/libcpu_extension.so
+/usr/lib64/libformat_reader.so
 /usr/lib64/libinference_engine.so
 /usr/lib64/libinference_engine.so.1
 /usr/lib64/libmyriadPlugin.so
