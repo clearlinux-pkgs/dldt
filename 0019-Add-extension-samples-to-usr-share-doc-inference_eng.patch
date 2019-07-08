@@ -1,0 +1,34 @@
+From ca7f64dd10dd364faf0058940f7951460d9af367 Mon Sep 17 00:00:00 2001
+From: Erin Park <erin.park@intel.com>
+Date: Mon, 8 Jul 2019 17:07:06 +0000
+Subject: [PATCH] Add extension/samples to /usr/share/doc/inference_engine for
+ users
+
+---
+ inference-engine/CMakeLists.txt     | 2 ++
+ inference-engine/src/CMakeLists.txt | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/inference-engine/CMakeLists.txt b/inference-engine/CMakeLists.txt
+index c98c2fe..38ff174 100644
+--- a/inference-engine/CMakeLists.txt
++++ b/inference-engine/CMakeLists.txt
+@@ -159,3 +159,5 @@ if (ENABLE_PYTHON)
+ endif()
+ 
+ add_cpplint_report_target()
++
++install(DIRECTORY samples DESTINATION share/doc/inference_engine)
+diff --git a/inference-engine/src/CMakeLists.txt b/inference-engine/src/CMakeLists.txt
+index 55cd679..8384b08 100644
+--- a/inference-engine/src/CMakeLists.txt
++++ b/inference-engine/src/CMakeLists.txt
+@@ -42,3 +42,5 @@ add_library(IE::ie_cpu_extension ALIAS ie_cpu_extension)
+ 
+ file(GLOB_RECURSE EXTENSION_SOURCES extension/*.cpp extension/*.hpp extension/*.h)
+ add_cpplint_target(ie_cpu_extension_cpplint FOR_SOURCES ${EXTENSION_SOURCES})
++
++install(DIRECTORY extension DESTINATION share/doc/inference_engine)
+-- 
+2.22.0
+

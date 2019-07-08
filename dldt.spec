@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r1.1
-Release  : 60
+Release  : 61
 URL      : https://github.com/opencv/dldt/archive/2019_R1.1/dldt-2019.R1.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R1.1/dldt-2019.R1.1.tar.gz
 Source1  : https://download.01.org/opencv/2019/openvinotoolkit/R1/inference_engine/firmware_ma2450_491.zip
@@ -94,6 +94,7 @@ Patch14: 0015-Enable-benchmark_app-for-inference-measurement.patch
 Patch15: 0016-Remove-RESOLVE_DEPENDENCY-for-VPU-firmware.patch
 Patch16: 0017-use-system-pugixml.patch
 Patch17: 0018-Expose-libraries-for-OpenVino-App.patch
+Patch18: 0019-Add-extension-samples-to-usr-share-doc-inference_eng.patch
 
 %description
 # [OpenVINO™ Toolkit](https://01.org/openvinotoolkit) - Deep Learning Deployment Toolkit repository
@@ -128,6 +129,14 @@ Requires: dldt = %{version}-%{release}
 
 %description dev
 dev components for the dldt package.
+
+
+%package doc
+Summary: doc components for the dldt package.
+Group: Documentation
+
+%description doc
+doc components for the dldt package.
 
 
 %package extras
@@ -182,13 +191,14 @@ cp -r %{_topdir}/BUILD/mvnc/* %{_topdir}/BUILD/dldt-2019_R1.1/mvnc
 %patch15 -p1
 %patch16 -p1
 %patch17 -p1
+%patch18 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1562005565
+export SOURCE_DATE_EPOCH=1562612110
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -269,7 +279,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1562005565
+export SOURCE_DATE_EPOCH=1562612110
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
@@ -610,6 +620,209 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 /usr/lib64/cmake/InferenceEngine/targets.cmake
 /usr/lib64/cmake/InferenceEngine/targets_cpu_extension-debug.cmake
 /usr/lib64/cmake/InferenceEngine/targets_cpu_extension.cmake
+
+%files doc
+%defattr(0644,root,root,0755)
+/usr/share/doc/inference_engine/extension/CMakeLists.txt
+/usr/share/doc/inference_engine/extension/README.md
+/usr/share/doc/inference_engine/extension/cmake/CPUID.cmake
+/usr/share/doc/inference_engine/extension/cmake/OptimizationFlags.cmake
+/usr/share/doc/inference_engine/extension/cmake/feature_defs.cmake
+/usr/share/doc/inference_engine/extension/common/defs.h
+/usr/share/doc/inference_engine/extension/common/fast_exp.h
+/usr/share/doc/inference_engine/extension/common/opt_exp.h
+/usr/share/doc/inference_engine/extension/common/softmax.h
+/usr/share/doc/inference_engine/extension/ext_argmax.cpp
+/usr/share/doc/inference_engine/extension/ext_base.cpp
+/usr/share/doc/inference_engine/extension/ext_base.hpp
+/usr/share/doc/inference_engine/extension/ext_ctc_greedy.cpp
+/usr/share/doc/inference_engine/extension/ext_depth_to_space.cpp
+/usr/share/doc/inference_engine/extension/ext_detectionoutput.cpp
+/usr/share/doc/inference_engine/extension/ext_detectionoutput_onnx.cpp
+/usr/share/doc/inference_engine/extension/ext_expand.cpp
+/usr/share/doc/inference_engine/extension/ext_fill.cpp
+/usr/share/doc/inference_engine/extension/ext_gather.cpp
+/usr/share/doc/inference_engine/extension/ext_grn.cpp
+/usr/share/doc/inference_engine/extension/ext_interp.cpp
+/usr/share/doc/inference_engine/extension/ext_list.cpp
+/usr/share/doc/inference_engine/extension/ext_list.hpp
+/usr/share/doc/inference_engine/extension/ext_mvn.cpp
+/usr/share/doc/inference_engine/extension/ext_normalize.cpp
+/usr/share/doc/inference_engine/extension/ext_pad.cpp
+/usr/share/doc/inference_engine/extension/ext_powerfile.cpp
+/usr/share/doc/inference_engine/extension/ext_priorbox.cpp
+/usr/share/doc/inference_engine/extension/ext_priorbox_clustered.cpp
+/usr/share/doc/inference_engine/extension/ext_priorgridgenerator_onnx.cpp
+/usr/share/doc/inference_engine/extension/ext_proposal.cpp
+/usr/share/doc/inference_engine/extension/ext_proposal_onnx.cpp
+/usr/share/doc/inference_engine/extension/ext_psroi.cpp
+/usr/share/doc/inference_engine/extension/ext_range.cpp
+/usr/share/doc/inference_engine/extension/ext_region_yolo.cpp
+/usr/share/doc/inference_engine/extension/ext_reorg_yolo.cpp
+/usr/share/doc/inference_engine/extension/ext_resample.cpp
+/usr/share/doc/inference_engine/extension/ext_reverse_sequence.cpp
+/usr/share/doc/inference_engine/extension/ext_roifeatureextractor_onnx.cpp
+/usr/share/doc/inference_engine/extension/ext_shuffle_channels.cpp
+/usr/share/doc/inference_engine/extension/ext_simplernms.cpp
+/usr/share/doc/inference_engine/extension/ext_space_to_depth.cpp
+/usr/share/doc/inference_engine/extension/ext_squeeze.cpp
+/usr/share/doc/inference_engine/extension/ext_strided_slice.cpp
+/usr/share/doc/inference_engine/extension/ext_topkrois_onnx.cpp
+/usr/share/doc/inference_engine/extension/ext_unsqueeze.cpp
+/usr/share/doc/inference_engine/extension/simple_copy.cpp
+/usr/share/doc/inference_engine/extension/simple_copy.h
+/usr/share/doc/inference_engine/samples/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/benchmark_app/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/benchmark_app/README.md
+/usr/share/doc/inference_engine/samples/benchmark_app/benchmark_app.hpp
+/usr/share/doc/inference_engine/samples/benchmark_app/infer_request_wrap.hpp
+/usr/share/doc/inference_engine/samples/benchmark_app/main.cpp
+/usr/share/doc/inference_engine/samples/benchmark_app/progress_bar.hpp
+/usr/share/doc/inference_engine/samples/benchmark_app/statistics_report.cpp
+/usr/share/doc/inference_engine/samples/benchmark_app/statistics_report.hpp
+/usr/share/doc/inference_engine/samples/calibration_tool/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/calibration_tool/README.md
+/usr/share/doc/inference_engine/samples/calibration_tool/calibrator_processors.cpp
+/usr/share/doc/inference_engine/samples/calibration_tool/calibrator_processors.h
+/usr/share/doc/inference_engine/samples/calibration_tool/data_stats.cpp
+/usr/share/doc/inference_engine/samples/calibration_tool/data_stats.h
+/usr/share/doc/inference_engine/samples/calibration_tool/main.cpp
+/usr/share/doc/inference_engine/samples/classification_sample/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/classification_sample/README.md
+/usr/share/doc/inference_engine/samples/classification_sample/classification_sample.h
+/usr/share/doc/inference_engine/samples/classification_sample/main.cpp
+/usr/share/doc/inference_engine/samples/classification_sample_async/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/classification_sample_async/README.md
+/usr/share/doc/inference_engine/samples/classification_sample_async/classification_sample_async.h
+/usr/share/doc/inference_engine/samples/classification_sample_async/main.cpp
+/usr/share/doc/inference_engine/samples/common/format_reader/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/common/format_reader/MnistUbyte.cpp
+/usr/share/doc/inference_engine/samples/common/format_reader/MnistUbyte.h
+/usr/share/doc/inference_engine/samples/common/format_reader/bmp.cpp
+/usr/share/doc/inference_engine/samples/common/format_reader/bmp.h
+/usr/share/doc/inference_engine/samples/common/format_reader/format_reader.cpp
+/usr/share/doc/inference_engine/samples/common/format_reader/format_reader.h
+/usr/share/doc/inference_engine/samples/common/format_reader/format_reader_ptr.h
+/usr/share/doc/inference_engine/samples/common/format_reader/opencv_wraper.cpp
+/usr/share/doc/inference_engine/samples/common/format_reader/opencv_wraper.h
+/usr/share/doc/inference_engine/samples/common/format_reader/register.h
+/usr/share/doc/inference_engine/samples/common/os/windows/w_dirent.h
+/usr/share/doc/inference_engine/samples/common/samples/args_helper.hpp
+/usr/share/doc/inference_engine/samples/common/samples/classification_results.h
+/usr/share/doc/inference_engine/samples/common/samples/common.hpp
+/usr/share/doc/inference_engine/samples/common/samples/console_progress.hpp
+/usr/share/doc/inference_engine/samples/common/samples/csv_dumper.hpp
+/usr/share/doc/inference_engine/samples/common/samples/ocv_common.hpp
+/usr/share/doc/inference_engine/samples/common/samples/slog.hpp
+/usr/share/doc/inference_engine/samples/hello_autoresize_classification/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/hello_autoresize_classification/README.md
+/usr/share/doc/inference_engine/samples/hello_autoresize_classification/main.cpp
+/usr/share/doc/inference_engine/samples/hello_classification/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/hello_classification/main.cpp
+/usr/share/doc/inference_engine/samples/hello_request_classification/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/hello_request_classification/README.md
+/usr/share/doc/inference_engine/samples/hello_request_classification/main.cpp
+/usr/share/doc/inference_engine/samples/hello_shape_infer_ssd/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/hello_shape_infer_ssd/README.md
+/usr/share/doc/inference_engine/samples/hello_shape_infer_ssd/main.cpp
+/usr/share/doc/inference_engine/samples/hello_shape_infer_ssd/shape_infer_extension.hpp
+/usr/share/doc/inference_engine/samples/lenet_network_graph_builder/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/lenet_network_graph_builder/LeNet.bin
+/usr/share/doc/inference_engine/samples/lenet_network_graph_builder/README.md
+/usr/share/doc/inference_engine/samples/lenet_network_graph_builder/lenet_network_graph_builder.hpp
+/usr/share/doc/inference_engine/samples/lenet_network_graph_builder/main.cpp
+/usr/share/doc/inference_engine/samples/object_detection_sample_ssd/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/object_detection_sample_ssd/README.md
+/usr/share/doc/inference_engine/samples/object_detection_sample_ssd/main.cpp
+/usr/share/doc/inference_engine/samples/object_detection_sample_ssd/object_detection_sample_ssd.h
+/usr/share/doc/inference_engine/samples/perfcheck/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/perfcheck/README.md
+/usr/share/doc/inference_engine/samples/perfcheck/main.cpp
+/usr/share/doc/inference_engine/samples/perfcheck/perfcheck.h
+/usr/share/doc/inference_engine/samples/sample_data/car.png
+/usr/share/doc/inference_engine/samples/sample_data/squeezenet1.1.labels
+/usr/share/doc/inference_engine/samples/speech_sample/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/speech_sample/README.md
+/usr/share/doc/inference_engine/samples/speech_sample/main.cpp
+/usr/share/doc/inference_engine/samples/speech_sample/speech_sample.hpp
+/usr/share/doc/inference_engine/samples/style_transfer_sample/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/style_transfer_sample/README.md
+/usr/share/doc/inference_engine/samples/style_transfer_sample/main.cpp
+/usr/share/doc/inference_engine/samples/style_transfer_sample/style_transfer_sample.h
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/.gitattributes
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/.gitignore
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/.gitmodules
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/.travis.yml
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/AUTHORS.txt
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/BUILD
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/COPYING.txt
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/ChangeLog.txt
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/INSTALL.md
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/README.md
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/WORKSPACE
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/appveyor.yml
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/bazel/gflags.bzl
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/cmake/README_runtime.txt
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/cmake/config.cmake.in
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/cmake/execute_test.cmake
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/cmake/package.cmake.in
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/cmake/package.pc.in
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/cmake/utils.cmake
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/cmake/version.cmake.in
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/doc/.nojekyll
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/doc/designstyle.css
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/doc/index.html
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/config.h.in
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/gflags.cc
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/gflags.h.in
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/gflags_completions.cc
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/gflags_completions.h.in
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/gflags_completions.sh
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/gflags_declare.h.in
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/gflags_ns.h.in
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/gflags_reporting.cc
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/mutex.h
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/util.h
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/windows_port.cc
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/src/windows_port.h
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/config/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/config/main.cc
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/flagfile.1
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/flagfile.2
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/flagfile.3
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/gflags_build.py.in
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/gflags_declare_flags.cc
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/gflags_declare_test.cc
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/gflags_strip_flags_test.cc
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/gflags_strip_flags_test.cmake
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/gflags_unittest.cc
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/gflags_unittest_flagfile
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/nc/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/thirdparty/gflags/test/nc/gflags_nc.cc
+/usr/share/doc/inference_engine/samples/validation_app/CMakeLists.txt
+/usr/share/doc/inference_engine/samples/validation_app/ClassificationProcessor.cpp
+/usr/share/doc/inference_engine/samples/validation_app/ClassificationProcessor.hpp
+/usr/share/doc/inference_engine/samples/validation_app/ObjectDetectionProcessor.cpp
+/usr/share/doc/inference_engine/samples/validation_app/ObjectDetectionProcessor.hpp
+/usr/share/doc/inference_engine/samples/validation_app/PreprocessingOptions.hpp
+/usr/share/doc/inference_engine/samples/validation_app/Processor.cpp
+/usr/share/doc/inference_engine/samples/validation_app/Processor.hpp
+/usr/share/doc/inference_engine/samples/validation_app/README.md
+/usr/share/doc/inference_engine/samples/validation_app/SSDObjectDetectionProcessor.hpp
+/usr/share/doc/inference_engine/samples/validation_app/VOCAnnotationParser.cpp
+/usr/share/doc/inference_engine/samples/validation_app/VOCAnnotationParser.hpp
+/usr/share/doc/inference_engine/samples/validation_app/YOLOObjectDetectionProcessor.hpp
+/usr/share/doc/inference_engine/samples/validation_app/classification_set_generator.cpp
+/usr/share/doc/inference_engine/samples/validation_app/classification_set_generator.hpp
+/usr/share/doc/inference_engine/samples/validation_app/image_decoder.cpp
+/usr/share/doc/inference_engine/samples/validation_app/image_decoder.hpp
+/usr/share/doc/inference_engine/samples/validation_app/main.cpp
+/usr/share/doc/inference_engine/samples/validation_app/pugixml/pugiconfig.hpp
+/usr/share/doc/inference_engine/samples/validation_app/pugixml/pugixml.cpp
+/usr/share/doc/inference_engine/samples/validation_app/pugixml/pugixml.hpp
+/usr/share/doc/inference_engine/samples/validation_app/user_exception.hpp
 
 %files extras
 %defattr(-,root,root,-)
