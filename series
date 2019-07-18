@@ -16,3 +16,4 @@
 0017-use-system-pugixml.patch
 0018-Expose-libraries-for-OpenVino-App.patch
 0019-Add-extension-samples-to-usr-share-doc-inference_eng.patch
+0020-Use-system-OpenMP.patch

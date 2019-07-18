@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r1.1
-Release  : 61
+Release  : 62
 URL      : https://github.com/opencv/dldt/archive/2019_R1.1/dldt-2019.R1.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R1.1/dldt-2019.R1.1.tar.gz
 Source1  : https://download.01.org/opencv/2019/openvinotoolkit/R1/inference_engine/firmware_ma2450_491.zip
@@ -95,6 +95,7 @@ Patch15: 0016-Remove-RESOLVE_DEPENDENCY-for-VPU-firmware.patch
 Patch16: 0017-use-system-pugixml.patch
 Patch17: 0018-Expose-libraries-for-OpenVino-App.patch
 Patch18: 0019-Add-extension-samples-to-usr-share-doc-inference_eng.patch
+Patch19: 0020-Use-system-OpenMP.patch
 
 %description
 # [OpenVINO™ Toolkit](https://01.org/openvinotoolkit) - Deep Learning Deployment Toolkit repository
@@ -192,13 +193,14 @@ cp -r %{_topdir}/BUILD/mvnc/* %{_topdir}/BUILD/dldt-2019_R1.1/mvnc
 %patch16 -p1
 %patch17 -p1
 %patch18 -p1
+%patch19 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1562612110
+export SOURCE_DATE_EPOCH=1563473969
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -279,7 +281,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1562612110
+export SOURCE_DATE_EPOCH=1563473969
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE
