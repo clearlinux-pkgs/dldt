@@ -14,3 +14,5 @@ openblas
 pugixml-dev
 ocl-icd-dev
 llvm-dev
+tbb-dev
+ngraph-dev

@@ -1,17 +1,32 @@
-From 1ebd69950997290f33dc12860ce98167cfd049c1 Mon Sep 17 00:00:00 2001
+From 970443ce6bf31128c3517374e2890a93518d988e Mon Sep 17 00:00:00 2001
 From: Kevron Rees <kevron.m.rees@intel.com>
 Date: Wed, 3 Apr 2019 09:20:48 -0700
-Subject: [PATCH 13/16] use GNUInstallDirs on *nix
+Subject: [PATCH] use GNUInstallDirs on *nix
 
 ---
+ .../thirdparty/clDNN/CMakeLists.txt           |  3 +-
  .../thirdparty/clDNN/src/CMakeLists.txt       | 36 +++++++++++++++----
- 1 file changed, 29 insertions(+), 7 deletions(-)
+ 2 files changed, 31 insertions(+), 8 deletions(-)
 
+diff --git a/inference-engine/thirdparty/clDNN/CMakeLists.txt b/inference-engine/thirdparty/clDNN/CMakeLists.txt
+index 624d95c..5957791 100644
+--- a/inference-engine/thirdparty/clDNN/CMakeLists.txt
++++ b/inference-engine/thirdparty/clDNN/CMakeLists.txt
+@@ -93,7 +93,8 @@ set(CLDNN__GTEST_DIR     "${CLDNN__COMMON_DIR}/googletest-fused")
+ # Build targets settings.
+ 
+ # Path which points to default root directory for compilation output.
+-set(CLDNN_BUILD__DEFAULT_OUT_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/build/out")
++set(CLDNN_BUILD__DEFAULT_OUT_ROOT "${CMAKE_BINARY_DIR}")
++set(CLDNN__OUTPUT_DIR, "${CMAKE_BINARY_DIR}")
+ 
+ # Prefix for all targets in internal pass.
+ set(CLDNN_BUILD__PROJ_NAME_PREFIX "")
 diff --git a/inference-engine/thirdparty/clDNN/src/CMakeLists.txt b/inference-engine/thirdparty/clDNN/src/CMakeLists.txt
-index 861a09d..dae7e68 100644
+index 132c6e4..cc88535 100644
 --- a/inference-engine/thirdparty/clDNN/src/CMakeLists.txt
 +++ b/inference-engine/thirdparty/clDNN/src/CMakeLists.txt
-@@ -245,17 +245,39 @@ target_link_libraries("${CLDNN_BUILD__PROJ}" PRIVATE ${CLDNN__SYSTEM_LINK_LIBRAR
+@@ -247,17 +247,39 @@ target_link_libraries("${CLDNN_BUILD__PROJ}" PRIVATE ${CLDNN__SYSTEM_LINK_LIBRAR
  
  # ========================================== Installation ==============================================
  
@@ -59,5 +74,5 @@ index 861a09d..dae7e68 100644
  
  # ======================================================================================================
 -- 
-2.21.0
+2.23.0
 
