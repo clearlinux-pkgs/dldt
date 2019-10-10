@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r2
-Release  : 63
+Release  : 64
 URL      : https://github.com/opencv/dldt/archive/2019_R2/dldt-2019.R2.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R2/dldt-2019.R2.tar.gz
 Summary  : @PACKAGE_DESCRIPTION@
@@ -44,6 +44,7 @@ BuildRequires : Pillow
 BuildRequires : PyYAML
 BuildRequires : Shapely
 BuildRequires : ade-dev
+BuildRequires : ade-staticdev
 BuildRequires : boost-dev
 BuildRequires : buildreq-cmake
 BuildRequires : cmake
@@ -53,6 +54,7 @@ BuildRequires : gflags
 BuildRequires : gflags-dev
 BuildRequires : git
 BuildRequires : glibc-dev
+BuildRequires : glibc-staticdev
 BuildRequires : googletest
 BuildRequires : googletest-dev
 BuildRequires : intel-compute-runtime
@@ -183,7 +185,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568744274
+export SOURCE_DATE_EPOCH=1570694730
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -211,7 +213,7 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fn
 -DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
 -DPYTHON_INCLUDE_DIR=/usr/include/python3.7m \
 -DCMAKE_BUILD_TYPE=Release
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 popd
 mkdir -p clr-build-avx2
 pushd clr-build-avx2
@@ -241,7 +243,7 @@ export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
 -DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
 -DPYTHON_INCLUDE_DIR=/usr/include/python3.7m \
 -DCMAKE_BUILD_TYPE=Release
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 popd
 mkdir -p clr-build-avx512
 pushd clr-build-avx512
@@ -271,12 +273,12 @@ export CXXFLAGS="$CXXFLAGS -march=skylake-avx512 -m64 "
 -DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
 -DPYTHON_INCLUDE_DIR=/usr/include/python3.7m \
 -DCMAKE_BUILD_TYPE=Release
-make  %{?_smp_mflags} VERBOSE=1
+make  %{?_smp_mflags}  VERBOSE=1
 popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1568744274
+export SOURCE_DATE_EPOCH=1570694730
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp LICENSE %{buildroot}/usr/share/package-licenses/dldt/LICENSE

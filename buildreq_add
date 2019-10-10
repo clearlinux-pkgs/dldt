@@ -2,6 +2,7 @@
 # picked up automatically. One name per line, no whitespace.
 Cython
 ade-dev
+ade-staticdev
 gflags-dev
 googletest
 googletest-dev
