@@ -1,0 +1,52 @@
+From 590aad0978a3d6459c0b44fa883d5897626615e3 Mon Sep 17 00:00:00 2001
+From: Hui Chun Ong <hui.chun.ong@intel.com>
+Date: Thu, 31 Oct 2019 08:58:59 +0000
+Subject: [PATCH] R3 enable VPU Myriad support
+
+- Update VPU firmware path to /usr/lib/firmware in myriad plugin
+
+Signed-off-by: Hui Chun Ong <hui.chun.ong@intel.com>
+---
+ .../src/vpu/myriad_plugin/myriad_executor.cpp | 19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
+
+diff --git a/inference-engine/src/vpu/myriad_plugin/myriad_executor.cpp b/inference-engine/src/vpu/myriad_plugin/myriad_executor.cpp
+index 0f3bfcacba42238be512d9b057d9fcdded5b4f7b..e1f2d1a03a897ee8c3d29f85ddf2e60431f5c5ed 100644
+--- a/inference-engine/src/vpu/myriad_plugin/myriad_executor.cpp
++++ b/inference-engine/src/vpu/myriad_plugin/myriad_executor.cpp
+@@ -93,18 +93,7 @@ ncStatus_t MyriadExecutor::bootNextDevice(std::vector<DevicePtr> &devicePool,
+ 
+     DeviceDesc device;
+ 
+-    char* dirName = nullptr;
+-
+-#if !defined(_WIN32)
+-    Dl_info info;
+-    dladdr(&device_mutex, &info);
+-    char* dli_fname = nullptr;
+-
+-    if (info.dli_fname != nullptr) {
+-        dli_fname = strdup(info.dli_fname);
+-        dirName = dirname(dli_fname);
+-    }
+-#endif
++    const char* dirName = "/usr/lib/firmware";
+ 
+     ncDeviceDescr_t in_deviceDesc = {};
+     in_deviceDesc.platform = configPlatform;
+@@ -134,12 +123,6 @@ ncStatus_t MyriadExecutor::bootNextDevice(std::vector<DevicePtr> &devicePool,
+     // Open new device with specific path to FW folder
+     statusOpen = ncDeviceOpen(&device._deviceHandle, in_deviceDesc, watchdogInterval, dirName);
+ 
+-#if !defined(_WIN32)
+-    if (info.dli_fname != nullptr) {
+-        free(dli_fname);
+-    }
+-#endif
+-
+     if (statusOpen != NC_OK) {
+         ncDeviceClose(&device._deviceHandle);
+         return statusOpen;
+-- 
+2.24.0
+

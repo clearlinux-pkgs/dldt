@@ -4,12 +4,15 @@
 #
 Name     : dldt
 Version  : 2019.r3.1
-Release  : 66
+Release  : 67
 URL      : https://github.com/opencv/dldt/archive/2019_R3.1/dldt-2019.R3.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R3.1/dldt-2019.R3.1.tar.gz
+Source1  : https://download.01.org/opencv/2019/openvinotoolkit/R3/inference_engine/firmware_ma2450_759W.zip
+Source2  : https://download.01.org/opencv/2019/openvinotoolkit/R3/inference_engine/firmware_ma2x8x_mdk_R9.8.zip
+Source3  : https://download.01.org/opencv/2019/openvinotoolkit/R3/inference_engine/firmware_mv0262_mdk_R9.8.zip
 Summary  : @PACKAGE_DESCRIPTION@
 Group    : Development/Tools
-License  : Apache-2.0 BSD-3-Clause MIT
+License  : Apache-2.0 BSD-3-Clause ISSL MIT
 Requires: dldt-config = %{version}-%{release}
 Requires: dldt-data = %{version}-%{release}
 Requires: dldt-lib = %{version}-%{release}
@@ -50,6 +53,7 @@ BuildRequires : gflags
 BuildRequires : gflags-dev
 BuildRequires : git
 BuildRequires : glibc-dev
+BuildRequires : glibc-staticdev
 BuildRequires : googletest
 BuildRequires : googletest-dev
 BuildRequires : intel-compute-runtime
@@ -75,10 +79,12 @@ BuildRequires : scipy
 BuildRequires : tbb-dev
 BuildRequires : tensorflow
 BuildRequires : tqdm
+BuildRequires : util-linux
 BuildRequires : xmltodict
 Patch1: 0001-R3-fix-build-error.patch
 Patch2: 0002-R3-install-DLDT-headers-libs-sample-apps.patch
 Patch3: 0003-use-GNUInstallDirs-on-nix.patch
+Patch4: 0004-R3-enable-VPU-Myriad-support.patch
 
 %description
 # [OpenVINO™ Toolkit](https://01.org/openvinotoolkit) - Deep Learning Deployment Toolkit repository
@@ -167,17 +173,41 @@ python3 components for the dldt package.
 
 %prep
 %setup -q -n dldt-2019_R3.1
+cd %{_builddir}
+mkdir -p firmware_ma2450_759W
+cd firmware_ma2450_759W
+unzip -q %{_sourcedir}/firmware_ma2450_759W.zip
+cd %{_builddir}
+mkdir -p firmware_ma2x8x_mdk_R9.8
+cd firmware_ma2x8x_mdk_R9.8
+unzip -q %{_sourcedir}/firmware_ma2x8x_mdk_R9.8.zip
+cd %{_builddir}
+mkdir -p firmware_mv0262_mdk_R9.8
+cd firmware_mv0262_mdk_R9.8
+unzip -q %{_sourcedir}/firmware_mv0262_mdk_R9.8.zip
 cd %{_builddir}/dldt-2019_R3.1
+mkdir -p inference-engine/temp/vpu/ma2450
+cp -r %{_builddir}/firmware_ma2450_759W/* %{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/ma2450
+mkdir -p inference-engine/temp/vpu/ma2x8x
+cp -r %{_builddir}/firmware_ma2x8x_mdk_R9.8/* %{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/ma2x8x
+mkdir -p inference-engine/temp/vpu/mv0262
+cp -r %{_builddir}/firmware_mv0262_mdk_R9.8/* %{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/mv0262
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
+## build_prepend content
+export VPU_FIRMWARE_MA2450=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/ma2450
+export VPU_FIRMWARE_MV0262=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/mv0262
+export VPU_FIRMWARE_MA2X8X=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/ma2x8x
+## build_prepend end
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1572307290
+export SOURCE_DATE_EPOCH=1573175310
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -199,7 +229,7 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fn
 -DENABLE_GNA=0 \
 -DLLVM_LINK_LLVM_DYLIB=ON \
 -DTHREADING=TBB \
--DENABLE_VPU=OFF \
+-DENABLE_VPU=ON \
 -DENABLE_MYRIAD=ON \
 -DENABLE_PYTHON=ON \
 -DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
@@ -209,6 +239,11 @@ make  %{?_smp_mflags}  VERBOSE=1
 popd
 mkdir -p clr-build-avx2
 pushd clr-build-avx2
+## build_prepend content
+export VPU_FIRMWARE_MA2450=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/ma2450
+export VPU_FIRMWARE_MV0262=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/mv0262
+export VPU_FIRMWARE_MA2X8X=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/ma2x8x
+## build_prepend end
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=haswell "
@@ -229,7 +264,7 @@ export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
 -DENABLE_GNA=0 \
 -DLLVM_LINK_LLVM_DYLIB=ON \
 -DTHREADING=TBB \
--DENABLE_VPU=OFF \
+-DENABLE_VPU=ON \
 -DENABLE_MYRIAD=ON \
 -DENABLE_PYTHON=ON \
 -DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
@@ -239,6 +274,11 @@ make  %{?_smp_mflags}  VERBOSE=1
 popd
 mkdir -p clr-build-avx512
 pushd clr-build-avx512
+## build_prepend content
+export VPU_FIRMWARE_MA2450=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/ma2450
+export VPU_FIRMWARE_MV0262=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/mv0262
+export VPU_FIRMWARE_MA2X8X=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/ma2x8x
+## build_prepend end
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
 export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fno-semantic-interposition -fno-trapping-math -march=skylake-avx512 "
@@ -259,7 +299,7 @@ export CXXFLAGS="$CXXFLAGS -march=skylake-avx512 -m64 "
 -DENABLE_GNA=0 \
 -DLLVM_LINK_LLVM_DYLIB=ON \
 -DTHREADING=TBB \
--DENABLE_VPU=OFF \
+-DENABLE_VPU=ON \
 -DENABLE_MYRIAD=ON \
 -DENABLE_PYTHON=ON \
 -DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
@@ -270,7 +310,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1572307290
+export SOURCE_DATE_EPOCH=1573175310
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp %{_builddir}/dldt-2019_R3.1/LICENSE %{buildroot}/usr/share/package-licenses/dldt/7df059597099bb7dcf25d2a9aedfaf4465f72d8d
@@ -324,10 +364,15 @@ rm -f %{buildroot}/usr/lib64/haswell/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/haswell/libpugixml.so*
 rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
+mkdir -p %{buildroot}/usr/lib/firmware
+find inference-engine/temp/vpu/ -type f -name "*.mvcmd" -exec install -m 0644 {} %{buildroot}/usr/lib/firmware \;
 ## install_append end
 
 %files
 %defattr(-,root,root,-)
+/usr/lib/firmware/MvNCAPI-ma2450.mvcmd
+/usr/lib/firmware/MvNCAPI-ma2x8x.mvcmd
+/usr/lib/firmware/MvNCAPI-mv0262.mvcmd
 
 %files config
 %defattr(-,root,root,-)
@@ -760,6 +805,7 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 /usr/lib64/haswell/avx512_1/libcpu_extension.so
 /usr/lib64/haswell/avx512_1/libinference_engine.so
 /usr/lib64/haswell/avx512_1/libinference_engine.so.1
+/usr/lib64/haswell/avx512_1/libmyriadPlugin.so
 /usr/lib64/haswell/libHeteroPlugin.so
 /usr/lib64/haswell/libMKLDNNPlugin.so
 /usr/lib64/haswell/libclDNNPlugin.so
@@ -767,6 +813,7 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 /usr/lib64/haswell/libformat_reader.so
 /usr/lib64/haswell/libinference_engine.so
 /usr/lib64/haswell/libinference_engine.so.1
+/usr/lib64/haswell/libmyriadPlugin.so
 /usr/lib64/libHeteroPlugin.so
 /usr/lib64/libMKLDNNPlugin.so
 /usr/lib64/libclDNNPlugin.so
@@ -774,6 +821,7 @@ rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
 /usr/lib64/libformat_reader.so
 /usr/lib64/libinference_engine.so
 /usr/lib64/libinference_engine.so.1
+/usr/lib64/libmyriadPlugin.so
 
 %files license
 %defattr(0644,root,root,0755)

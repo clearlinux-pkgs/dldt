@@ -21,3 +21,6 @@ rm -f %{buildroot}/usr/lib64/haswell/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/haswell/libpugixml.so*
 rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
+
+mkdir -p %{buildroot}/usr/lib/firmware
+find inference-engine/temp/vpu/ -type f -name "*.mvcmd" -exec install -m 0644 {} %{buildroot}/usr/lib/firmware \;

@@ -1,0 +1,3 @@
+export VPU_FIRMWARE_MA2450=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/ma2450
+export VPU_FIRMWARE_MV0262=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/mv0262
+export VPU_FIRMWARE_MA2X8X=%{_builddir}/dldt-2019_R3.1/inference-engine/temp/vpu/ma2x8x

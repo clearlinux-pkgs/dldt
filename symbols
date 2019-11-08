@@ -1210,3 +1210,4 @@ libinference_engine.so.1:_ZNK15InferenceEngine8NV12Blob2uvEv
 libinference_engine.so.1:_ZNK15InferenceEngine8PortData13getParametersB5cxx11Ev
 libinference_engine.so.1:_ZNK15InferenceEngine8PortData7getDataEv
 libinference_engine.so.1:findPlugin
+libmyriadPlugin.so:CreatePluginEngine

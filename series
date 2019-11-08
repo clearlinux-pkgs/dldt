@@ -1,3 +1,4 @@
 0001-R3-fix-build-error.patch
 0002-R3-install-DLDT-headers-libs-sample-apps.patch
 0003-use-GNUInstallDirs-on-nix.patch
+0004-R3-enable-VPU-Myriad-support.patch
