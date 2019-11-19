@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r3.1
-Release  : 69
+Release  : 70
 URL      : https://github.com/opencv/dldt/archive/2019_R3.1/dldt-2019.R3.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R3.1/dldt-2019.R3.1.tar.gz
 Source1  : https://download.01.org/opencv/2019/openvinotoolkit/R3/inference_engine/firmware_ma2450_759W.zip
@@ -207,7 +207,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1573175310
+export SOURCE_DATE_EPOCH=1574193404
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -232,8 +232,8 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -fno-lto -fno-math-errno -fn
 -DENABLE_VPU=ON \
 -DENABLE_MYRIAD=ON \
 -DENABLE_PYTHON=ON \
--DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
--DPYTHON_INCLUDE_DIR=/usr/include/python3.7m \
+-DPYTHON_EXECUTABLE=/usr/bin/python3 \
+-DPYTHON_INCLUDE_DIR=$(python -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())") \
 -DCMAKE_BUILD_TYPE=Release
 make  %{?_smp_mflags}  VERBOSE=1
 popd
@@ -267,8 +267,8 @@ export CXXFLAGS="$CXXFLAGS -march=haswell -m64"
 -DENABLE_VPU=ON \
 -DENABLE_MYRIAD=ON \
 -DENABLE_PYTHON=ON \
--DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
--DPYTHON_INCLUDE_DIR=/usr/include/python3.7m \
+-DPYTHON_EXECUTABLE=/usr/bin/python3 \
+-DPYTHON_INCLUDE_DIR=$(python -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())") \
 -DCMAKE_BUILD_TYPE=Release
 make  %{?_smp_mflags}  VERBOSE=1
 popd
@@ -302,15 +302,15 @@ export CXXFLAGS="$CXXFLAGS -march=skylake-avx512 -m64 "
 -DENABLE_VPU=ON \
 -DENABLE_MYRIAD=ON \
 -DENABLE_PYTHON=ON \
--DPYTHON_EXECUTABLE=/usr/bin/python3.7 \
--DPYTHON_INCLUDE_DIR=/usr/include/python3.7m \
+-DPYTHON_EXECUTABLE=/usr/bin/python3 \
+-DPYTHON_INCLUDE_DIR=$(python -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_inc())") \
 -DCMAKE_BUILD_TYPE=Release
 make  %{?_smp_mflags}  VERBOSE=1
 popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1573175310
+export SOURCE_DATE_EPOCH=1574193404
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp %{_builddir}/dldt-2019_R3.1/LICENSE %{buildroot}/usr/share/package-licenses/dldt/7df059597099bb7dcf25d2a9aedfaf4465f72d8d

@@ -10,7 +10,7 @@ libopencv_imgcodecs.so.4.1
 libopencv_imgproc.so.4.1
 libpthread.so.0
 libpugixml.so.1
-libpython3.7m.so.1.0
+libpython3.8.so.1.0
 libstdc++.so.6
 libtbb.so.2
 libusb-1.0.so.0
