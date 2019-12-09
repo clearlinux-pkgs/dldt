@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r3.1
-Release  : 75
+Release  : 76
 URL      : https://github.com/opencv/dldt/archive/2019_R3.1/dldt-2019.R3.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R3.1/dldt-2019.R3.1.tar.gz
 Source1  : https://download.01.org/opencv/2019/openvinotoolkit/R3/inference_engine/firmware_ma2450_759W.zip
@@ -207,7 +207,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1574193404
+export SOURCE_DATE_EPOCH=1575914972
 pushd inference-engine
 mkdir -p clr-build
 pushd clr-build
@@ -310,7 +310,7 @@ popd
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1574193404
+export SOURCE_DATE_EPOCH=1575914972
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/dldt
 cp %{_builddir}/dldt-2019_R3.1/LICENSE %{buildroot}/usr/share/package-licenses/dldt/7df059597099bb7dcf25d2a9aedfaf4465f72d8d
@@ -356,14 +356,17 @@ find inference-engine/clr-build/ -type f -name "${so}" -exec install -m 0755 {} 
 find inference-engine/clr-build-avx2/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64/haswell \;
 find inference-engine/clr-build-avx512/ -type f -name "${so}" -exec install -m 0755 {} %{buildroot}/usr/lib64/haswell/avx512_1 \;
 done
+
 mkdir -p %{buildroot}/usr/lib/udev/rules.d
 install -m 0644 inference-engine/thirdparty/movidius/mvnc/src/97-myriad-usbboot.rules %{buildroot}/usr/lib/udev/rules.d
+
 rm -f %{buildroot}/usr/lib64/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/libpugixml.so*
 rm -f %{buildroot}/usr/lib64/haswell/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/haswell/libpugixml.so*
 rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libgflags_nothreads.so*
 rm -f %{buildroot}/usr/lib64/haswell/avx512_1/libpugixml.so*
+
 mkdir -p %{buildroot}/usr/lib/firmware
 find inference-engine/temp/vpu/ -type f -name "*.mvcmd" -exec install -m 0644 {} %{buildroot}/usr/lib/firmware \;
 ## install_append end
