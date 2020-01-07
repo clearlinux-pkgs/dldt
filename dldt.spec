@@ -4,7 +4,7 @@
 #
 Name     : dldt
 Version  : 2019.r3.1
-Release  : 76
+Release  : 77
 URL      : https://github.com/opencv/dldt/archive/2019_R3.1/dldt-2019.R3.1.tar.gz
 Source0  : https://github.com/opencv/dldt/archive/2019_R3.1/dldt-2019.R3.1.tar.gz
 Source1  : https://download.01.org/opencv/2019/openvinotoolkit/R3/inference_engine/firmware_ma2450_759W.zip
